@@ -19,19 +19,19 @@
         />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="61dp"
+        android:layout_height="@dimen/setting_height"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="0dp"
-            android:layout_height="61dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/white"
-            android:paddingStart="16dp"
-            android:paddingTop="21dp"
-            android:paddingEnd="44dp"
-            android:paddingBottom="21dp"
+            android:paddingStart="@dimen/padding_setting_start_end"
+            android:paddingTop="@dimen/padding_setting_top_bottom"
+            android:paddingEnd="@dimen/padding_setting_start_end"
+            android:paddingBottom="@dimen/padding_setting_top_bottom"
             android:text="@string/black_theme"
             android:textColor="@color/setting_text_color"
             android:textSize="16sp" />
@@ -45,12 +45,12 @@
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="61dp"
+        android:layout_height="@dimen/setting_height"
         android:backgroundTint="@color/white"
-        android:paddingStart="16dp"
-        android:paddingTop="21dp"
-        android:paddingEnd="18dp"
-        android:paddingBottom="21dp"
+        android:paddingStart="@dimen/padding_setting_start_end"
+        android:paddingTop="@dimen/padding_setting_top_bottom"
+        android:paddingEnd="@dimen/padding_setting_start_end"
+        android:paddingBottom="@dimen/padding_setting_top_bottom"
         android:text="@string/provide_app"
         android:textColor="@color/setting_text_color"
         android:textSize="16sp"
@@ -58,29 +58,29 @@
         app:drawableTint="@color/setting_icon_color" />
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="61dp"
+        android:layout_height="@dimen/setting_height"
         android:text="@string/send_support"
         android:backgroundTint="@color/white"
         android:textSize="16sp"
         android:textColor="@color/setting_text_color"
-        android:paddingTop="21dp"
-        android:paddingBottom="21dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="18dp"
+        android:paddingTop="@dimen/padding_setting_top_bottom"
+        android:paddingBottom="@dimen/padding_setting_top_bottom"
+        android:paddingStart="@dimen/padding_setting_start_end"
+        android:paddingEnd="@dimen/padding_setting_start_end"
         app:drawableEndCompat="@drawable/support"
         app:drawableTint="@color/setting_icon_color"
         />
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="61dp"
+        android:layout_height="@dimen/setting_height"
         android:text="@string/user_term"
         android:backgroundTint="@color/white"
         android:textSize="16sp"
         android:textColor="@color/setting_text_color"
-        android:paddingTop="21dp"
-        android:paddingBottom="21dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="18dp"
+        android:paddingTop="@dimen/padding_setting_top_bottom"
+        android:paddingBottom="@dimen/padding_setting_top_bottom"
+        android:paddingStart="@dimen/padding_setting_start_end"
+        android:paddingEnd="@dimen/padding_setting_start_end"
         app:drawableEndCompat="@drawable/arrow"
         app:drawableTint="@color/setting_icon_color"
         />

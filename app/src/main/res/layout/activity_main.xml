@@ -30,7 +30,7 @@
         android:layout_weight="1"
         android:text="@string/find_button"
         android:textColor="@color/text_color"
-        android:textSize="22sp"
+        android:textSize="@dimen/text_button_size"
         android:textStyle="bold"
         android:textAllCaps="false"
         android:backgroundTint="@color/white"
@@ -38,7 +38,7 @@
         app:iconGravity="textStart"
         app:iconPadding="10dp"
         app:iconTint="@color/text_color"
-        app:cornerRadius="16dp"
+        app:cornerRadius="@dimen/corner_radius_button"
         />
 
     <Button
@@ -50,9 +50,9 @@
         android:text="@string/media_button"
         android:textAllCaps="false"
         android:textColor="@color/text_color"
-        android:textSize="22sp"
+        android:textSize="@dimen/text_button_size"
         android:textStyle="bold"
-        app:cornerRadius="16dp"
+        app:cornerRadius="@dimen/corner_radius_button"
         app:icon="@drawable/media"
         app:iconGravity="textStart"
         app:iconPadding="10dp"
@@ -64,7 +64,7 @@
         android:layout_weight="1"
         android:text="@string/setting"
         android:textColor="@color/text_color"
-        android:textSize="22sp"
+        android:textSize="@dimen/text_button_size"
         android:textStyle="bold"
         android:textAllCaps="false"
         android:backgroundTint="@color/white"
@@ -72,7 +72,7 @@
         app:iconGravity="textStart"
         app:iconPadding="10dp"
         app:iconTint="@color/text_color"
-        app:cornerRadius="16dp"
+        app:cornerRadius="@dimen/corner_radius_button"
         />
 
 </LinearLayout>
