@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_blue"
+    android:paddingEnd="15dp"
+    android:paddingStart="17dp"
+    android:paddingTop="14dp"
+    android:paddingBottom="28dp"
+    tools:context=".MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="@string/app_name"
+        android:layout_gravity="top"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        />
+    <Button
+        android:id="@+id/findButton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/find_button"
+        android:textColor="@color/text_color"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/white"
+        app:icon="@drawable/search"
+        app:iconGravity="textStart"
+        app:iconPadding="10dp"
+        app:iconTint="@color/text_color"
+        app:cornerRadius="16dp"
+        />
+
+    <Button
+        android:id="@+id/mediaButton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/white"
+        android:text="@string/media_button"
+        android:textAllCaps="false"
+        android:textColor="@color/text_color"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/media"
+        app:iconGravity="textStart"
+        app:iconPadding="10dp"
+        app:iconTint="@color/text_color" />
+    <Button
+        android:id="@+id/settingButton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/setting"
+        android:textColor="@color/text_color"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/white"
+        app:icon="@drawable/setting"
+        app:iconGravity="textStart"
+        app:iconPadding="10dp"
+        app:iconTint="@color/text_color"
+        app:cornerRadius="16dp"
+        />
+
+</LinearLayout>
