@@ -2,7 +2,7 @@
 <resources>
     <dimen name="text_button_size">22sp</dimen>
     <dimen name="corner_radius_button">16dp</dimen>
-    <dimen name="padding_setting_top_bottom">21dp</dimen>
+    <dimen name="padding_setting_top_bottom">20dp</dimen>
     <dimen name="padding_setting_start_end">16dp</dimen>
-    <dimen name="setting_height">61dp</dimen>
+    <dimen name="setting_height">60dp</dimen>
 </resources>

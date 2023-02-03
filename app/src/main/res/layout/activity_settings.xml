@@ -14,7 +14,7 @@
         android:text="@string/setting"
         android:paddingBottom="20dp"
         app:titleTextColor="@color/black"
-        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:navigationIcon="@drawable/arrow_back"
         app:titleTextAppearance="@style/Toolbar.SubPage"
         />
     <LinearLayout
