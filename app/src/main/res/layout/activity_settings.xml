@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    style="@style/setting_screen">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBarSetting"
@@ -13,9 +13,10 @@
         android:layout_height="wrap_content"
         android:text="@string/setting"
         android:paddingBottom="20dp"
-        app:titleTextColor="@color/black"
+        app:backgroundTint="@color/white"
         app:navigationIcon="@drawable/arrow_back"
         app:titleTextAppearance="@style/Toolbar.SubPage"
+        style="@style/Theme.PlaylistMaker"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,20 +26,16 @@
         <TextView
             android:id="@+id/textView"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/setting_height"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:paddingStart="@dimen/padding_setting_start_end"
-            android:paddingTop="@dimen/padding_setting_top_bottom"
-            android:paddingEnd="@dimen/padding_setting_start_end"
-            android:paddingBottom="@dimen/padding_setting_top_bottom"
             android:text="@string/black_theme"
-            android:textColor="@color/setting_text_color"
-            android:textSize="16sp" />
+            style="@style/item_setting"
+            />
 
         <androidx.appcompat.widget.SwitchCompat
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:theme="@style/Switch"
             />
 
@@ -46,43 +43,23 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
-        android:backgroundTint="@color/white"
-        android:paddingStart="@dimen/padding_setting_start_end"
-        android:paddingTop="@dimen/padding_setting_top_bottom"
-        android:paddingEnd="@dimen/padding_setting_start_end"
-        android:paddingBottom="@dimen/padding_setting_top_bottom"
         android:text="@string/provide_app"
-        android:textColor="@color/setting_text_color"
-        android:textSize="16sp"
         app:drawableEndCompat="@drawable/share"
-        app:drawableTint="@color/setting_icon_color" />
+        style="@style/item_setting"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
         android:text="@string/send_support"
-        android:backgroundTint="@color/white"
-        android:textSize="16sp"
-        android:textColor="@color/setting_text_color"
-        android:paddingTop="@dimen/padding_setting_top_bottom"
-        android:paddingBottom="@dimen/padding_setting_top_bottom"
-        android:paddingStart="@dimen/padding_setting_start_end"
-        android:paddingEnd="@dimen/padding_setting_start_end"
         app:drawableEndCompat="@drawable/support"
-        app:drawableTint="@color/setting_icon_color"
+        style="@style/item_setting"
         />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
         android:text="@string/user_term"
-        android:backgroundTint="@color/white"
-        android:textSize="16sp"
-        android:textColor="@color/setting_text_color"
-        android:paddingTop="@dimen/padding_setting_top_bottom"
-        android:paddingBottom="@dimen/padding_setting_top_bottom"
-        android:paddingStart="@dimen/padding_setting_start_end"
-        android:paddingEnd="@dimen/padding_setting_start_end"
         app:drawableEndCompat="@drawable/arrow"
-        app:drawableTint="@color/setting_icon_color"
+        style="@style/item_setting"
         />
 
 </LinearLayout>

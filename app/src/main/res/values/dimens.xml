@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_button_size">22sp</dimen>
+    <dimen name="text_item_setting_size">16sp</dimen>
     <dimen name="corner_radius_button">16dp</dimen>
     <dimen name="padding_setting_top_bottom">20dp</dimen>
     <dimen name="padding_setting_start_end">16dp</dimen>

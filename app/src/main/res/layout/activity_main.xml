@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background_blue"
+    style="@style/main_screen"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -32,16 +32,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="@string/find_button"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/text_button_size"
-            android:textStyle="normal"
-            android:textAllCaps="false"
-            android:backgroundTint="@color/white"
             app:icon="@drawable/search"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconTint="@color/text_color"
-            app:cornerRadius="@dimen/corner_radius_button"
+            style="@style/buttom_main_screen"
             />
 
         <Button
@@ -49,33 +41,18 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
             android:text="@string/media_button"
-            android:textAllCaps="false"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/text_button_size"
-            android:textStyle="normal"
-            app:cornerRadius="@dimen/corner_radius_button"
             app:icon="@drawable/media"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconTint="@color/text_color" />
+            style="@style/buttom_main_screen"
+            />
         <Button
             android:id="@+id/settingButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="@string/setting"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/text_button_size"
-            android:textStyle="normal"
-            android:textAllCaps="false"
-            android:backgroundTint="@color/white"
             app:icon="@drawable/setting"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconTint="@color/text_color"
-            app:cornerRadius="@dimen/corner_radius_button"
+            style="@style/buttom_main_screen"
             />
     </LinearLayout>
 
