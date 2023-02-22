@@ -28,29 +28,22 @@ class SettingsActivity: AppCompatActivity() {
 
         sharingApp.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, LINK_TO_SITE)
+            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.link_to_site))
             shareIntent.type = "text/plain"
             startActivity(shareIntent)
         }
         messageSupport.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.data = Uri.parse("mailto:")
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(DEVELOPER_MAIL))
-            supportIntent.putExtra(Intent.EXTRA_SUBJECT, THEME_TO_SUPPORT)
-            supportIntent.putExtra(Intent.EXTRA_TEXT, MESSAGE_TO_SUPPORT)
+            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.developer_mail)))
+            supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.theme_to_support))
+            supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.message_to_support))
             startActivity(supportIntent)
         }
         termsUser.setOnClickListener {
-            val address = Uri.parse("https://yandex.ru/legal/practicum_offer/")
+            val address = Uri.parse(getString(R.string.user_term_link))
             val termIntent = Intent(Intent.ACTION_VIEW, address)
             startActivity(termIntent)
         }
-    }
-
-    companion object {
-        const val THEME_TO_SUPPORT = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
-        const val MESSAGE_TO_SUPPORT = "Спасибо разработчикам и разработчицам за крутое приложение!"
-        const val LINK_TO_SITE = "https://practicum.yandex.ru/profile/android-developer/"
-        const val DEVELOPER_MAIL = "delirium.ag@yandex.ru"
     }
 }

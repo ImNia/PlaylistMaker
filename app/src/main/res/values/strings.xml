@@ -10,5 +10,11 @@
     <string name="send_support">Написать в поддержку</string>
     <string name="user_term">Пользовательское соглашение</string>
     <string name="search_input">Поиск</string>
-    <string name="cross_description">cross for delete</string>
+    <string name="cross_description">Крест для удаления текста</string>
+
+    <string name="user_term_link">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="theme_to_support">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="message_to_support">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="link_to_site">https://practicum.yandex.ru/profile/android-developer/</string>
+    <string name="developer_mail">delirium.ag@yandex.ru</string>
 </resources>
