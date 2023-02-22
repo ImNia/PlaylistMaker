@@ -46,4 +46,9 @@ class SettingsActivity: AppCompatActivity() {
             startActivity(termIntent)
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return super.onSupportNavigateUp()
+    }
 }

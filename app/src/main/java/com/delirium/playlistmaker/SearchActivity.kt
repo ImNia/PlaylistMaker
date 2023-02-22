@@ -22,6 +22,8 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        val toolbar = findViewById<Toolbar>(R.id.toolBarSearch)
+        setSupportActionBar(toolbar)
 
         crossForDelete = findViewById(R.id.clear_search)
 
@@ -36,6 +38,11 @@ class SearchActivity : AppCompatActivity() {
         }
         editSearch = findViewById(R.id.edit_search)
         editSearch.addTextChangedListener(createTextWatcher())
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return super.onSupportNavigateUp()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
