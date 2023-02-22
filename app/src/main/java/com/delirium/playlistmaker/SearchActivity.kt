@@ -29,6 +29,17 @@ class SearchActivity : AppCompatActivity() {
         editSearch.addTextChangedListener(createTextWatcher())
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val inputString = savedInstanceState.getString(EDIT_TEXT)
+        editSearch.setText(inputString)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(EDIT_TEXT, editSearch.text.toString())
+    }
+
     private fun createTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             crossForDelete.visibility = View.VISIBLE
@@ -43,4 +54,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    companion object {
+        const val EDIT_TEXT = "EDIT_TEXT"
+    }
 }
