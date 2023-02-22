@@ -16,7 +16,14 @@
         app:navigationIcon="@drawable/arrow_back"
         app:titleTextAppearance="@style/Toolbar.SubPage"
         style="@style/Theme.PlaylistMaker"
-        />
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/setting"
+            style="@style/toolbar"
+            />
+    </androidx.appcompat.widget.Toolbar>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"

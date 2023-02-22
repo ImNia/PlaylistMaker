@@ -21,9 +21,6 @@ class SettingsActivity: AppCompatActivity() {
 
         val toolBar: Toolbar = findViewById(R.id.toolBarSetting)
         setSupportActionBar(toolBar)
-        supportActionBar?.title = getString(R.string.setting)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         sharingApp = findViewById(R.id.sharing_app)
         messageSupport = findViewById(R.id.message_support)

@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:text="@string/find_button"
             app:icon="@drawable/search"
-            style="@style/buttom_main_screen"
+            style="@style/button_main_screen"
             />
 
         <Button
@@ -43,7 +43,7 @@
             android:layout_weight="1"
             android:text="@string/media_button"
             app:icon="@drawable/media"
-            style="@style/buttom_main_screen"
+            style="@style/button_main_screen"
             />
         <Button
             android:id="@+id/settingButton"
@@ -52,7 +52,7 @@
             android:layout_weight="1"
             android:text="@string/setting"
             app:icon="@drawable/setting"
-            style="@style/buttom_main_screen"
+            style="@style/button_main_screen"
             />
     </LinearLayout>
 
