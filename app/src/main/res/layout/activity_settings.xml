@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:text="@string/setting"
         android:paddingBottom="20dp"
-        app:backgroundTint="@color/white"
         app:navigationIcon="@drawable/arrow_back"
         app:titleTextAppearance="@style/Toolbar.SubPage"
         style="@style/Theme.PlaylistMaker"
