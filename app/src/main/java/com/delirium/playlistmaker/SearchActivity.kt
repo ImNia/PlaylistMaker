@@ -27,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
 
         crossForDelete = findViewById(R.id.clear_search)
 
-        crossForDelete.setOnClickListener {
+        crossForDelete.setOnClickListener { it ->
             editSearch.text.clear()
             it.visibility = View.INVISIBLE
 
