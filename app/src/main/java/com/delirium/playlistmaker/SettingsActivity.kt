@@ -12,52 +12,56 @@ import androidx.appcompat.widget.Toolbar
 
 class SettingsActivity: AppCompatActivity() {
 
-    private lateinit var sharingApp: TextView
-    private lateinit var messageSupport: TextView
-    private lateinit var termsUser: TextView
-    private lateinit var switch: SwitchCompat
+    private lateinit var sharingAppButton: TextView
+    private lateinit var messageSupportButton: TextView
+    private lateinit var termsUserButton: TextView
+    private lateinit var switchTheme: SwitchCompat
+    private lateinit var toolBar: Toolbar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val toolBar: Toolbar = findViewById(R.id.toolBarSetting)
+        toolBar = findViewById(R.id.toolBarSetting)
         setSupportActionBar(toolBar)
 
-        sharingApp = findViewById(R.id.sharing_app)
-        messageSupport = findViewById(R.id.message_support)
-        termsUser = findViewById(R.id.terms_user)
-        switch = findViewById(R.id.switch_mode)
+        sharingAppButton = findViewById(R.id.sharing_app)
+        messageSupportButton = findViewById(R.id.message_support)
+        termsUserButton = findViewById(R.id.terms_user)
+        switchTheme = findViewById(R.id.switch_mode)
 
         when(resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
             Configuration.UI_MODE_NIGHT_YES -> {
-                switch.isChecked = true
+                switchTheme.isChecked = true
             }
             Configuration.UI_MODE_NIGHT_NO -> {
-                switch.isChecked = false
+                switchTheme.isChecked = false
             }
         }
-        switch.setOnCheckedChangeListener { compoundButton, isNight ->
+        switchTheme.setOnCheckedChangeListener { compoundButton, isNight ->
             setModeTheme(isNight)
         }
 
-        sharingApp.setOnClickListener {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.link_to_site))
-            shareIntent.type = "text/plain"
-            startActivity(shareIntent)
+        sharingAppButton.setOnClickListener {
+            Intent(Intent.ACTION_VIEW).apply {
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.link_to_site))
+                type = "text/plain"
+                startActivity(this)
+            }
         }
-        messageSupport.setOnClickListener {
-            val supportIntent = Intent(Intent.ACTION_SENDTO)
-            supportIntent.data = Uri.parse("mailto:")
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.developer_mail)))
-            supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.theme_to_support))
-            supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.message_to_support))
-            startActivity(supportIntent)
+        messageSupportButton.setOnClickListener {
+            Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.developer_mail)))
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.theme_to_support))
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.message_to_support))
+                startActivity(this)
+            }
         }
-        termsUser.setOnClickListener {
+        termsUserButton.setOnClickListener {
             val address = Uri.parse(getString(R.string.user_term_link))
-            val termIntent = Intent(Intent.ACTION_VIEW, address)
-            startActivity(termIntent)
+            Intent(Intent.ACTION_VIEW, address).apply {
+                startActivity(this)
+            }
         }
     }
 
