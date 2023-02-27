@@ -11,9 +11,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        supportActionBar?.hide()
-        val toolBar: Toolbar = findViewById(R.id.toolBar)
-        setSupportActionBar(toolBar)
 
         val findButton = findViewById<Button>(R.id.findButton)
         val mediaButton = findViewById<Button>(R.id.mediaButton)

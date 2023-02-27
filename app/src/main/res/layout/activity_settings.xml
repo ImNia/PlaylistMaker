@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    style="@style/additional_screen">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBarSetting"
@@ -13,76 +13,71 @@
         android:layout_height="wrap_content"
         android:text="@string/setting"
         android:paddingBottom="20dp"
-        app:titleTextColor="@color/black"
         app:navigationIcon="@drawable/arrow_back"
         app:titleTextAppearance="@style/Toolbar.SubPage"
-        />
-    <LinearLayout
+        style="@style/Theme.PlaylistMaker"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/setting"
+            style="@style/toolbar"
+            />
+    </androidx.appcompat.widget.Toolbar>
+    <FrameLayout
+        android:id="@+id/container_switch_theme"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_height"
-        android:orientation="horizontal">
+        android:layout_height="@dimen/setting_height">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:paddingStart="@dimen/padding_setting_start_end"
-            android:paddingTop="@dimen/padding_setting_top_bottom"
-            android:paddingEnd="@dimen/padding_setting_start_end"
-            android:paddingBottom="@dimen/padding_setting_top_bottom"
+            android:id="@+id/night_theme"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/setting_height"
             android:text="@string/black_theme"
-            android:textColor="@color/setting_text_color"
-            android:textSize="16sp" />
+            android:paddingHorizontal="@dimen/padding_setting_start_end"
+            android:paddingVertical="@dimen/padding_setting_top_bottom"
+            style="@style/item_setting"
+            />
 
         <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
             android:theme="@style/Switch"
             />
 
-    </LinearLayout>
+    </FrameLayout>
     <TextView
+        android:id="@+id/sharing_app"
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
-        android:backgroundTint="@color/white"
-        android:paddingStart="@dimen/padding_setting_start_end"
-        android:paddingTop="@dimen/padding_setting_top_bottom"
-        android:paddingEnd="@dimen/padding_setting_start_end"
-        android:paddingBottom="@dimen/padding_setting_top_bottom"
+        android:paddingHorizontal="@dimen/padding_setting_start_end"
+        android:paddingVertical="@dimen/padding_setting_top_bottom"
         android:text="@string/provide_app"
-        android:textColor="@color/setting_text_color"
-        android:textSize="16sp"
+        android:clickable="true"
+        android:focusable="true"
         app:drawableEndCompat="@drawable/share"
-        app:drawableTint="@color/setting_icon_color" />
+        style="@style/item_setting"/>
     <TextView
+        android:id="@+id/message_support"
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
+        android:paddingHorizontal="@dimen/padding_setting_start_end"
+        android:paddingVertical="@dimen/padding_setting_top_bottom"
         android:text="@string/send_support"
-        android:backgroundTint="@color/white"
-        android:textSize="16sp"
-        android:textColor="@color/setting_text_color"
-        android:paddingTop="@dimen/padding_setting_top_bottom"
-        android:paddingBottom="@dimen/padding_setting_top_bottom"
-        android:paddingStart="@dimen/padding_setting_start_end"
-        android:paddingEnd="@dimen/padding_setting_start_end"
         app:drawableEndCompat="@drawable/support"
-        app:drawableTint="@color/setting_icon_color"
+        style="@style/item_setting"
         />
     <TextView
+        android:id="@+id/terms_user"
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
+        android:paddingHorizontal="@dimen/padding_setting_start_end"
+        android:paddingVertical="@dimen/padding_setting_top_bottom"
         android:text="@string/user_term"
-        android:backgroundTint="@color/white"
-        android:textSize="16sp"
-        android:textColor="@color/setting_text_color"
-        android:paddingTop="@dimen/padding_setting_top_bottom"
-        android:paddingBottom="@dimen/padding_setting_top_bottom"
-        android:paddingStart="@dimen/padding_setting_start_end"
-        android:paddingEnd="@dimen/padding_setting_start_end"
         app:drawableEndCompat="@drawable/arrow"
-        app:drawableTint="@color/setting_icon_color"
+        style="@style/item_setting"
         />
 
 </LinearLayout>
