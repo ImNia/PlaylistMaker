@@ -8,9 +8,8 @@
 
     <ImageView
         android:id="@+id/image_song_item"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@drawable/not_image"
         android:layout_marginHorizontal="@dimen/padding_item_recycler_horizontal"
         android:layout_marginVertical="@dimen/padding_item_recycler_vertical"
@@ -22,7 +21,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="6"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:paddingVertical="@dimen/padding_item_recycler_vertical"
         >
@@ -76,12 +75,12 @@
     </LinearLayout>
     <ImageView
         android:id="@+id/arrow_item"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_width="8dp"
+        android:layout_height="14dp"
         android:src="@drawable/arrow"
         android:layout_gravity="center_vertical"
-        android:layout_marginVertical="@dimen/padding_arrow_recycler_horizontal"
+        android:layout_marginHorizontal="@dimen/padding_arrow_recycler"
+        android:layout_marginVertical="@dimen/padding_arrow_recycler"
         android:contentDescription="@string/describe_arrow" />
 
 </LinearLayout>
