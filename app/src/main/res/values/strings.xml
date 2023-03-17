@@ -17,4 +17,7 @@
     <string name="message_to_support">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="link_to_site">https://practicum.yandex.ru/profile/android-developer/</string>
     <string name="developer_mail">delirium.ag@yandex.ru</string>
+    <string name="image_song">image song</string>
+    <string name="describe_point">point for divided artist name and time song</string>
+    <string name="describe_arrow">open song\'s details</string>
 </resources>
