@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/image_song_item"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/image_song_size"
+        android:layout_height="@dimen/image_song_size"
         android:src="@drawable/not_image"
         android:layout_marginHorizontal="@dimen/padding_item_recycler_horizontal"
         android:layout_marginVertical="@dimen/padding_item_recycler_vertical"
