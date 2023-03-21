@@ -2,10 +2,19 @@
 <resources>
     <dimen name="text_button_size">22sp</dimen>
     <dimen name="text_item_setting_size">16sp</dimen>
+    <dimen name="text_item_sub_size">11sp</dimen>
     <dimen name="corner_radius_button">16dp</dimen>
     <dimen name="padding_setting_top_bottom">20dp</dimen>
     <dimen name="padding_setting_start_end">16dp</dimen>
     <dimen name="setting_height">60dp</dimen>
     <dimen name="padding_search_edit_start_end">16dp</dimen>
     <dimen name="round_radius_search">8dp</dimen>
+
+    <dimen name="image_song_size">45dp</dimen>
+    <dimen name="padding_item_recycler_horizontal">16dp</dimen>
+    <dimen name="padding_item_recycler_vertical">8dp</dimen>
+    <dimen name="padding_arrow_recycler">20dp</dimen>
+    <dimen name="ellipse_padding_item_recycler">8dp</dimen>
+    <dimen name="item_recycler_height">60dp</dimen>
+    <dimen name="image_corner_radius">2dp</dimen>
 </resources>

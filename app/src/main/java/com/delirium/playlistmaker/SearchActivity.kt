@@ -3,22 +3,23 @@ package com.delirium.playlistmaker
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.delirium.playlistmaker.mock.MockData
+import com.delirium.playlistmaker.songslist.AdapterSongs
 
 class SearchActivity : AppCompatActivity() {
     lateinit var editSearch: EditText
     lateinit var crossForDelete: ImageView
     private var inputTextSave: String = ""
+    lateinit var recycler: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -26,6 +27,11 @@ class SearchActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         crossForDelete = findViewById(R.id.clear_search)
+        recycler = findViewById(R.id.recycler_songs)
+
+        recycler.layoutManager = LinearLayoutManager(this)
+        println(MockData.getData())
+        recycler.adapter = AdapterSongs(songs = MockData.getData())
 
         crossForDelete.setOnClickListener { it ->
             editSearch.text.clear()

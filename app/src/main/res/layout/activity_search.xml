@@ -61,4 +61,12 @@
         android:contentDescription="@string/cross_description" />
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_songs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="24dp"
+        />
+
+
 </LinearLayout>
