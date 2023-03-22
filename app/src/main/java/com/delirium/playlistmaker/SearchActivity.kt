@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -13,13 +14,22 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.delirium.playlistmaker.mock.MockData
+import com.delirium.playlistmaker.searchitunes.ITunesSetting
+import com.delirium.playlistmaker.searchitunes.model.DataITunes
+import com.delirium.playlistmaker.searchitunes.model.SongItem
 import com.delirium.playlistmaker.songslist.AdapterSongs
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
     lateinit var editSearch: EditText
     lateinit var crossForDelete: ImageView
     private var inputTextSave: String = ""
     lateinit var recycler: RecyclerView
+    private var data: MutableList<SongItem> = mutableListOf()
+    private val adapter = AdapterSongs()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -30,8 +40,8 @@ class SearchActivity : AppCompatActivity() {
         recycler = findViewById(R.id.recycler_songs)
 
         recycler.layoutManager = LinearLayoutManager(this)
-        println(MockData.getData())
-        recycler.adapter = AdapterSongs(songs = MockData.getData())
+
+        recycler.adapter = adapter
 
         crossForDelete.setOnClickListener { it ->
             editSearch.text.clear()
@@ -44,6 +54,16 @@ class SearchActivity : AppCompatActivity() {
         }
         editSearch = findViewById(R.id.edit_search)
         editSearch.addTextChangedListener(createTextWatcher())
+        editSearch.setOnEditorActionListener { _, i, _ ->
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                getSongsITunes(inputTextSave)
+                adapter.songs = data
+                adapter.notifyDataSetChanged()
+                true
+            } else {
+                false
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -72,10 +92,34 @@ class SearchActivity : AppCompatActivity() {
         }
 
         override fun afterTextChanged(p0: Editable?) {
-//            TODO("Not yet implemented")
         }
     }
 
+    private fun getSongsITunes(nameSong: String) {
+        val request = ITunesSetting.itunesInstant
+
+        request.getSongs(nameSong).enqueue(object : Callback<DataITunes> {
+            override fun onFailure(call: Call<DataITunes>, t: Throwable) {
+                t.printStackTrace()
+            }
+
+            override fun onResponse(
+                call: Call<DataITunes>,
+                response: Response<DataITunes>
+            ) {
+                if(response.isSuccessful) {
+                    val rawData = response.body()
+                    rawData?.let {
+                        for (item in it.results) {
+                            data.add(item)
+                        }
+                    }
+                } else {
+                    println(response.errorBody()?.string())
+                }
+            }
+        })
+    }
     companion object {
         private const val EDIT_TEXT = "EDIT_TEXT"
     }

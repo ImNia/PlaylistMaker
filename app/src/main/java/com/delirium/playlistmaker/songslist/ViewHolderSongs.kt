@@ -8,6 +8,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.mock.Track
+import com.delirium.playlistmaker.searchitunes.model.DataITunes
+import com.delirium.playlistmaker.searchitunes.model.SongItem
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ViewHolderSongs(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val imageSong: ImageView
@@ -22,7 +26,7 @@ class ViewHolderSongs(itemView: View): RecyclerView.ViewHolder(itemView) {
         timeSong = itemView.findViewById(R.id.time_song_item)
     }
 
-    fun bind(data: Track) {
+    fun bind(data: SongItem) {
         Glide.with(itemView)
             .load(data.artworkUrl100)
             .placeholder(R.drawable.not_image)
@@ -30,6 +34,6 @@ class ViewHolderSongs(itemView: View): RecyclerView.ViewHolder(itemView) {
             .into(imageSong)
         nameSong.text = data.trackName
         artistName.text = data.artistName
-        timeSong.text = data.trackTime
+        timeSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(data.trackTimeMillis)
     }
 }

@@ -49,6 +49,8 @@
         android:drawableStart="@drawable/edittext_search"
         android:drawablePadding="8dp"
         android:background="@color/search_edit_background"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         />
     <ImageView
         android:id="@+id/clear_search"
