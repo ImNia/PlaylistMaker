@@ -17,4 +17,7 @@
     <dimen name="ellipse_padding_item_recycler">8dp</dimen>
     <dimen name="item_recycler_height">60dp</dimen>
     <dimen name="image_corner_radius">2dp</dimen>
+
+    <dimen name="item_margin_vertical">16dp</dimen>
+    <dimen name="item_margin_horizontal">24dp</dimen>
 </resources>

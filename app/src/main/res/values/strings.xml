@@ -20,4 +20,9 @@
     <string name="image_song">image song</string>
     <string name="describe_point">point for divided artist name and time song</string>
     <string name="describe_arrow">open song\'s details</string>
+
+    <string name="not_found">Ничего не нашлось</string>
+    <string name="not_connect_item_text">Проблемы со связью</string>
+    <string name="not_connect_item_text_sub">Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="not_connect_item_button">Обновить</string>
 </resources>

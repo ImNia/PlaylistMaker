@@ -1,19 +1,20 @@
 package com.delirium.playlistmaker.songslist
 
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.mock.Track
-import com.delirium.playlistmaker.searchitunes.model.DataITunes
+import com.delirium.playlistmaker.searchitunes.model.ErrorItem
+import com.delirium.playlistmaker.searchitunes.model.NotFoundItem
 import com.delirium.playlistmaker.searchitunes.model.SongItem
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ViewHolderSongs(itemView: View): RecyclerView.ViewHolder(itemView) {
+class ViewHolderSongs(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val imageSong: ImageView
     private val nameSong: TextView
     private val artistName: TextView
@@ -35,5 +36,45 @@ class ViewHolderSongs(itemView: View): RecyclerView.ViewHolder(itemView) {
         nameSong.text = data.trackName
         artistName.text = data.artistName
         timeSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(data.trackTimeMillis)
+    }
+}
+
+class ViewHolderSongsNotFound(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val image: ImageView
+    private val text: TextView
+
+    init {
+        image = itemView.findViewById(R.id.image_problem_item)
+        text = itemView.findViewById(R.id.text_problem_item)
+    }
+
+    fun bind(data: NotFoundItem) {
+        image.setImageResource(data.res)
+        text.text = data.textProblem
+    }
+}
+
+class ViewHolderSongsError(itemView: View, private val clickListener: ClickListener) :
+    RecyclerView.ViewHolder(itemView) {
+    private val image: ImageView
+    private val text: TextView
+    private val textSub: TextView
+    private val button: Button
+
+    init {
+        image = itemView.findViewById(R.id.image_problem_item)
+        text = itemView.findViewById(R.id.text_problem_item)
+        textSub = itemView.findViewById(R.id.text_problem_item_sub)
+        button = itemView.findViewById(R.id.button_update_item)
+    }
+
+    fun bind(data: ErrorItem) {
+        image.setImageResource(data.res)
+        text.text = data.text
+        textSub.text = data.textSub
+
+        button.setOnClickListener {
+            clickListener.clickUpdate()
+        }
     }
 }

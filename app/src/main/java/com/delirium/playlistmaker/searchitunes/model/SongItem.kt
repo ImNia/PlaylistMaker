@@ -5,4 +5,4 @@ data class SongItem(
     val artistName: String,
     val trackTimeMillis: Int,
     val artworkUrl100: String
-)
+) : AdapterModel()

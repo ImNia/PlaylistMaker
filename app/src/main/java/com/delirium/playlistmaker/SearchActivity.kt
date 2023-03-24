@@ -13,22 +13,24 @@ import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.delirium.playlistmaker.mock.MockData
 import com.delirium.playlistmaker.searchitunes.ITunesSetting
+import com.delirium.playlistmaker.searchitunes.model.AdapterModel
 import com.delirium.playlistmaker.searchitunes.model.DataITunes
-import com.delirium.playlistmaker.searchitunes.model.SongItem
+import com.delirium.playlistmaker.searchitunes.model.ErrorItem
+import com.delirium.playlistmaker.searchitunes.model.NotFoundItem
 import com.delirium.playlistmaker.songslist.AdapterSongs
+import com.delirium.playlistmaker.songslist.ClickListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), ClickListener {
     lateinit var editSearch: EditText
     lateinit var crossForDelete: ImageView
     private var inputTextSave: String = ""
     lateinit var recycler: RecyclerView
-    private var data: MutableList<SongItem> = mutableListOf()
-    private val adapter = AdapterSongs()
+    private var data: MutableList<AdapterModel> = mutableListOf()
+    private val adapter = AdapterSongs(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,14 +53,15 @@ class SearchActivity : AppCompatActivity() {
                 val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 keyboard.hideSoftInputFromWindow(it.windowToken, 0)
             }
+            data.clear()
+            updateData()
         }
+
         editSearch = findViewById(R.id.edit_search)
         editSearch.addTextChangedListener(createTextWatcher())
         editSearch.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_DONE) {
                 getSongsITunes(inputTextSave)
-                adapter.songs = data
-                adapter.notifyDataSetChanged()
                 true
             } else {
                 false
@@ -101,6 +104,12 @@ class SearchActivity : AppCompatActivity() {
         request.getSongs(nameSong).enqueue(object : Callback<DataITunes> {
             override fun onFailure(call: Call<DataITunes>, t: Throwable) {
                 t.printStackTrace()
+                data.clear()
+                data.add(ErrorItem(
+                    text = getString(R.string.not_connect_item_text),
+                    textSub = getString(R.string.not_connect_item_text_sub)
+                ))
+                updateData()
             }
 
             override fun onResponse(
@@ -108,19 +117,40 @@ class SearchActivity : AppCompatActivity() {
                 response: Response<DataITunes>
             ) {
                 if(response.isSuccessful) {
+                    data.clear()
                     val rawData = response.body()
                     rawData?.let {
-                        for (item in it.results) {
-                            data.add(item)
+                        if (it.resultCount == 0) {
+                            data.add(NotFoundItem(
+                                textProblem = getString(R.string.not_found)
+                            ))
+                        } else {
+                            for (item in it.results) {
+                                data.add(item)
+                            }
                         }
                     }
+                    updateData()
                 } else {
                     println(response.errorBody()?.string())
                 }
             }
         })
     }
+
+    private fun updateData() {
+        adapter.songs = data
+        adapter.notifyDataSetChanged()
+        this.currentFocus?.let {
+            val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            keyboard.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+    }
     companion object {
         private const val EDIT_TEXT = "EDIT_TEXT"
+    }
+
+    override fun clickUpdate() {
+        getSongsITunes(inputTextSave)
     }
 }
