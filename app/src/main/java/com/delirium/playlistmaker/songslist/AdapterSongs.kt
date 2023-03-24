@@ -52,7 +52,7 @@ class AdapterSongs(
     companion object {
         const val SONG_TYPE = 0
         const val NOT_FOUND_TYPE = 1
-        const val ERROR_TYPE = 1
+        const val ERROR_TYPE = 2
     }
 }
 

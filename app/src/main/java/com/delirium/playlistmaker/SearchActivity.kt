@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -132,7 +133,13 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                     }
                     updateData()
                 } else {
-                    println(response.errorBody()?.string())
+                    Log.i("RETROFIT_ERROR", "${response.errorBody()?.string()}")
+                    data.clear()
+                    data.add(ErrorItem(
+                        text = getString(R.string.not_connect_item_text),
+                        textSub = getString(R.string.not_connect_item_text_sub)
+                    ))
+                    updateData()
                 }
             }
         })
