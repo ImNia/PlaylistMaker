@@ -1,83 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/additional_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    style="@style/additional_screen">
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBarSetting"
-        android:minHeight="?attr/actionBarSize"
+        style="@style/Theme.PlaylistMaker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/setting"
+        android:minHeight="?attr/actionBarSize"
         android:paddingBottom="20dp"
+        android:text="@string/setting"
         app:navigationIcon="@drawable/arrow_back"
-        app:titleTextAppearance="@style/Toolbar.SubPage"
-        style="@style/Theme.PlaylistMaker"
-        >
+        app:titleTextAppearance="@style/Toolbar.SubPage">
+
         <TextView
+            style="@style/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/setting"
-            style="@style/toolbar"
-            />
+            android:text="@string/setting" />
     </androidx.appcompat.widget.Toolbar>
-    <FrameLayout
-        android:id="@+id/container_switch_theme"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_height">
 
-        <TextView
-            android:id="@+id/night_theme"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/setting_height"
-            android:text="@string/black_theme"
-            android:paddingHorizontal="@dimen/padding_setting_start_end"
-            android:paddingVertical="@dimen/padding_setting_top_bottom"
-            style="@style/item_setting"
-            />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center"
-            android:theme="@style/Switch"
-            />
-
-    </FrameLayout>
-    <TextView
-        android:id="@+id/sharing_app"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_mode"
+        style="@style/item_setting"
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
+        android:layout_gravity="start"
+        android:paddingHorizontal="@dimen/padding_setting_start_end"
+        android:text="@string/black_theme" />
+
+    <TextView
+        android:id="@+id/sharing_app"
+        style="@style/item_setting"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_height"
+        android:clickable="true"
+        android:focusable="true"
         android:paddingHorizontal="@dimen/padding_setting_start_end"
         android:paddingVertical="@dimen/padding_setting_top_bottom"
         android:text="@string/provide_app"
-        android:clickable="true"
-        android:focusable="true"
-        app:drawableEndCompat="@drawable/share"
-        style="@style/item_setting"/>
+        app:drawableEndCompat="@drawable/share" />
+
     <TextView
         android:id="@+id/message_support"
+        style="@style/item_setting"
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
         android:paddingHorizontal="@dimen/padding_setting_start_end"
         android:paddingVertical="@dimen/padding_setting_top_bottom"
         android:text="@string/send_support"
-        app:drawableEndCompat="@drawable/support"
-        style="@style/item_setting"
-        />
+        app:drawableEndCompat="@drawable/support" />
+
     <TextView
         android:id="@+id/terms_user"
+        style="@style/item_setting"
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
         android:paddingHorizontal="@dimen/padding_setting_start_end"
         android:paddingVertical="@dimen/padding_setting_top_bottom"
         android:text="@string/user_term"
-        app:drawableEndCompat="@drawable/arrow"
-        style="@style/item_setting"
-        />
+        app:drawableEndCompat="@drawable/arrow" />
 
 </LinearLayout>

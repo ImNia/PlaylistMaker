@@ -1,21 +1,19 @@
 package com.delirium.playlistmaker
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity: AppCompatActivity() {
 
     private lateinit var sharingAppButton: TextView
     private lateinit var messageSupportButton: TextView
     private lateinit var termsUserButton: TextView
-    private lateinit var switchTheme: SwitchCompat
+    private lateinit var switchTheme: SwitchMaterial
     private lateinit var toolBar: Toolbar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,16 +27,15 @@ class SettingsActivity: AppCompatActivity() {
         termsUserButton = findViewById(R.id.terms_user)
         switchTheme = findViewById(R.id.switch_mode)
 
-        when(resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                switchTheme.isChecked = true
-            }
-            Configuration.UI_MODE_NIGHT_NO -> {
-                switchTheme.isChecked = false
-            }
-        }
-        switchTheme.setOnCheckedChangeListener { compoundButton, isNight ->
-            setModeTheme(isNight)
+        val sharedPrefs = getSharedPreferences(SettingPreferences.THEME_MODE.name, MODE_PRIVATE)
+        switchTheme.isChecked = sharedPrefs.getBoolean(SettingPreferences.THEME_MODE.name, false)
+
+        switchTheme.setOnCheckedChangeListener { switcher, isNight ->
+            sharedPrefs.edit()
+                .remove(SettingPreferences.THEME_MODE.name)
+                .putBoolean(SettingPreferences.THEME_MODE.name, isNight)
+                .apply()
+            App().switchTheme(sharedPrefs.getBoolean(SettingPreferences.THEME_MODE.name, false))
         }
 
         sharingAppButton.setOnClickListener {
@@ -68,13 +65,5 @@ class SettingsActivity: AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return super.onSupportNavigateUp()
-    }
-
-    private fun setModeTheme(isNight: Boolean) {
-        if(isNight) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
     }
 }

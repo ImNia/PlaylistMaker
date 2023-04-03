@@ -1,11 +1,14 @@
-package com.delirium.playlistmaker.songslist
+package com.delirium.playlistmaker.search.songslist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.searchitunes.model.*
+import com.delirium.playlistmaker.search.itunes.model.AdapterModel
+import com.delirium.playlistmaker.search.itunes.model.ErrorItem
+import com.delirium.playlistmaker.search.itunes.model.NotFoundItem
+import com.delirium.playlistmaker.search.itunes.model.SongItem
 
 class AdapterSongs(
     private val clickListener: ClickListener
@@ -15,7 +18,7 @@ class AdapterSongs(
         SONG_TYPE -> {
             val view =
                 LayoutInflater.from(parent.context).inflate(R.layout.item_song, parent, false)
-            ViewHolderSongs(view)
+            ViewHolderSongs(view, clickListener)
         }
         NOT_FOUND_TYPE -> {
             val view =
@@ -58,4 +61,5 @@ class AdapterSongs(
 
 interface ClickListener {
     fun clickUpdate()
+    fun clickOnSong(item: SongItem)
 }

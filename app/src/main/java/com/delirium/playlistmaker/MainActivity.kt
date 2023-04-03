@@ -3,9 +3,8 @@ package com.delirium.playlistmaker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import androidx.appcompat.widget.Toolbar
+import com.delirium.playlistmaker.search.SearchActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

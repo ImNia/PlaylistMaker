@@ -1,6 +1,7 @@
-package com.delirium.playlistmaker
+package com.delirium.playlistmaker.search
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -14,13 +15,12 @@ import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.delirium.playlistmaker.searchitunes.ITunesSetting
-import com.delirium.playlistmaker.searchitunes.model.AdapterModel
-import com.delirium.playlistmaker.searchitunes.model.DataITunes
-import com.delirium.playlistmaker.searchitunes.model.ErrorItem
-import com.delirium.playlistmaker.searchitunes.model.NotFoundItem
-import com.delirium.playlistmaker.songslist.AdapterSongs
-import com.delirium.playlistmaker.songslist.ClickListener
+import com.delirium.playlistmaker.R
+import com.delirium.playlistmaker.SettingPreferences
+import com.delirium.playlistmaker.search.itunes.ITunesSetting
+import com.delirium.playlistmaker.search.itunes.model.*
+import com.delirium.playlistmaker.search.songslist.AdapterSongs
+import com.delirium.playlistmaker.search.songslist.ClickListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,8 +54,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 keyboard.hideSoftInputFromWindow(it.windowToken, 0)
             }
-            data.clear()
-            updateData()
+            history()
         }
 
         editSearch = findViewById(R.id.edit_search)
@@ -68,6 +67,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 false
             }
         }
+
+        history()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -106,10 +107,12 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             override fun onFailure(call: Call<DataITunes>, t: Throwable) {
                 t.printStackTrace()
                 data.clear()
-                data.add(ErrorItem(
+                data.add(
+                    ErrorItem(
                     text = getString(R.string.not_connect_item_text),
                     textSub = getString(R.string.not_connect_item_text_sub)
-                ))
+                )
+                )
                 updateData()
             }
 
@@ -122,9 +125,11 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                     val rawData = response.body()
                     rawData?.let {
                         if (it.resultCount == 0) {
-                            data.add(NotFoundItem(
+                            data.add(
+                                NotFoundItem(
                                 textProblem = getString(R.string.not_found)
-                            ))
+                            )
+                            )
                         } else {
                             for (item in it.results) {
                                 data.add(item)
@@ -135,10 +140,12 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 } else {
                     Log.i("RETROFIT_ERROR", "${response.errorBody()?.string()}")
                     data.clear()
-                    data.add(ErrorItem(
+                    data.add(
+                        ErrorItem(
                         text = getString(R.string.not_connect_item_text),
                         textSub = getString(R.string.not_connect_item_text_sub)
-                    ))
+                    )
+                    )
                     updateData()
                 }
             }
@@ -153,11 +160,22 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             keyboard.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
+
+    private fun history() {
+        data.clear()
+        data = SongHistory.getHistory(getSharedPreferences(SettingPreferences.FINDING_SONG.name, MODE_PRIVATE)).toMutableList()
+        updateData()
+    }
     companion object {
         private const val EDIT_TEXT = "EDIT_TEXT"
     }
 
     override fun clickUpdate() {
         getSongsITunes(inputTextSave)
+    }
+
+    override fun clickOnSong(item: SongItem) {
+        Log.i("SEARCH_ACTIVITY", "Click on Song!!")
+        SongHistory.saveSong(getSharedPreferences(SettingPreferences.FINDING_SONG.name, MODE_PRIVATE), item)
     }
 }

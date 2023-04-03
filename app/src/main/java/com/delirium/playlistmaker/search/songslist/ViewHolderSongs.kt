@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.songslist
+package com.delirium.playlistmaker.search.songslist
 
 import android.view.View
 import android.widget.Button
@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.searchitunes.model.ErrorItem
-import com.delirium.playlistmaker.searchitunes.model.NotFoundItem
-import com.delirium.playlistmaker.searchitunes.model.SongItem
+import com.delirium.playlistmaker.search.itunes.model.ErrorItem
+import com.delirium.playlistmaker.search.itunes.model.NotFoundItem
+import com.delirium.playlistmaker.search.itunes.model.SongItem
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ViewHolderSongs(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ViewHolderSongs(itemView: View, private val clickListener: ClickListener) : RecyclerView.ViewHolder(itemView) {
     private val imageSong: ImageView
     private val nameSong: TextView
     private val artistName: TextView
@@ -36,6 +36,10 @@ class ViewHolderSongs(itemView: View) : RecyclerView.ViewHolder(itemView) {
         nameSong.text = data.trackName
         artistName.text = data.artistName
         timeSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(data.trackTimeMillis)
+
+        itemView.setOnClickListener {
+            clickListener.clickOnSong(data)
+        }
     }
 }
 
