@@ -5,16 +5,16 @@ import com.delirium.playlistmaker.SettingPreferences
 import com.delirium.playlistmaker.search.itunes.model.SongItem
 import com.google.gson.Gson
 
-object SongHistory {
-    private const val MAX_SIZE_HISTORY = 10
-    fun saveSong(sharedPrefs: SharedPreferences, song: SongItem) {
-        val jsonNewHistory = Gson().toJson(formedHistory(sharedPrefs, song))
+class SongHistory(private val sharedPrefs: SharedPreferences) {
+
+    fun saveSong(song: SongItem) {
+        val jsonNewHistory = Gson().toJson(formedHistory(song))
         sharedPrefs.edit()
             .putString(SettingPreferences.FINDING_SONG.name, jsonNewHistory)
             .apply()
     }
 
-    private fun formedHistory(sharedPrefs: SharedPreferences, song: SongItem): ArrayList<SongItem> {
+    private fun formedHistory(song: SongItem): ArrayList<SongItem> {
         val json = sharedPrefs.getString(SettingPreferences.FINDING_SONG.name, null)
         return if (json != null) {
             val oldHistory = Gson().fromJson(json, Array<SongItem>::class.java)
@@ -31,8 +31,15 @@ object SongHistory {
         }
     }
 
-    fun getHistory(sharedPrefs: SharedPreferences): Array<SongItem> {
+    fun getHistory(): Array<SongItem> {
         val jsonHistory = sharedPrefs.getString(SettingPreferences.FINDING_SONG.name, null) ?: return arrayOf()
         return Gson().fromJson(jsonHistory, Array<SongItem>::class.java)
+    }
+
+    fun cleanHistory() {
+        sharedPrefs.edit().clear().apply()
+    }
+    companion object {
+        const val MAX_SIZE_HISTORY = 10
     }
 }

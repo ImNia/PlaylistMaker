@@ -65,7 +65,7 @@
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">10dp</item>
         <item name="iconTint">@color/text_color</item>
-        <item name="cornerRadius">@dimen/corner_radius_button</item>
+        <item name="cornerRadius">@dimen/item_corner_radius_button</item>
     </style>
 
     <style name="main_screen" parent="Theme.AppCompat.DayNight.NoActionBar">
