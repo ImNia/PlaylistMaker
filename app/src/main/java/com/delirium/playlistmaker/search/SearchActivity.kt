@@ -128,11 +128,9 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                     val rawData = response.body()
                     rawData?.let {
                         if (it.resultCount == 0) {
-                            data.add(
-                                NotFoundItem(
+                            data.add(NotFoundItem(
                                 textProblem = getString(R.string.not_found)
-                            )
-                            )
+                            ))
                         } else {
                             for (item in it.results) {
                                 data.add(item)
@@ -143,12 +141,10 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 } else {
                     Log.i("RETROFIT_ERROR", "${response.errorBody()?.string()}")
                     data.clear()
-                    data.add(
-                        ErrorItem(
+                    data.add(ErrorItem(
                         text = getString(R.string.not_connect_item_text),
                         textSub = getString(R.string.not_connect_item_text_sub)
-                    )
-                    )
+                    ))
                     updateData()
                 }
             }
@@ -188,6 +184,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     override fun clickOnSong(item: SongItem) {
         Log.i("SEARCH_ACTIVITY", "Click on Song!!")
         songHistory.saveSong(item)
+//        data.clear()
+        updateData()
     }
 
     override fun cleanHistory() {

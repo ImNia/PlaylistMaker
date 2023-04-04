@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.search.songslist
+package com.delirium.playlistmaker.search
 
 import android.view.View
 import android.widget.Button
@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.search.itunes.model.*
+import com.delirium.playlistmaker.search.songslist.ClickListener
 import java.text.SimpleDateFormat
 import java.util.*
 
