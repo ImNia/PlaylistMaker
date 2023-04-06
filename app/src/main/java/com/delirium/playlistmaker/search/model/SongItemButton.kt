@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.search.itunes.model
+package com.delirium.playlistmaker.search.model
 
 data class SongItemButton(
     val text: String

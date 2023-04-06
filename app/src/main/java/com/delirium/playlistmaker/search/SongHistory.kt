@@ -2,7 +2,7 @@ package com.delirium.playlistmaker.search
 
 import android.content.SharedPreferences
 import com.delirium.playlistmaker.SettingPreferences
-import com.delirium.playlistmaker.search.itunes.model.SongItem
+import com.delirium.playlistmaker.search.model.SongItem
 import com.google.gson.Gson
 
 class SongHistory(private val sharedPrefs: SharedPreferences) {
@@ -21,7 +21,7 @@ class SongHistory(private val sharedPrefs: SharedPreferences) {
             val newHistory = arrayListOf<SongItem>()
             newHistory.add(song)
             for (item in oldHistory) {
-                if (item != song && newHistory.size < MAX_SIZE_HISTORY) {
+                if (item.trackId != song.trackId && newHistory.size < MAX_SIZE_HISTORY) {
                     newHistory.add(item)
                 }
             }

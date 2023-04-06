@@ -1,7 +1,6 @@
 package com.delirium.playlistmaker.search
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -17,10 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.SettingPreferences
+import com.delirium.playlistmaker.search.model.SongItemButton
+import com.delirium.playlistmaker.search.model.SongItemTitle
 import com.delirium.playlistmaker.search.itunes.ITunesSetting
-import com.delirium.playlistmaker.search.itunes.model.*
-import com.delirium.playlistmaker.search.songslist.AdapterSongs
-import com.delirium.playlistmaker.search.songslist.ClickListener
+import com.delirium.playlistmaker.search.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +33,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     private val adapter = AdapterSongs(this)
     private lateinit var songHistory: SongHistory
 
+    private var isGetData: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -42,10 +43,9 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         songHistory = SongHistory(getSharedPreferences(SettingPreferences.FINDING_SONG.name, MODE_PRIVATE))
 
         crossForDelete = findViewById(R.id.clear_search)
+
         recycler = findViewById(R.id.recycler_songs)
-
         recycler.layoutManager = LinearLayoutManager(this)
-
         recycler.adapter = adapter
 
         crossForDelete.setOnClickListener { it ->
@@ -56,8 +56,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 keyboard.hideSoftInputFromWindow(it.windowToken, 0)
             }
-            data.clear()
-            updateData()
+            history()
+            isGetData = false
         }
 
         editSearch = findViewById(R.id.edit_search)
@@ -70,8 +70,11 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 false
             }
         }
-
-        updateData()
+        editSearch.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && editSearch.text.isEmpty()) {
+                history()
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -82,12 +85,15 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val inputString = savedInstanceState.getString(EDIT_TEXT)
+        isGetData = savedInstanceState.getBoolean(IS_GET_DATA)
         editSearch.setText(inputString)
+        if (isGetData) getSongsITunes(inputTextSave)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(EDIT_TEXT, inputTextSave)
+        outState.putBoolean(IS_GET_DATA, isGetData)
     }
 
     private fun createTextWatcher() = object : TextWatcher {
@@ -97,6 +103,9 @@ class SearchActivity : AppCompatActivity(), ClickListener {
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             inputTextSave = editSearch.text.toString()
+            if (editSearch.hasFocus() && editSearch.text.isEmpty()) {
+                history()
+            }
         }
 
         override fun afterTextChanged(p0: Editable?) {
@@ -116,6 +125,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                     textSub = getString(R.string.not_connect_item_text_sub)
                 )
                 )
+                isGetData = true
                 updateData()
             }
 
@@ -128,23 +138,24 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                     val rawData = response.body()
                     rawData?.let {
                         if (it.resultCount == 0) {
-                            data.add(NotFoundItem(
-                                textProblem = getString(R.string.not_found)
-                            ))
+                            data.add(NotFoundItem(textProblem = getString(R.string.not_found)))
                         } else {
                             for (item in it.results) {
                                 data.add(item)
                             }
                         }
                     }
+                    isGetData = true
                     updateData()
                 } else {
                     Log.i("RETROFIT_ERROR", "${response.errorBody()?.string()}")
                     data.clear()
-                    data.add(ErrorItem(
+                    data.add(
+                        ErrorItem(
                         text = getString(R.string.not_connect_item_text),
-                        textSub = getString(R.string.not_connect_item_text_sub)
-                    ))
+                        textSub = getString(R.string.not_connect_item_text_sub))
+                    )
+                    isGetData = true
                     updateData()
                 }
             }
@@ -152,7 +163,6 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     }
 
     private fun updateData() {
-        if (data.isEmpty()) history()
         adapter.songs = data
         adapter.notifyDataSetChanged()
         this.currentFocus?.let {
@@ -162,19 +172,18 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     }
 
     private fun history() {
+        data.clear()
         val historyData = songHistory.getHistory().toMutableList()
         if (historyData.isNotEmpty()) {
-            data.add(SongItemTitle(
-                text = getString(R.string.title_history)
-            ))
+            data.add(SongItemTitle(text = getString(R.string.title_history)))
             data.addAll(songHistory.getHistory().toMutableList())
-            data.add(SongItemButton(
-                text = getString(R.string.clean_history)
-            ))
+            data.add(SongItemButton(text = getString(R.string.clean_history)))
         }
+        updateData()
     }
     companion object {
         private const val EDIT_TEXT = "EDIT_TEXT"
+        private const val IS_GET_DATA = "IS_GET_DATA"
     }
 
     override fun clickUpdate() {
@@ -184,13 +193,11 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     override fun clickOnSong(item: SongItem) {
         Log.i("SEARCH_ACTIVITY", "Click on Song!!")
         songHistory.saveSong(item)
-//        data.clear()
         updateData()
     }
 
     override fun cleanHistory() {
         songHistory.cleanHistory()
-        data.clear()
-        updateData()
+        history()
     }
 }

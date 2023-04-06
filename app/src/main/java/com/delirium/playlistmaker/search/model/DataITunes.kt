@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.search.itunes.model
+package com.delirium.playlistmaker.search.model
 
 data class DataITunes(
     val resultCount: Int,

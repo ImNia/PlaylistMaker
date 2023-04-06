@@ -1,6 +1,6 @@
 package com.delirium.playlistmaker.search.itunes
 
-import com.delirium.playlistmaker.search.itunes.model.DataITunes
+import com.delirium.playlistmaker.search.model.DataITunes
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

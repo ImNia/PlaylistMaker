@@ -1,12 +1,11 @@
-package com.delirium.playlistmaker.search.songslist
+package com.delirium.playlistmaker.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.search.*
-import com.delirium.playlistmaker.search.itunes.model.*
+import com.delirium.playlistmaker.search.model.*
 
 class AdapterSongs(
     private val clickListener: ClickListener
@@ -71,6 +70,7 @@ class AdapterSongs(
         is ErrorItem -> ERROR_TYPE
         is SongItemTitle -> TITLE_TYPE
         is SongItemButton -> BUTTON_TYPE
+        else -> throw IllegalArgumentException()
     }
 
     companion object {
