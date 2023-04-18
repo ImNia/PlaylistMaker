@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.songslist
+package com.delirium.playlistmaker.search
 
 import android.view.View
 import android.widget.Button
@@ -8,13 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.searchitunes.model.ErrorItem
-import com.delirium.playlistmaker.searchitunes.model.NotFoundItem
-import com.delirium.playlistmaker.searchitunes.model.SongItem
+import com.delirium.playlistmaker.search.model.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ViewHolderSongs(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ViewHolderSongs(itemView: View, private val clickListener: ClickListener) :
+    RecyclerView.ViewHolder(itemView) {
     private val imageSong: ImageView
     private val nameSong: TextView
     private val artistName: TextView
@@ -36,6 +35,38 @@ class ViewHolderSongs(itemView: View) : RecyclerView.ViewHolder(itemView) {
         nameSong.text = data.trackName
         artistName.text = data.artistName
         timeSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(data.trackTimeMillis)
+
+        itemView.setOnClickListener {
+            clickListener.clickOnSong(data)
+        }
+    }
+}
+
+class ViewHolderSongsTitle(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val textTitle: TextView
+
+    init {
+        textTitle = itemView.findViewById(R.id.item_song_title)
+    }
+
+    fun bind(data: SongItemTitle) {
+        textTitle.text = data.text
+    }
+}
+
+class ViewHolderSongsButton(itemView: View, private val clickListener: ClickListener) :
+    RecyclerView.ViewHolder(itemView) {
+    private val buttonClean: Button
+
+    init {
+        buttonClean = itemView.findViewById(R.id.item_song_clean)
+    }
+
+    fun bind(data: SongItemButton) {
+        buttonClean.text = data.text
+        buttonClean.setOnClickListener {
+            clickListener.cleanHistory()
+        }
     }
 }
 

@@ -25,4 +25,6 @@
     <string name="not_connect_item_text">Проблемы со связью</string>
     <string name="not_connect_item_text_sub">Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="not_connect_item_button">Обновить</string>
+    <string name="title_history">Вы искали</string>
+    <string name="clean_history">Очистить историю</string>
 </resources>

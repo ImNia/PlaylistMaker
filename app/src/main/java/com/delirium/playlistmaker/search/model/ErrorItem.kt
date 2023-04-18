@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.searchitunes.model
+package com.delirium.playlistmaker.search.model
 
 import com.delirium.playlistmaker.R
 

@@ -21,4 +21,6 @@
     <dimen name="item_margin_vertical">16dp</dimen>
     <dimen name="item_margin_horizontal">24dp</dimen>
     <dimen name="item_size_image_error">120dp</dimen>
+    <dimen name="item_song_height">60dp</dimen>
+    <dimen name="item_corner_radius_button">54dp</dimen>
 </resources>
