@@ -33,14 +33,15 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     private val adapter = AdapterSongs(this)
     private lateinit var songHistory: SongHistory
 
-    private var isGetData: Boolean = false
+    private var isSearchSubmitted: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         val toolbar = findViewById<Toolbar>(R.id.toolBarSearch)
         setSupportActionBar(toolbar)
-        songHistory = SongHistory(getSharedPreferences(SettingPreferences.FINDING_SONG.name, MODE_PRIVATE))
+        songHistory =
+            SongHistory(getSharedPreferences(SettingPreferences.FINDING_SONG.name, MODE_PRIVATE))
 
         crossForDelete = findViewById(R.id.clear_search)
 
@@ -56,8 +57,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 keyboard.hideSoftInputFromWindow(it.windowToken, 0)
             }
-            history()
-            isGetData = false
+            renderHistory()
+            isSearchSubmitted = false
         }
 
         editSearch = findViewById(R.id.edit_search)
@@ -72,7 +73,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         }
         editSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && editSearch.text.isEmpty()) {
-                history()
+                renderHistory()
             }
         }
     }
@@ -85,15 +86,15 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val inputString = savedInstanceState.getString(EDIT_TEXT)
-        isGetData = savedInstanceState.getBoolean(IS_GET_DATA)
+        isSearchSubmitted = savedInstanceState.getBoolean(IS_SEARCH_SUBMITTED)
         editSearch.setText(inputString)
-        if (isGetData) getSongsITunes(inputTextSave)
+        if (isSearchSubmitted) getSongsITunes(inputTextSave)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(EDIT_TEXT, inputTextSave)
-        outState.putBoolean(IS_GET_DATA, isGetData)
+        outState.putBoolean(IS_SEARCH_SUBMITTED, isSearchSubmitted)
     }
 
     private fun createTextWatcher() = object : TextWatcher {
@@ -104,8 +105,9 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             inputTextSave = editSearch.text.toString()
             if (editSearch.hasFocus() && editSearch.text.isEmpty()) {
-                history()
+                renderHistory()
             }
+            isSearchSubmitted = true
         }
 
         override fun afterTextChanged(p0: Editable?) {
@@ -121,11 +123,11 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 data.clear()
                 data.add(
                     ErrorItem(
-                    text = getString(R.string.not_connect_item_text),
-                    textSub = getString(R.string.not_connect_item_text_sub)
+                        text = getString(R.string.not_connect_item_text),
+                        textSub = getString(R.string.not_connect_item_text_sub)
+                    )
                 )
-                )
-                isGetData = true
+//                isSearchSubmitted = true
                 updateData()
             }
 
@@ -133,7 +135,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 call: Call<DataITunes>,
                 response: Response<DataITunes>
             ) {
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
                     data.clear()
                     val rawData = response.body()
                     rawData?.let {
@@ -145,17 +147,18 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                             }
                         }
                     }
-                    isGetData = true
+//                    isSearchSubmitted = true
                     updateData()
                 } else {
                     Log.i("RETROFIT_ERROR", "${response.errorBody()?.string()}")
                     data.clear()
                     data.add(
                         ErrorItem(
-                        text = getString(R.string.not_connect_item_text),
-                        textSub = getString(R.string.not_connect_item_text_sub))
+                            text = getString(R.string.not_connect_item_text),
+                            textSub = getString(R.string.not_connect_item_text_sub)
+                        )
                     )
-                    isGetData = true
+//                    isSearchSubmitted = true
                     updateData()
                 }
             }
@@ -171,7 +174,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         }
     }
 
-    private fun history() {
+    private fun renderHistory() {
         data.clear()
         val historyData = songHistory.getHistory().toMutableList()
         if (historyData.isNotEmpty()) {
@@ -181,9 +184,10 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         }
         updateData()
     }
+
     companion object {
         private const val EDIT_TEXT = "EDIT_TEXT"
-        private const val IS_GET_DATA = "IS_GET_DATA"
+        private const val IS_SEARCH_SUBMITTED = "IS_SEARCH_SUBMITTED"
     }
 
     override fun clickUpdate() {
@@ -198,6 +202,6 @@ class SearchActivity : AppCompatActivity(), ClickListener {
 
     override fun cleanHistory() {
         songHistory.cleanHistory()
-        history()
+        renderHistory()
     }
 }

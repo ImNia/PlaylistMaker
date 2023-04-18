@@ -32,13 +32,15 @@ class SongHistory(private val sharedPrefs: SharedPreferences) {
     }
 
     fun getHistory(): Array<SongItem> {
-        val jsonHistory = sharedPrefs.getString(SettingPreferences.FINDING_SONG.name, null) ?: return arrayOf()
+        val jsonHistory =
+            sharedPrefs.getString(SettingPreferences.FINDING_SONG.name, null) ?: return arrayOf()
         return Gson().fromJson(jsonHistory, Array<SongItem>::class.java)
     }
 
     fun cleanHistory() {
         sharedPrefs.edit().clear().apply()
     }
+
     companion object {
         const val MAX_SIZE_HISTORY = 10
     }

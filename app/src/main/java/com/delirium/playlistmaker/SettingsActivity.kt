@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 
-class SettingsActivity: AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     private lateinit var sharingAppButton: TextView
     private lateinit var messageSupportButton: TextView
@@ -32,10 +32,14 @@ class SettingsActivity: AppCompatActivity() {
 
         switchTheme.setOnCheckedChangeListener { switcher, isNight ->
             sharedPrefs.edit()
-                .remove(SettingPreferences.THEME_MODE.name)
                 .putBoolean(SettingPreferences.THEME_MODE.name, isNight)
                 .apply()
-            App().switchTheme(sharedPrefs.getBoolean(SettingPreferences.THEME_MODE.name, false))
+            (applicationContext as App).switchTheme(
+                sharedPrefs.getBoolean(
+                    SettingPreferences.THEME_MODE.name,
+                    false
+                )
+            )
         }
 
         sharingAppButton.setOnClickListener {

@@ -34,7 +34,8 @@ class AdapterSongs(
         }
         BUTTON_TYPE -> {
             val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_button_clean, parent, false)
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_button_clean, parent, false)
             ViewHolderSongsButton(view, clickListener)
         }
         else -> throw IllegalArgumentException()

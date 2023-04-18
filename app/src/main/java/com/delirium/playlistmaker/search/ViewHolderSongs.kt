@@ -12,7 +12,8 @@ import com.delirium.playlistmaker.search.model.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ViewHolderSongs(itemView: View, private val clickListener: ClickListener) : RecyclerView.ViewHolder(itemView) {
+class ViewHolderSongs(itemView: View, private val clickListener: ClickListener) :
+    RecyclerView.ViewHolder(itemView) {
     private val imageSong: ImageView
     private val nameSong: TextView
     private val artistName: TextView
@@ -47,18 +48,20 @@ class ViewHolderSongsTitle(itemView: View) : RecyclerView.ViewHolder(itemView) {
     init {
         textTitle = itemView.findViewById(R.id.item_song_title)
     }
+
     fun bind(data: SongItemTitle) {
         textTitle.text = data.text
     }
 }
 
-class ViewHolderSongsButton(itemView: View, private val clickListener: ClickListener)
-    : RecyclerView.ViewHolder(itemView) {
+class ViewHolderSongsButton(itemView: View, private val clickListener: ClickListener) :
+    RecyclerView.ViewHolder(itemView) {
     private val buttonClean: Button
 
     init {
         buttonClean = itemView.findViewById(R.id.item_song_clean)
     }
+
     fun bind(data: SongItemButton) {
         buttonClean.text = data.text
         buttonClean.setOnClickListener {
@@ -66,6 +69,7 @@ class ViewHolderSongsButton(itemView: View, private val clickListener: ClickList
         }
     }
 }
+
 class ViewHolderSongsNotFound(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val image: ImageView
     private val text: TextView
