@@ -31,7 +31,7 @@
             android:id="@+id/image_desc"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="24dp"
+            android:layout_marginHorizontal="@dimen/description_margin_main"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,8 +43,8 @@
             style="@style/description_song_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginVertical="12dp"
+            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginVertical="@dimen/description_margin_sub"
             app:layout_constraintTop_toBottomOf="@+id/image_desc"
             tools:text="Name Song" />
 
@@ -52,16 +52,15 @@
             android:id="@+id/group_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginVertical="12dp"
+            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginVertical="@dimen/description_margin_sub"
             app:layout_constraintTop_toBottomOf="@+id/name_song_desc"
-            tools:layout_editor_absoluteX="24dp"
             tools:text="Group name" />
 
         <ImageView
             android:id="@+id/play_button_desc"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/description_play_button_size"
+            android:layout_height="@dimen/description_play_button_size"
             android:layout_marginVertical="40dp"
             android:src="@drawable/play_button"
             app:layout_constraintEnd_toEndOf="parent"
@@ -70,9 +69,9 @@
 
         <ImageView
             android:id="@+id/added_button_desc"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="24dp"
+            android:layout_width="@dimen/description_sub_button_size"
+            android:layout_height="@dimen/description_sub_button_size"
+            android:layout_marginHorizontal="@dimen/description_margin_main"
             android:src="@drawable/added_desc"
             app:layout_constraintBottom_toBottomOf="@+id/play_button_desc"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,9 +79,9 @@
 
         <ImageView
             android:id="@+id/favorite_button_desc"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="24dp"
+            android:layout_width="@dimen/description_sub_button_size"
+            android:layout_height="@dimen/description_sub_button_size"
+            android:layout_marginHorizontal="@dimen/description_margin_main"
             android:src="@drawable/favorite_desc"
             app:layout_constraintBottom_toBottomOf="@+id/play_button_desc"
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +92,7 @@
             style="@style/description_song_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="12dp"
+            android:layout_marginVertical="@dimen/description_margin_sub"
             android:gravity="center"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@+id/play_button_desc"
@@ -102,8 +101,8 @@
         <FrameLayout
             android:id="@+id/duration_song_desc"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_marginHorizontal="24dp"
+            android:layout_height="@dimen/description_height_item"
+            android:layout_marginHorizontal="@dimen/description_margin_main"
             android:layout_marginVertical="30dp"
             app:layout_constraintTop_toBottomOf="@+id/current_duration_song">
 
@@ -128,8 +127,8 @@
         <FrameLayout
             android:id="@+id/collection_song_desc"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_marginHorizontal="24dp"
+            android:layout_height="@dimen/description_height_item"
+            android:layout_marginHorizontal="@dimen/description_margin_main"
             app:layout_constraintTop_toBottomOf="@+id/duration_song_desc">
 
             <TextView
@@ -153,8 +152,8 @@
         <FrameLayout
             android:id="@+id/year_song_desc"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_marginHorizontal="24dp"
+            android:layout_height="@dimen/description_height_item"
+            android:layout_marginHorizontal="@dimen/description_margin_main"
             app:layout_constraintTop_toBottomOf="@+id/collection_song_desc">
 
             <TextView
@@ -178,8 +177,8 @@
         <FrameLayout
             android:id="@+id/genre_song_desc"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_marginHorizontal="24dp"
+            android:layout_height="@dimen/description_height_item"
+            android:layout_marginHorizontal="@dimen/description_margin_main"
             app:layout_constraintTop_toBottomOf="@+id/year_song_desc">
 
             <TextView
@@ -203,8 +202,8 @@
         <FrameLayout
             android:id="@+id/country_song_desc"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_marginHorizontal="24dp"
+            android:layout_height="@dimen/description_height_item"
+            android:layout_marginHorizontal="@dimen/description_margin_main"
             app:layout_constraintTop_toBottomOf="@+id/genre_song_desc">
 
             <TextView

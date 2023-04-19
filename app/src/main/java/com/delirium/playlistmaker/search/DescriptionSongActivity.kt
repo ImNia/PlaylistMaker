@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class DescriptionSongActivity : AppCompatActivity() {
+    private var trackId: String? = null
     private var songItem: SongItem? = null
     private lateinit var imageDesc: ImageView
     private lateinit var nameSong: TextView
@@ -45,10 +46,12 @@ class DescriptionSongActivity : AppCompatActivity() {
         countrySong = findViewById(R.id.country_song)
 
         val bundle = intent.extras
-        val trackId = bundle?.getString("TRACK_ID")
+        if (trackId == null) {
+            trackId = bundle?.getString("TRACK_ID")
+        }
 
         if (trackId != null) {
-            songItem = getSong(trackId)
+            songItem = getSong(trackId!!)
 
             Glide.with(this)
                 .load(songItem?.artworkUrl100?.let { getCoverArtwork(it) })
@@ -70,7 +73,15 @@ class DescriptionSongActivity : AppCompatActivity() {
             countrySong.text = songItem?.country
         }
     }
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        trackId = savedInstanceState.getString(TRACK_ID)
+    }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(TRACK_ID, trackId)
+    }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return super.onSupportNavigateUp()
@@ -90,4 +101,8 @@ class DescriptionSongActivity : AppCompatActivity() {
     }
 
     private fun getCoverArtwork(artworkUrl: String) = artworkUrl.replaceAfterLast('/',"512x512bb.jpg")
+
+    companion object {
+        const val TRACK_ID = "TRACK_ID"
+    }
 }
