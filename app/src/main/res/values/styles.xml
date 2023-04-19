@@ -75,4 +75,20 @@
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/text_color</item>
     </style>
+
+    <style name="description_song_main">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="sub_description_song">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/setting_icon_color</item>
+    </style>
+
+    <style name="sub_description_song_input" parent="sub_description_song">
+        <item name="android:textColor">@color/text_color</item>
+    </style>
 </resources>

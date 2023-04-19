@@ -1,6 +1,7 @@
 package com.delirium.playlistmaker.search
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -197,7 +198,10 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     override fun clickOnSong(item: SongItem) {
         Log.i("SEARCH_ACTIVITY", "Click on Song!!")
         songHistory.saveSong(item)
-        updateData()
+//        updateData()
+        val descSongIntent = Intent(this, DescriptionSongActivity::class.java)
+        descSongIntent.putExtra("TRACK_ID", item.trackId)
+        startActivity(descSongIntent)
     }
 
     override fun cleanHistory() {
