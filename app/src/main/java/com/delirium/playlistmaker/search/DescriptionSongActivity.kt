@@ -47,7 +47,7 @@ class DescriptionSongActivity : AppCompatActivity() {
 
         val bundle = intent.extras
         if (trackId == null) {
-            trackId = bundle?.getString("TRACK_ID")
+            trackId = bundle?.getString(BundleKey.TRACK_ID.name)
         }
 
         if (trackId != null) {
@@ -56,7 +56,7 @@ class DescriptionSongActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(songItem?.artworkUrl100?.let { getCoverArtwork(it) })
                 .placeholder(R.drawable.not_image)
-                .transform(RoundedCorners(8))
+                .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_description_image)))
                 .into(imageDesc)
 
             nameSong.text = songItem?.trackName

@@ -8,6 +8,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        style="@style/additional_screen"
         tools:context=".search.DescriptionSongActivity">
 
         <androidx.appcompat.widget.Toolbar
@@ -31,7 +33,7 @@
             android:id="@+id/image_desc"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +45,7 @@
             style="@style/description_song_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
             android:layout_marginVertical="@dimen/description_margin_sub"
             app:layout_constraintTop_toBottomOf="@+id/image_desc"
             tools:text="Name Song" />
@@ -52,7 +54,7 @@
             android:id="@+id/group_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
             android:layout_marginVertical="@dimen/description_margin_sub"
             app:layout_constraintTop_toBottomOf="@+id/name_song_desc"
             tools:text="Group name" />
@@ -71,7 +73,7 @@
             android:id="@+id/added_button_desc"
             android:layout_width="@dimen/description_sub_button_size"
             android:layout_height="@dimen/description_sub_button_size"
-            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
             android:src="@drawable/added_desc"
             app:layout_constraintBottom_toBottomOf="@+id/play_button_desc"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +83,7 @@
             android:id="@+id/favorite_button_desc"
             android:layout_width="@dimen/description_sub_button_size"
             android:layout_height="@dimen/description_sub_button_size"
-            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
             android:src="@drawable/favorite_desc"
             app:layout_constraintBottom_toBottomOf="@+id/play_button_desc"
             app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +104,7 @@
             android:id="@+id/duration_song_desc"
             android:layout_width="match_parent"
             android:layout_height="@dimen/description_height_item"
-            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
             android:layout_marginVertical="30dp"
             app:layout_constraintTop_toBottomOf="@+id/current_duration_song">
 
@@ -128,7 +130,7 @@
             android:id="@+id/collection_song_desc"
             android:layout_width="match_parent"
             android:layout_height="@dimen/description_height_item"
-            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
             app:layout_constraintTop_toBottomOf="@+id/duration_song_desc">
 
             <TextView
@@ -153,7 +155,7 @@
             android:id="@+id/year_song_desc"
             android:layout_width="match_parent"
             android:layout_height="@dimen/description_height_item"
-            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
             app:layout_constraintTop_toBottomOf="@+id/collection_song_desc">
 
             <TextView
@@ -178,7 +180,7 @@
             android:id="@+id/genre_song_desc"
             android:layout_width="match_parent"
             android:layout_height="@dimen/description_height_item"
-            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
             app:layout_constraintTop_toBottomOf="@+id/year_song_desc">
 
             <TextView
@@ -203,7 +205,7 @@
             android:id="@+id/country_song_desc"
             android:layout_width="match_parent"
             android:layout_height="@dimen/description_height_item"
-            android:layout_marginHorizontal="@dimen/description_margin_main"
+            android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
             app:layout_constraintTop_toBottomOf="@+id/genre_song_desc">
 
             <TextView
