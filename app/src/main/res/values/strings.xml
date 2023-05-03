@@ -27,4 +27,11 @@
     <string name="not_connect_item_button">Обновить</string>
     <string name="title_history">Вы искали</string>
     <string name="clean_history">Очистить историю</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="duration_text">Длительность</string>
+    <string name="collection_text">Альбом</string>
+    <string name="year_song_text">Год</string>
+    <string name="genre_song_desc">Жанр</string>
+    <string name="country_song_text">Страна</string>
 </resources>
