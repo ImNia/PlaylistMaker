@@ -12,7 +12,6 @@ import com.delirium.playlistmaker.SettingPreferences
 import com.delirium.playlistmaker.search.model.SongItem
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class DescriptionSongActivity : AppCompatActivity() {
@@ -47,7 +46,7 @@ class DescriptionSongActivity : AppCompatActivity() {
 
         val bundle = intent.extras
         if (trackId == null) {
-            trackId = bundle?.getString(BundleKey.TRACK_ID.name)
+            trackId = bundle?.getString(TRACK_ID)
         }
 
         if (trackId != null) {
@@ -75,12 +74,12 @@ class DescriptionSongActivity : AppCompatActivity() {
     }
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        trackId = savedInstanceState.getString(TRACK_ID)
+        trackId = savedInstanceState.getString(SAVE_TRACK)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(TRACK_ID, trackId)
+        outState.putString(SAVE_TRACK, trackId)
     }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
@@ -103,6 +102,7 @@ class DescriptionSongActivity : AppCompatActivity() {
     private fun getCoverArtwork(artworkUrl: String) = artworkUrl.replaceAfterLast('/',"512x512bb.jpg")
 
     companion object {
+        const val SAVE_TRACK = "SAVE_TRACK"
         const val TRACK_ID = "TRACK_ID"
     }
 }

@@ -186,11 +186,6 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         updateData()
     }
 
-    companion object {
-        private const val EDIT_TEXT = "EDIT_TEXT"
-        private const val IS_SEARCH_SUBMITTED = "IS_SEARCH_SUBMITTED"
-    }
-
     override fun clickUpdate() {
         getSongsITunes(inputTextSave)
     }
@@ -200,12 +195,17 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         songHistory.saveSong(item)
 //        updateData()
         val descSongIntent = Intent(this, DescriptionSongActivity::class.java)
-        descSongIntent.putExtra(BundleKey.TRACK_ID.name, item.trackId)
+        descSongIntent.putExtra(DescriptionSongActivity.TRACK_ID, item.trackId)
         startActivity(descSongIntent)
     }
 
     override fun cleanHistory() {
         songHistory.cleanHistory()
         renderHistory()
+    }
+
+    companion object {
+        private const val EDIT_TEXT = "EDIT_TEXT"
+        private const val IS_SEARCH_SUBMITTED = "IS_SEARCH_SUBMITTED"
     }
 }
