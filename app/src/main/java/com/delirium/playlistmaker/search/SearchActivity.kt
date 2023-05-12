@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +38,11 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     private lateinit var songHistory: SongHistory
 
     private var isSearchSubmitted: Boolean = false
+    private val searchRunnable = Runnable {
+        getSongsITunes(inputTextSave)
+    }
+    private var handler = Handler(Looper.getMainLooper())
+    lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,19 +72,21 @@ class SearchActivity : AppCompatActivity(), ClickListener {
 
         editSearch = findViewById(R.id.edit_search)
         editSearch.addTextChangedListener(createTextWatcher())
-        editSearch.setOnEditorActionListener { _, i, _ ->
+        /*editSearch.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_DONE) {
                 getSongsITunes(inputTextSave)
                 true
             } else {
                 false
             }
-        }
+        }*/
         editSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && editSearch.text.isEmpty()) {
                 renderHistory()
             }
         }
+
+        progressBar = findViewById(R.id.progress_bar)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -104,11 +114,14 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         }
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            progressBar.visibility = View.VISIBLE
+            recycler.visibility = View.INVISIBLE
             inputTextSave = editSearch.text.toString()
             if (editSearch.hasFocus() && editSearch.text.isEmpty()) {
                 renderHistory()
             }
             isSearchSubmitted = true
+            searchDebounce()
         }
 
         override fun afterTextChanged(p0: Editable?) {
@@ -167,6 +180,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     }
 
     private fun updateData() {
+        progressBar.visibility = View.INVISIBLE
+        recycler.visibility = View.VISIBLE
         adapter.songs = data
         adapter.notifyDataSetChanged()
         this.currentFocus?.let {
@@ -204,8 +219,14 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         renderHistory()
     }
 
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
     companion object {
         private const val EDIT_TEXT = "EDIT_TEXT"
         private const val IS_SEARCH_SUBMITTED = "IS_SEARCH_SUBMITTED"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
