@@ -119,9 +119,10 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             inputTextSave = editSearch.text.toString()
             if (editSearch.hasFocus() && editSearch.text.isEmpty()) {
                 renderHistory()
+            } else {
+                searchDebounce()
             }
             isSearchSubmitted = true
-            searchDebounce()
         }
 
         override fun afterTextChanged(p0: Editable?) {
@@ -182,6 +183,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     private fun updateData() {
         progressBar.visibility = View.INVISIBLE
         recycler.visibility = View.VISIBLE
+        println(data)
         adapter.songs = data
         adapter.notifyDataSetChanged()
         this.currentFocus?.let {
