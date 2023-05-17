@@ -37,6 +37,8 @@ class DescriptionSongActivity : AppCompatActivity() {
     private var playerState = STATE_DEFAULT
     private var mainThreadHandler: Handler? = null
 
+    private var runnable = updateTimer()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_description_song)
@@ -84,7 +86,7 @@ class DescriptionSongActivity : AppCompatActivity() {
 
         mainThreadHandler = Handler(Looper.getMainLooper())
 
-        preparePlayer(songItem?.previewUrl ?: "")
+        preparePlayer(songItem?.previewUrl.orEmpty())
         playButton.setOnClickListener {
             playbackControl()
         }
@@ -98,6 +100,7 @@ class DescriptionSongActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
+        mainThreadHandler?.removeCallbacks(runnable)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -122,7 +125,7 @@ class DescriptionSongActivity : AppCompatActivity() {
             currentDurationSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(0)
         }
         mediaPlayer.setOnCompletionListener {
-            mainThreadHandler?.removeCallbacks(updateTimer())
+            mainThreadHandler?.removeCallbacks(runnable)
             playButton.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.play_button))
             currentDurationSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(0)
             playerState = STATE_PREPARED
@@ -151,10 +154,11 @@ class DescriptionSongActivity : AppCompatActivity() {
         mediaPlayer.pause()
         playButton.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.play_button))
         playerState = STATE_PAUSED
+        mainThreadHandler?.removeCallbacks(runnable)
     }
 
     private fun startTimer() {
-        mainThreadHandler?.post(updateTimer())
+        mainThreadHandler?.post(runnable)
     }
     private fun updateTimer() : Runnable {
         return object : Runnable {

@@ -41,6 +41,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     private val searchRunnable = Runnable {
         getSongsITunes(inputTextSave)
     }
+    private var isClickAllowed = true
     private var handler = Handler(Looper.getMainLooper())
     lateinit var progressBar: ProgressBar
 
@@ -209,11 +210,23 @@ class SearchActivity : AppCompatActivity(), ClickListener {
 
     override fun clickOnSong(item: SongItem) {
         Log.i("SEARCH_ACTIVITY", "Click on Song!!")
-        songHistory.saveSong(item)
-//        updateData()
-        val descSongIntent = Intent(this, DescriptionSongActivity::class.java)
-        descSongIntent.putExtra(DescriptionSongActivity.TRACK_ID, item.trackId)
-        startActivity(descSongIntent)
+        if (isClickDebounce()) {
+            songHistory.saveSong(item)
+            val descSongIntent = Intent(this, DescriptionSongActivity::class.java)
+            descSongIntent.putExtra(DescriptionSongActivity.TRACK_ID, item.trackId)
+            startActivity(descSongIntent)
+        }
+    }
+
+    private fun isClickDebounce(): Boolean {
+        val currentState = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed(
+                { isClickAllowed = true }, CLICK_DEBOUNCE_DELAY
+            )
+        }
+        return currentState
     }
 
     override fun cleanHistory() {
@@ -230,5 +243,6 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         private const val EDIT_TEXT = "EDIT_TEXT"
         private const val IS_SEARCH_SUBMITTED = "IS_SEARCH_SUBMITTED"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
