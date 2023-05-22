@@ -1,9 +1,14 @@
 package com.delirium.playlistmaker.search
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -26,6 +31,13 @@ class DescriptionSongActivity : AppCompatActivity() {
     private lateinit var yearSong: TextView
     private lateinit var genreSong: TextView
     private lateinit var countrySong: TextView
+    private lateinit var playButton: ImageView
+
+    private var mediaPlayer = MediaPlayer()
+    private var playerState = STATE_DEFAULT
+    private var mainThreadHandler: Handler? = null
+
+    private var runnable = updateTimer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +55,7 @@ class DescriptionSongActivity : AppCompatActivity() {
         yearSong = findViewById(R.id.year_song)
         genreSong = findViewById(R.id.genre_song)
         countrySong = findViewById(R.id.country_song)
+        playButton = findViewById(R.id.play_button_desc)
 
         val bundle = intent.extras
         if (trackId == null) {
@@ -60,7 +73,6 @@ class DescriptionSongActivity : AppCompatActivity() {
 
             nameSong.text = songItem?.trackName
             groupDesc.text = songItem?.artistName
-            currentDurationSong.text = "0:30"
             durationSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(songItem?.trackTimeMillis)
             collectionSong.text = songItem?.collectionName
 
@@ -71,7 +83,26 @@ class DescriptionSongActivity : AppCompatActivity() {
             genreSong.text = songItem?.primaryGenreName
             countrySong.text = songItem?.country
         }
+
+        mainThreadHandler = Handler(Looper.getMainLooper())
+
+        preparePlayer(songItem?.previewUrl.orEmpty())
+        playButton.setOnClickListener {
+            playbackControl()
+        }
     }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        mainThreadHandler?.removeCallbacks(runnable)
+    }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         trackId = savedInstanceState.getString(SAVE_TRACK)
@@ -84,6 +115,61 @@ class DescriptionSongActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    private fun preparePlayer(url: String) {
+        mediaPlayer.setDataSource(url)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            playerState = STATE_PREPARED
+            currentDurationSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(0)
+        }
+        mediaPlayer.setOnCompletionListener {
+            mainThreadHandler?.removeCallbacks(runnable)
+            playButton.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.play_button))
+            currentDurationSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(0)
+            playerState = STATE_PREPARED
+            mediaPlayer.seekTo(0)
+        }
+    }
+
+    private fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+                startTimer()
+            }
+        }
+    }
+    private fun startPlayer() {
+        mediaPlayer.start()
+        playButton.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.pause_button))
+        playerState = STATE_PLAYING
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        playButton.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.play_button))
+        playerState = STATE_PAUSED
+        mainThreadHandler?.removeCallbacks(runnable)
+    }
+
+    private fun startTimer() {
+        mainThreadHandler?.post(runnable)
+    }
+    private fun updateTimer() : Runnable {
+        return object : Runnable {
+            override fun run() {
+                if (playerState == STATE_PLAYING) {
+                    val currentTime = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+                    currentDurationSong.text = currentTime
+                    mainThreadHandler?.postDelayed(this, DELAY)
+                }
+            }
+        }
     }
 
     private fun getSong(trackId: String): SongItem? {
@@ -104,5 +190,11 @@ class DescriptionSongActivity : AppCompatActivity() {
     companion object {
         const val SAVE_TRACK = "SAVE_TRACK"
         const val TRACK_ID = "TRACK_ID"
+        private const val DELAY = 1000L
+
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
     }
 }
