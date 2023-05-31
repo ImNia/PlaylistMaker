@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.search
+package com.delirium.playlistmaker.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -19,27 +18,26 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.SettingPreferences
-import com.delirium.playlistmaker.search.model.SongItemButton
-import com.delirium.playlistmaker.search.model.SongItemTitle
-import com.delirium.playlistmaker.search.itunes.ITunesSetting
-import com.delirium.playlistmaker.search.model.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.delirium.playlistmaker.data.repository.HistoryRepositoryImpl
+import com.delirium.playlistmaker.data.repository.RetrofitRepositoryImpl
+import com.delirium.playlistmaker.domain.models.*
+import com.delirium.playlistmaker.domain.repository.RetrofitCallback
+import com.delirium.playlistmaker.search.AdapterSongs
+import com.delirium.playlistmaker.search.ClickListener
 
-class SearchActivity : AppCompatActivity(), ClickListener {
+class SearchActivity : AppCompatActivity(), ClickListener, RetrofitCallback {
     lateinit var editSearch: EditText
     lateinit var crossForDelete: ImageView
     private var inputTextSave: String = ""
     lateinit var recycler: RecyclerView
     private var data: MutableList<AdapterModel> = mutableListOf()
     private val adapter = AdapterSongs(this)
-    private lateinit var songHistory: SongHistory
+    private val historyRepository by lazy { HistoryRepositoryImpl(context = applicationContext) }
+    private val retrofitRepository by lazy { RetrofitRepositoryImpl(context = applicationContext, this) }
 
     private var isSearchSubmitted: Boolean = false
     private val searchRunnable = Runnable {
-        getSongsITunes(inputTextSave)
+        retrofitRepository.getSongs(inputTextSave)
     }
     private var isClickAllowed = true
     private var handler = Handler(Looper.getMainLooper())
@@ -50,8 +48,6 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         setContentView(R.layout.activity_search)
         val toolbar = findViewById<Toolbar>(R.id.toolBarSearch)
         setSupportActionBar(toolbar)
-        songHistory =
-            SongHistory(getSharedPreferences(SettingPreferences.FINDING_SONG.name, MODE_PRIVATE))
 
         crossForDelete = findViewById(R.id.clear_search)
 
@@ -100,7 +96,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         val inputString = savedInstanceState.getString(EDIT_TEXT)
         isSearchSubmitted = savedInstanceState.getBoolean(IS_SEARCH_SUBMITTED)
         editSearch.setText(inputString)
-        if (isSearchSubmitted) getSongsITunes(inputTextSave)
+        if (isSearchSubmitted) searchRunnable
+            //retrofitRepository.getSongs(inputTextSave)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -130,61 +127,9 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         }
     }
 
-    private fun getSongsITunes(nameSong: String) {
-        val request = ITunesSetting.itunesInstant
-
-        request.getSongs(nameSong).enqueue(object : Callback<DataITunes> {
-            override fun onFailure(call: Call<DataITunes>, t: Throwable) {
-                t.printStackTrace()
-                data.clear()
-                data.add(
-                    ErrorItem(
-                        text = getString(R.string.not_connect_item_text),
-                        textSub = getString(R.string.not_connect_item_text_sub)
-                    )
-                )
-//                isSearchSubmitted = true
-                updateData()
-            }
-
-            override fun onResponse(
-                call: Call<DataITunes>,
-                response: Response<DataITunes>
-            ) {
-                if (response.isSuccessful) {
-                    data.clear()
-                    val rawData = response.body()
-                    rawData?.let {
-                        if (it.resultCount == 0) {
-                            data.add(NotFoundItem(textProblem = getString(R.string.not_found)))
-                        } else {
-                            for (item in it.results) {
-                                data.add(item)
-                            }
-                        }
-                    }
-//                    isSearchSubmitted = true
-                    updateData()
-                } else {
-                    Log.i("RETROFIT_ERROR", "${response.errorBody()?.string()}")
-                    data.clear()
-                    data.add(
-                        ErrorItem(
-                            text = getString(R.string.not_connect_item_text),
-                            textSub = getString(R.string.not_connect_item_text_sub)
-                        )
-                    )
-//                    isSearchSubmitted = true
-                    updateData()
-                }
-            }
-        })
-    }
-
     private fun updateData() {
         progressBar.visibility = View.INVISIBLE
         recycler.visibility = View.VISIBLE
-        println(data)
         adapter.songs = data
         adapter.notifyDataSetChanged()
         this.currentFocus?.let {
@@ -195,23 +140,24 @@ class SearchActivity : AppCompatActivity(), ClickListener {
 
     private fun renderHistory() {
         data.clear()
-        val historyData = songHistory.getHistory().toMutableList()
+        val historyData = historyRepository.getHistory().toMutableList()
         if (historyData.isNotEmpty()) {
             data.add(SongItemTitle(text = getString(R.string.title_history)))
-            data.addAll(songHistory.getHistory().toMutableList())
+            data.addAll(historyRepository.getHistory().toMutableList())
             data.add(SongItemButton(text = getString(R.string.clean_history)))
         }
         updateData()
     }
 
     override fun clickUpdate() {
-        getSongsITunes(inputTextSave)
+//        retrofitRepository.getSongs(inputTextSave)
+        searchRunnable
     }
 
     override fun clickOnSong(item: SongItem) {
         Log.i("SEARCH_ACTIVITY", "Click on Song!!")
         if (isClickDebounce()) {
-            songHistory.saveSong(item)
+            historyRepository.saveSong(item)
             val descSongIntent = Intent(this, DescriptionSongActivity::class.java)
             descSongIntent.putExtra(DescriptionSongActivity.TRACK_ID, item.trackId)
             startActivity(descSongIntent)
@@ -230,7 +176,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     }
 
     override fun cleanHistory() {
-        songHistory.cleanHistory()
+        historyRepository.cleanHistory()
         renderHistory()
     }
 
@@ -244,5 +190,16 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         private const val IS_SEARCH_SUBMITTED = "IS_SEARCH_SUBMITTED"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
+
+    override fun successful(data: MutableList<AdapterModel>) {
+        this.data = data
+        updateData()
+    }
+
+    override fun error(data: MutableList<AdapterModel>) {
+        this.data = data
+        Log.d("SEARCH_ERROR", "Error in get data")
+        updateData()
     }
 }

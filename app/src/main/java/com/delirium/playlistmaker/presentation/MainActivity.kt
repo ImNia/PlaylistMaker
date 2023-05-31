@@ -1,10 +1,10 @@
-package com.delirium.playlistmaker
+package com.delirium.playlistmaker.presentation
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.delirium.playlistmaker.search.SearchActivity
+import com.delirium.playlistmaker.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

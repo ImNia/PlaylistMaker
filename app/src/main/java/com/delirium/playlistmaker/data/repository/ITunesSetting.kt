@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.search.itunes
+package com.delirium.playlistmaker.data.repository
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
