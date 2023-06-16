@@ -2,6 +2,7 @@ package com.delirium.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.delirium.playlistmaker.presentation.SettingPreferences
 
 class App: Application() {
     var darkTheme = true

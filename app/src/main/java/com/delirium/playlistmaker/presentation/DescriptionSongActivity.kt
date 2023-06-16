@@ -1,11 +1,10 @@
-package com.delirium.playlistmaker.search
+package com.delirium.playlistmaker.presentation
 
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
@@ -13,8 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.SettingPreferences
-import com.delirium.playlistmaker.search.model.SongItem
+import com.delirium.playlistmaker.domain.models.SongItem
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*

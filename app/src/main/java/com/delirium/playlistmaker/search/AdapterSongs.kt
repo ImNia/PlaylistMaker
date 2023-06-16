@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.search.model.*
+import com.delirium.playlistmaker.domain.models.*
 
 class AdapterSongs(
     private val clickListener: ClickListener
