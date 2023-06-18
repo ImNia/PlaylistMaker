@@ -158,8 +158,8 @@ class SearchActivity : AppCompatActivity(), ClickListener, RetrofitCallback {
         Log.i("SEARCH_ACTIVITY", "Click on Song!!")
         if (isClickDebounce()) {
             historyRepository.saveSong(item)
-            val descSongIntent = Intent(this, DescriptionSongActivity::class.java)
-            descSongIntent.putExtra(DescriptionSongActivity.TRACK_ID, item.trackId)
+            val descSongIntent = Intent(this, TrackActivity::class.java)
+            descSongIntent.putExtra(TrackActivity.TRACK_ID, item.trackId)
             startActivity(descSongIntent)
         }
     }

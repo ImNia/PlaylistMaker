@@ -5,11 +5,12 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import com.delirium.playlistmaker.domain.models.SongItem
 import com.delirium.playlistmaker.domain.repository.HistoryRepository
-import com.delirium.playlistmaker.presentation.SettingPreferences
+import com.delirium.playlistmaker.settings.models.SettingPreferences
 import com.google.gson.Gson
 
 class HistoryRepositoryImpl(private val context: Context): HistoryRepository {
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(SettingPreferences.FINDING_SONG.name,
+    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
+        SettingPreferences.FINDING_SONG.name,
         AppCompatActivity.MODE_PRIVATE
     )
 
