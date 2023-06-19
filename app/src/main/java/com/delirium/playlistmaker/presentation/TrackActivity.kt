@@ -9,15 +9,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.domain.models.SongItem
+import com.delirium.playlistmaker.databinding.ActivityDescriptionSongBinding
+import com.delirium.playlistmaker.search.data.models.SongItem
+import com.delirium.playlistmaker.settings.models.SettingPreferences
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DescriptionSongActivity : AppCompatActivity() {
+class TrackActivity : AppCompatActivity() {
     private var trackId: String? = null
     private var songItem: SongItem? = null
     private lateinit var imageDesc: ImageView
@@ -31,18 +34,49 @@ class DescriptionSongActivity : AppCompatActivity() {
     private lateinit var countrySong: TextView
     private lateinit var playButton: ImageView
 
+    private lateinit var binding: ActivityDescriptionSongBinding
+
     private var mediaPlayer = MediaPlayer()
     private var playerState = STATE_DEFAULT
     private var mainThreadHandler: Handler? = null
 
     private var runnable = updateTimer()
 
+    private lateinit var viewModel: TrackViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_description_song)
+        binding = ActivityDescriptionSongBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+//        setContentView(R.layout.activity_description_song)
 
         val toolbar = findViewById<Toolbar>(R.id.toolBarDescriptionSong)
         setSupportActionBar(toolbar)
+/*
+        viewModel = ViewModelProvider(this, TrackViewModel.getViewModelFactory(123))[TrackViewModel::class.java]
+        viewModel.getLoadingLiveData().observe(this) { isLoading ->
+            changeProgressBarVisibility(isLoading)
+        }
+
+        viewModel.getScreenStateLiveData().observe(this) { screenState ->
+            when (screenState) {
+                is TrackScreenState.Content -> {
+                    changeContentVisibility(loading = false)
+                    binding.imageDesc.setImageURI(screenState.trackModel.pictureUrl.toUri())
+                    binding.groupDesc.text = screenState.trackModel.author
+                    binding.nameSongDesc.text = screenState.trackModel.name
+                }
+                is TrackScreenState.Loading -> {
+                    changeContentVisibility(loading = true)
+                }
+            }
+        }*/
+/*
+        viewModel.getPlayStatusLiveData().observe(this) { playStatus ->
+            changeButtonStyle(playStatus)
+            // 2
+//            binding.seekBar.value = playStatus.progress
+        }*/
 
         imageDesc = findViewById(R.id.image_desc)
         nameSong = findViewById(R.id.name_song_desc)
@@ -99,6 +133,8 @@ class DescriptionSongActivity : AppCompatActivity() {
         super.onDestroy()
         mediaPlayer.release()
         mainThreadHandler?.removeCallbacks(runnable)
+
+//        viewModel.removeLoadingObserver()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -114,6 +150,24 @@ class DescriptionSongActivity : AppCompatActivity() {
         onBackPressedDispatcher.onBackPressed()
         return super.onSupportNavigateUp()
     }
+
+    private fun changeProgressBarVisibility(visible: Boolean) {
+        binding.progressBar.isVisible = visible
+    }
+
+    private fun changeContentVisibility(loading: Boolean) {
+        binding.progressBar.isVisible = loading
+
+        binding.imageDesc.isVisible = !loading
+        binding.groupDesc.isVisible = !loading
+        binding.nameSongDesc.isVisible = !loading
+    }
+
+/*
+    private fun changeButtonStyle(playStatus: PlayStatus) {
+        // Меняем вид кнопки проигрывания в зависимости от того, играет сейчас трек или нет
+    }
+*/
 
     private fun preparePlayer(url: String) {
         mediaPlayer.setDataSource(url)

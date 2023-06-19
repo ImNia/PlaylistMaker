@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.domain.models
+package com.delirium.playlistmaker.search.data.models
 
 data class SongItem(
     val trackId: String,
@@ -11,4 +11,4 @@ data class SongItem(
     val country: String,
     val primaryGenreName: String,
     val previewUrl: String,
-) : AdapterModel
+) : ModelForAdapter

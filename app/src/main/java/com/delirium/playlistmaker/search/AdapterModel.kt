@@ -5,12 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.domain.models.*
+import com.delirium.playlistmaker.search.data.models.ModelForAdapter
+import com.delirium.playlistmaker.search.data.models.ErrorItem
+import com.delirium.playlistmaker.search.data.models.NotFoundItem
+import com.delirium.playlistmaker.search.data.models.SongItem
+import com.delirium.playlistmaker.search.data.models.SongItemButton
+import com.delirium.playlistmaker.search.data.models.SongItemTitle
 
-class AdapterSongs(
+class AdapterModel(
     private val clickListener: ClickListener
 ) : RecyclerView.Adapter<ViewHolder>() {
-    var songs: List<AdapterModel> = listOf()
+    var songs: List<ModelForAdapter> = listOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         SONG_TYPE -> {
             val view =

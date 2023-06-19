@@ -1,6 +1,6 @@
-package com.delirium.playlistmaker.domain.repository
+package com.delirium.playlistmaker.search.data.api
 
-import com.delirium.playlistmaker.domain.models.SongItem
+import com.delirium.playlistmaker.search.data.models.SongItem
 
 interface HistoryRepository {
     fun saveSong(song: SongItem)
