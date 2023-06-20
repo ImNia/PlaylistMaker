@@ -3,6 +3,12 @@ package com.delirium.playlistmaker
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import com.delirium.playlistmaker.player.data.api.PlayerRepository
+import com.delirium.playlistmaker.player.data.impl.PlayerRepositoryImpl
+import com.delirium.playlistmaker.player.domain.api.TrackPlayer
+import com.delirium.playlistmaker.player.domain.api.TracksInteractor
+import com.delirium.playlistmaker.player.domain.impl.TrackPlayerImpl
+import com.delirium.playlistmaker.player.domain.impl.TracksInteractorImpl
 import com.delirium.playlistmaker.search.data.api.HistoryRepository
 import com.delirium.playlistmaker.search.data.impl.HistoryRepositoryImpl
 import com.delirium.playlistmaker.search.data.api.NetworkClient
@@ -46,13 +52,15 @@ class App : Application() {
         )
     }
 
-    /*fun getRepository(): TracksRepositoryImpl {
-        TracksRepositoryImpl(NetworkClientImpl())
-    }
-
     fun provideTracksInteractor(): TracksInteractor {
-        return TracksInteractorImpl(getRepository())
-    }*/
+        return TracksInteractorImpl(getPlayerRepository())
+    }
+    private fun getPlayerRepository(): PlayerRepository {
+        return PlayerRepositoryImpl(sharedPrefsFindSong)
+    }
+    fun provideTrackPlayer(): TrackPlayer {
+        return TrackPlayerImpl()
+    }
 
     fun providerSettingsInteractor(): SettingsInteractor {
         return SettingsInteractorImpl(getSettingsRepository())

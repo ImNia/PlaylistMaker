@@ -1,4 +1,6 @@
-package com.delirium.playlistmaker.domain.models
+package com.delirium.playlistmaker.player.ui.models
+
+import com.delirium.playlistmaker.player.data.TrackModel
 
 sealed class TrackScreenState {
     object Loading: TrackScreenState()

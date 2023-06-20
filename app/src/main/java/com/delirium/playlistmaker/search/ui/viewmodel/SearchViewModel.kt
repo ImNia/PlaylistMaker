@@ -12,9 +12,8 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.delirium.playlistmaker.App
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.presentation.TrackActivity
+import com.delirium.playlistmaker.player.ui.activity.TrackActivity
 import com.delirium.playlistmaker.search.data.models.ErrorItem
-import com.delirium.playlistmaker.search.data.models.ModelForAdapter
 import com.delirium.playlistmaker.search.data.models.NotFoundItem
 import com.delirium.playlistmaker.search.data.models.SongItem
 import com.delirium.playlistmaker.search.data.models.SongListItem
@@ -105,6 +104,7 @@ class SearchViewModel(
             historyInteractor.saveSong(songItem)
             val descSongIntent = Intent(context, TrackActivity::class.java)
             descSongIntent.putExtra(TRACK_ID, songItem.trackId)
+            songIntentLiveData.postValue(descSongIntent)
         }
     }
 

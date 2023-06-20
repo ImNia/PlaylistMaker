@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.domain.api
+package com.delirium.playlistmaker.player.domain.api
 
 interface TrackPlayer {
     fun play(trackId: String, statusObserver: StatusObserver)

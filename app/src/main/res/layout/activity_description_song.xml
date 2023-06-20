@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
         style="@style/additional_screen"
-        tools:context=".presentation.TrackActivity">
+        tools:context=".player.ui.activity.TrackActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBarDescriptionSong"
