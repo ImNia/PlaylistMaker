@@ -5,9 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import com.delirium.playlistmaker.player.data.api.PlayerRepository
 import com.delirium.playlistmaker.player.data.impl.PlayerRepositoryImpl
-import com.delirium.playlistmaker.player.domain.api.TrackPlayer
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
-import com.delirium.playlistmaker.player.domain.impl.TrackPlayerImpl
 import com.delirium.playlistmaker.player.domain.impl.TracksInteractorImpl
 import com.delirium.playlistmaker.search.data.api.HistoryRepository
 import com.delirium.playlistmaker.search.data.impl.HistoryRepositoryImpl
@@ -57,9 +55,6 @@ class App : Application() {
     }
     private fun getPlayerRepository(): PlayerRepository {
         return PlayerRepositoryImpl(sharedPrefsFindSong)
-    }
-    fun provideTrackPlayer(): TrackPlayer {
-        return TrackPlayerImpl()
     }
 
     fun providerSettingsInteractor(): SettingsInteractor {

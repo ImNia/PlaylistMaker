@@ -13,8 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.ActivitySearchBinding
-import com.delirium.playlistmaker.search.AdapterModel
-import com.delirium.playlistmaker.search.ClickListener
 import com.delirium.playlistmaker.search.data.models.ModelForAdapter
 import com.delirium.playlistmaker.search.data.models.SongItem
 import com.delirium.playlistmaker.search.data.models.SongItemButton

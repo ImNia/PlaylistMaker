@@ -21,7 +21,6 @@ class SharingInteractorImpl(
     }
 
     private fun getShareAppLink(): String {
-        // Нужно реализовать
         return "https://practicum.yandex.ru/profile/android-developer/"
     }
 

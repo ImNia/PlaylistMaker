@@ -87,6 +87,11 @@ class TrackActivity : AppCompatActivity() {
         pausePlayer()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.closeScreen()
+    }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         trackId = savedInstanceState.getString(SAVE_TRACK)

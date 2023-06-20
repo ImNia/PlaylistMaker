@@ -28,14 +28,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".presentation.MediaActivity"
+            android:name=".media.ui.MediaActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".main.ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>

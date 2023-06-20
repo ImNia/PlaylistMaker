@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.search
+package com.delirium.playlistmaker.search.ui.activity
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

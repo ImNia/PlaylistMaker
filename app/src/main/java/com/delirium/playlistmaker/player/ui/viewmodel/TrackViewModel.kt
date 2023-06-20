@@ -13,7 +13,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.delirium.playlistmaker.App
 import com.delirium.playlistmaker.player.data.TrackModel
 import com.delirium.playlistmaker.player.data.model.PlayerState
-import com.delirium.playlistmaker.player.domain.api.TrackPlayer
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
 import com.delirium.playlistmaker.player.ui.models.PlayStatus
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
@@ -23,7 +22,6 @@ import java.util.Locale
 class TrackViewModel(
     private val trackId: String,
     private val tracksInteractor: TracksInteractor,
-    private val trackPlayer: TrackPlayer,
 ) : ViewModel() {
     init {
         tracksInteractor.prepareData(
@@ -35,8 +33,6 @@ class TrackViewModel(
                             TrackScreenState.Content(trackModel)
                         )
                         track = trackModel
-                    } else {
-                        //TODO error
                     }
                 }
             }
@@ -44,6 +40,7 @@ class TrackViewModel(
     }
 
     private var isPlaying: Boolean = false
+    private var currentTimePlayer: String = "0"
 
     private var loadingLiveData = MutableLiveData(true)
     fun getLoadingLiveData(): LiveData<Boolean> = loadingLiveData
@@ -65,7 +62,7 @@ class TrackViewModel(
         mediaPlayer.setOnPreparedListener {
             playStatusLiveData.postValue(
                 PlayStatus(
-                    progress = "0",
+                    progress = currentTimePlayer,
                     isPlaying = false,
                     playerStatus = PlayerState.STATE_PREPARED,
                 )
@@ -74,7 +71,7 @@ class TrackViewModel(
         mediaPlayer.setOnCompletionListener {
             playStatusLiveData.postValue(
                 PlayStatus(
-                    progress = "0",
+                    progress = currentTimePlayer,
                     isPlaying = false,
                     playerStatus = PlayerState.STATE_PREPARED,
                 )
@@ -99,9 +96,14 @@ class TrackViewModel(
         isPlaying = !isPlaying
     }
 
+    fun closeScreen() {
+        mediaPlayer.reset()
+        mainThreadHandler?.removeCallbacks(runnable)
+    }
+
     private fun getCurrentPlayStatus(): PlayStatus {
         return playStatusLiveData.value ?: PlayStatus(
-            progress = "0",
+            progress = currentTimePlayer,
             isPlaying = false,
             PlayerState.STATE_DEFAULT
         )
@@ -115,6 +117,7 @@ class TrackViewModel(
                     Locale.getDefault()
                 ).format(mediaPlayer.currentPosition)
                 playStatusLiveData.value = getCurrentPlayStatus().copy(progress = currentTime)
+                currentTimePlayer = currentTime
                 mainThreadHandler?.postDelayed(this, DELAY)
             }
         }
@@ -126,12 +129,10 @@ class TrackViewModel(
             initializer {
                 val myApp = (this[APPLICATION_KEY] as App)
                 val interactor = myApp.provideTracksInteractor()
-                val trackPlayer = myApp.provideTrackPlayer()
 
                 TrackViewModel(
                     trackId,
-                    interactor,
-                    trackPlayer
+                    interactor
                 )
             }
         }

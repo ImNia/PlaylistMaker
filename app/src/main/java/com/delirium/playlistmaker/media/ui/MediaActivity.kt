@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.presentation
+package com.delirium.playlistmaker.media.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
