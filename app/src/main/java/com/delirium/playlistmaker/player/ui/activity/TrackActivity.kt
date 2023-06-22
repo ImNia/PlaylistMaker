@@ -9,8 +9,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.ActivityDescriptionSongBinding
-import com.delirium.playlistmaker.player.data.TrackModel
-import com.delirium.playlistmaker.player.data.model.PlayerState
+import com.delirium.playlistmaker.player.domain.model.TrackModel
+import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
 import com.delirium.playlistmaker.player.ui.viewmodel.TrackViewModel
 import java.text.SimpleDateFormat

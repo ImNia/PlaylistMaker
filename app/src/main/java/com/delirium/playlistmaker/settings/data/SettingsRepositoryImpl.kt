@@ -3,8 +3,9 @@ package com.delirium.playlistmaker.settings.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.delirium.playlistmaker.App
-import com.delirium.playlistmaker.settings.data.models.ThemeSettings
-import com.delirium.playlistmaker.settings.models.SettingPreferences
+import com.delirium.playlistmaker.settings.domain.model.ThemeSettings
+import com.delirium.playlistmaker.settings.domain.api.SettingsRepository
+import com.delirium.playlistmaker.utils.model.SettingPreferences
 
 class SettingsRepositoryImpl(
     private val sharedPrefs: SharedPreferences,

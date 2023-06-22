@@ -1,7 +1,7 @@
 package com.delirium.playlistmaker.settings.domain.impl
 
-import com.delirium.playlistmaker.settings.data.SettingsRepository
-import com.delirium.playlistmaker.settings.data.models.ThemeSettings
+import com.delirium.playlistmaker.settings.domain.api.SettingsRepository
+import com.delirium.playlistmaker.settings.domain.model.ThemeSettings
 import com.delirium.playlistmaker.settings.domain.api.SettingsInteractor
 
 class SettingsInteractorImpl(

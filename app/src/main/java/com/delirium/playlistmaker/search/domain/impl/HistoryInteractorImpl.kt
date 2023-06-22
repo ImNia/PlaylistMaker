@@ -1,7 +1,7 @@
 package com.delirium.playlistmaker.search.domain.impl
 
-import com.delirium.playlistmaker.search.data.api.HistoryRepository
-import com.delirium.playlistmaker.search.data.models.SongItem
+import com.delirium.playlistmaker.search.domain.repository.HistoryRepository
+import com.delirium.playlistmaker.search.domain.model.SongItem
 import com.delirium.playlistmaker.search.domain.api.HistoryInteractor
 import java.util.concurrent.Executors
 

@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.delirium.playlistmaker.App
-import com.delirium.playlistmaker.player.data.TrackModel
-import com.delirium.playlistmaker.player.data.model.PlayerState
+import com.delirium.playlistmaker.player.domain.model.TrackModel
+import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
 import com.delirium.playlistmaker.player.ui.models.PlayStatus
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState

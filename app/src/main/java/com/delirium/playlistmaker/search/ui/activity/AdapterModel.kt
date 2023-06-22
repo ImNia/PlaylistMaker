@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.search.data.models.ModelForAdapter
-import com.delirium.playlistmaker.search.data.models.ErrorItem
-import com.delirium.playlistmaker.search.data.models.NotFoundItem
-import com.delirium.playlistmaker.search.data.models.SongItem
-import com.delirium.playlistmaker.search.data.models.SongItemButton
-import com.delirium.playlistmaker.search.data.models.SongItemTitle
+import com.delirium.playlistmaker.search.domain.model.ModelForAdapter
+import com.delirium.playlistmaker.search.domain.model.ErrorItem
+import com.delirium.playlistmaker.search.domain.model.NotFoundItem
+import com.delirium.playlistmaker.search.domain.model.SongItem
+import com.delirium.playlistmaker.search.domain.model.SongItemButton
+import com.delirium.playlistmaker.search.domain.model.SongItemTitle
 
 class AdapterModel(
     private val clickListener: ClickListener

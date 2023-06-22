@@ -3,28 +3,28 @@ package com.delirium.playlistmaker
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.delirium.playlistmaker.player.data.api.PlayerRepository
-import com.delirium.playlistmaker.player.data.impl.PlayerRepositoryImpl
+import com.delirium.playlistmaker.player.domain.repository.PlayerRepository
+import com.delirium.playlistmaker.player.data.repository.PlayerRepositoryImpl
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
 import com.delirium.playlistmaker.player.domain.impl.TracksInteractorImpl
-import com.delirium.playlistmaker.search.data.api.HistoryRepository
-import com.delirium.playlistmaker.search.data.impl.HistoryRepositoryImpl
-import com.delirium.playlistmaker.search.data.api.NetworkClient
-import com.delirium.playlistmaker.search.data.impl.RetrofitClientImpl
+import com.delirium.playlistmaker.search.domain.repository.HistoryRepository
+import com.delirium.playlistmaker.search.data.repository.HistoryRepositoryImpl
+import com.delirium.playlistmaker.search.domain.repository.NetworkClient
+import com.delirium.playlistmaker.search.data.repository.RetrofitClientImpl
 import com.delirium.playlistmaker.search.domain.api.HistoryInteractor
 import com.delirium.playlistmaker.search.domain.api.RetrofitInteractor
 import com.delirium.playlistmaker.search.domain.api.RetrofitRepository
 import com.delirium.playlistmaker.search.domain.impl.HistoryInteractorImpl
 import com.delirium.playlistmaker.search.domain.impl.RetrofitInteractorImpl
 import com.delirium.playlistmaker.search.domain.impl.RetrofitRepositoryImpl
-import com.delirium.playlistmaker.settings.data.ExternalNavigator
-import com.delirium.playlistmaker.settings.data.SettingsRepository
+import com.delirium.playlistmaker.sharing.data.impl.ExternalNavigatorImpl
+import com.delirium.playlistmaker.settings.domain.api.SettingsRepository
 import com.delirium.playlistmaker.settings.data.SettingsRepositoryImpl
 import com.delirium.playlistmaker.settings.domain.api.SettingsInteractor
-import com.delirium.playlistmaker.settings.domain.api.SharingInteractor
+import com.delirium.playlistmaker.sharing.domain.SharingInteractor
 import com.delirium.playlistmaker.settings.domain.impl.SettingsInteractorImpl
-import com.delirium.playlistmaker.settings.domain.impl.SharingInteractorImpl
-import com.delirium.playlistmaker.settings.models.SettingPreferences
+import com.delirium.playlistmaker.sharing.domain.impl.SharingInteractorImpl
+import com.delirium.playlistmaker.utils.model.SettingPreferences
 
 class App : Application() {
     var darkTheme = true
@@ -69,8 +69,8 @@ class App : Application() {
         return SharingInteractorImpl(getExtrenalNavigator())
     }
 
-    private fun getExtrenalNavigator(): ExternalNavigator {
-        return ExternalNavigator()
+    private fun getExtrenalNavigator(): ExternalNavigatorImpl {
+        return ExternalNavigatorImpl(baseContext)
     }
 
     fun providerRetrofitInteractor(): RetrofitInteractor {

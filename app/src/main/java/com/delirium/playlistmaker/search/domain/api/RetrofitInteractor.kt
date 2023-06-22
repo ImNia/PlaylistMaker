@@ -1,6 +1,6 @@
 package com.delirium.playlistmaker.search.domain.api
 
-import com.delirium.playlistmaker.search.data.models.SongItem
+import com.delirium.playlistmaker.search.domain.model.SongItem
 
 interface RetrofitInteractor {
 

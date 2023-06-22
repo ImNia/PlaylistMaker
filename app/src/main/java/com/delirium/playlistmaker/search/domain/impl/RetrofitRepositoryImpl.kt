@@ -1,10 +1,10 @@
 package com.delirium.playlistmaker.search.domain.impl
 
 import com.delirium.playlistmaker.search.Resource
-import com.delirium.playlistmaker.search.data.api.NetworkClient
-import com.delirium.playlistmaker.search.data.models.SongItem
-import com.delirium.playlistmaker.search.data.models.SongsSearchRequest
-import com.delirium.playlistmaker.search.data.models.SongsSearchResponse
+import com.delirium.playlistmaker.search.domain.repository.NetworkClient
+import com.delirium.playlistmaker.search.domain.model.SongItem
+import com.delirium.playlistmaker.search.domain.model.SongsSearchRequest
+import com.delirium.playlistmaker.search.domain.model.SongsSearchResponse
 import com.delirium.playlistmaker.search.domain.api.RetrofitRepository
 
 class RetrofitRepositoryImpl(

@@ -1,6 +1,6 @@
 package com.delirium.playlistmaker.player.domain.api
 
-import com.delirium.playlistmaker.player.data.TrackModel
+import com.delirium.playlistmaker.player.domain.model.TrackModel
 
 interface TracksInteractor {
     fun prepareData(trackId: String, consumer: TracksConsumer)

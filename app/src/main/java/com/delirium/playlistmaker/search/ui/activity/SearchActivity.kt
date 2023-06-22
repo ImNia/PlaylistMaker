@@ -13,11 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.ActivitySearchBinding
-import com.delirium.playlistmaker.search.data.models.ModelForAdapter
-import com.delirium.playlistmaker.search.data.models.SongItem
-import com.delirium.playlistmaker.search.data.models.SongItemButton
-import com.delirium.playlistmaker.search.data.models.SongItemTitle
-import com.delirium.playlistmaker.search.data.models.SongListItem
+import com.delirium.playlistmaker.player.ui.activity.TrackActivity
+import com.delirium.playlistmaker.search.domain.model.ErrorItem
+import com.delirium.playlistmaker.search.domain.model.ModelForAdapter
+import com.delirium.playlistmaker.search.domain.model.NotFoundItem
+import com.delirium.playlistmaker.search.domain.model.SongItem
+import com.delirium.playlistmaker.search.domain.model.SongItemButton
+import com.delirium.playlistmaker.search.domain.model.SongItemTitle
+import com.delirium.playlistmaker.search.domain.model.SongListItem
 import com.delirium.playlistmaker.search.ui.models.SearchState
 import com.delirium.playlistmaker.search.ui.viewmodel.SearchViewModel
 
@@ -42,8 +45,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             SearchViewModel.getViewModelFactory()
         )[SearchViewModel::class.java]
 
-        viewModel.getSongIntentLiveData().observe(this) { intent ->
-            openSongDescription(intent)
+        viewModel.getOpenPlayerLiveData().observe(this) { trackId ->
+            openSongDescription(trackId)
         }
 
         viewModel.getSearchStateLiveData().observe(this) { searchState ->
@@ -54,11 +57,22 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 }
                 is SearchState.Error -> {
                     changeContentVisibility(false)
-                    updateData(listOf(searchState.data))
+                    updateData(listOf(
+                        ErrorItem(
+                            res = R.drawable.not_connect_search,
+                            text = getString(R.string.not_connect_item_text),
+                            textSub = getString(R.string.not_connect_item_text_sub),
+                        )
+                    ))
                 }
                 is SearchState.Empty -> {
                     changeContentVisibility(false)
-                    updateData(listOf(searchState.data))
+                    updateData(listOf(
+                        NotFoundItem(
+                            res = R.drawable.not_search,
+                            textProblem = getString(R.string.not_found),
+                        )
+                    ))
                 }
                 is SearchState.Loading -> {
                     changeContentVisibility(true)
@@ -160,8 +174,10 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         binding.recyclerSongs.isVisible = !loading
     }
 
-    private fun openSongDescription(intent: Intent) {
-        startActivity(intent)
+    private fun openSongDescription(trackId: String) {
+        val descSongIntent = Intent(this, TrackActivity::class.java)
+        descSongIntent.putExtra(TRACK_ID, trackId)
+        startActivity(descSongIntent)
     }
     override fun clickUpdate() {
         viewModel.getSongOnInputText(inputTextSave)
@@ -178,5 +194,6 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     companion object {
         private const val EDIT_TEXT = "EDIT_TEXT"
         private const val IS_SEARCH_SUBMITTED = "IS_SEARCH_SUBMITTED"
+        private const val TRACK_ID = "TRACK_ID"
     }
 }
