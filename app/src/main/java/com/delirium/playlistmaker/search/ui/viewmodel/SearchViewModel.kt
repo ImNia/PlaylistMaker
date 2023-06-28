@@ -5,10 +5,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.delirium.playlistmaker.App
 import com.delirium.playlistmaker.search.domain.model.SongItem
 import com.delirium.playlistmaker.search.domain.model.SongListItem
 import com.delirium.playlistmaker.search.domain.api.HistoryInteractor
@@ -100,14 +96,6 @@ class SearchViewModel(
     }
 
     companion object {
-        fun getViewModelFactory() = viewModelFactory {
-            initializer {
-                val myApp = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App)
-                val retrofit = myApp.providerRetrofitInteractor()
-                val history = myApp.provideHistoryInteractor()
-                SearchViewModel(retrofit, history)
-            }
-        }
 
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L

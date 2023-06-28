@@ -6,11 +6,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.delirium.playlistmaker.App
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
@@ -57,26 +52,28 @@ class TrackViewModel(
     private val runnable = updateTimer()
 
     fun preparePlayer() {
-        mediaPlayer.setDataSource(track?.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            playStatusLiveData.postValue(
-                PlayStatus(
-                    progress = currentTimePlayer,
-                    isPlaying = false,
-                    playerStatus = PlayerState.STATE_PREPARED,
+        track?.previewUrl?.let {
+            mediaPlayer.setDataSource(it)
+            mediaPlayer.prepareAsync()
+            mediaPlayer.setOnPreparedListener {
+                playStatusLiveData.postValue(
+                    PlayStatus(
+                        progress = currentTimePlayer,
+                        isPlaying = false,
+                        playerStatus = PlayerState.STATE_PREPARED,
+                    )
                 )
-            )
-        }
-        mediaPlayer.setOnCompletionListener {
-            playStatusLiveData.postValue(
-                PlayStatus(
-                    progress = currentTimePlayer,
-                    isPlaying = false,
-                    playerStatus = PlayerState.STATE_PREPARED,
+            }
+            mediaPlayer.setOnCompletionListener {
+                playStatusLiveData.postValue(
+                    PlayStatus(
+                        progress = currentTimePlayer,
+                        isPlaying = false,
+                        playerStatus = PlayerState.STATE_PREPARED,
+                    )
                 )
-            )
-            mediaPlayer.seekTo(0)
+                mediaPlayer.seekTo(0)
+            }
         }
         mainThreadHandler = Handler(Looper.getMainLooper())
     }
@@ -125,16 +122,5 @@ class TrackViewModel(
 
     companion object {
         private const val DELAY = 1000L
-        fun getViewModelFactory(trackId: String): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val myApp = (this[APPLICATION_KEY] as App)
-                val interactor = myApp.provideTracksInteractor()
-
-                TrackViewModel(
-                    trackId,
-                    interactor
-                )
-            }
-        }
     }
 }

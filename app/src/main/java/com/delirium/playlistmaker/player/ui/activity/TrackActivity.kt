@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
@@ -13,6 +12,8 @@ import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
 import com.delirium.playlistmaker.player.ui.viewmodel.TrackViewModel
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,7 +21,7 @@ class TrackActivity : AppCompatActivity() {
     private var trackId: String? = null
     private lateinit var binding: ActivityDescriptionSongBinding
 
-    private lateinit var viewModel: TrackViewModel
+    private val viewModel : TrackViewModel by inject { parametersOf(trackId) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +34,6 @@ class TrackActivity : AppCompatActivity() {
             trackId = bundle?.getString(TRACK_ID)
         }
 
-        viewModel = ViewModelProvider(
-            this,
-            TrackViewModel.getViewModelFactory(trackId!!)
-        )[TrackViewModel::class.java]
         viewModel.getLoadingLiveData().observe(this) { isLoading ->
             changeProgressBarVisibility(isLoading)
         }

@@ -4,15 +4,15 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.delirium.playlistmaker.search.domain.repository.NetworkClient
-import com.delirium.playlistmaker.search.data.network.ITunesSetting
 import com.delirium.playlistmaker.search.data.models.Response
+import com.delirium.playlistmaker.search.data.network.ITunesServiceApi
 import com.delirium.playlistmaker.search.domain.model.SongsSearchRequest
 
 class RetrofitClientImpl(
+    private val ITunesService: ITunesServiceApi,
     private val context: Context,
 ): NetworkClient {
     override fun getSongs(dto: Any): Response {
-        val request = ITunesSetting.itunesInstant
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
@@ -20,7 +20,7 @@ class RetrofitClientImpl(
             return Response().apply { resultCode = 400 }
         }
 
-        val response = request.getSongs(dto.expression).execute()
+        val response = ITunesService.getSongs(dto.expression).execute()
         val body = response.body()
 
         return if (body != null) {

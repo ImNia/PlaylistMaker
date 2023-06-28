@@ -9,7 +9,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.ActivitySearchBinding
@@ -23,6 +22,7 @@ import com.delirium.playlistmaker.search.domain.model.SongItemTitle
 import com.delirium.playlistmaker.search.domain.model.SongListItem
 import com.delirium.playlistmaker.search.ui.models.SearchState
 import com.delirium.playlistmaker.search.ui.viewmodel.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity(), ClickListener {
     private lateinit var binding: ActivitySearchBinding
@@ -30,7 +30,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
 
     private val adapter = AdapterModel(this)
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel by viewModel<SearchViewModel>()
 
     private var isSearchSubmitted: Boolean = false
 
@@ -39,11 +39,6 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolBarSearch)
-
-        viewModel =  ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
 
         viewModel.getOpenPlayerLiveData().observe(this) { trackId ->
             openSongDescription(trackId)
