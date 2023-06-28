@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.delirium.playlistmaker"
-        minSdk 21
+        minSdk 23
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -30,6 +30,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
 }
 
 dependencies {

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
         style="@style/additional_screen"
-        tools:context=".presentation.DescriptionSongActivity">
+        tools:context=".player.ui.activity.TrackActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBarDescriptionSong"
@@ -227,5 +227,14 @@
                 android:gravity="center"
                 tools:text="0:00" />
         </FrameLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
