@@ -28,10 +28,13 @@ class SearchViewModel(
     private var historyLiveData = MutableLiveData<Array<SongItem>>()
     fun getHistoryLiveData(): MutableLiveData<Array<SongItem>> = historyLiveData
 
+    private val searchRunnable = Runnable { search() }
+    private var inputText: String? = null
     fun getSongOnInputText(expression: String) {
         searchStateLiveData.postValue(SearchState.Loading)
-        handler.removeCallbacks(searchRunnable(expression))
-        handler.postDelayed(searchRunnable(expression), SEARCH_DEBOUNCE_DELAY)
+        inputText = expression
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     fun getHistory() {
@@ -49,10 +52,10 @@ class SearchViewModel(
         historyLiveData.postValue(arrayOf())
     }
 
-    private fun searchRunnable(expression: String) =
-        Runnable {
+    private fun search() {
+        inputText?.let {
             retrofitInteractor.searchSongs(
-                expression,
+                it,
                 object : RetrofitInteractor.RetrofitConsumer {
                     override fun consume(foundSongs: List<SongItem>?, errorMessage: String?) {
                         if (errorMessage != null) {
@@ -75,6 +78,7 @@ class SearchViewModel(
                     }
                 }
             )
+        }
         }
 
     fun openSongOnId(songItem: SongItem) {
