@@ -17,18 +17,20 @@ import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-val dataSearchModule = module {
+val dataModule = module {
     single {
         ITunesSetting.itunesInstant
     }
 
     single {
         androidContext()
-            .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
+            .getSharedPreferences(SettingPreferences.THEME_MODE.name, Context.MODE_PRIVATE)
     }
 
     factory { Gson() }
 
+    /** Search
+     * */
     single<HistoryRepository> {
         HistoryRepositoryImpl(get(), get())
     }
@@ -36,35 +38,21 @@ val dataSearchModule = module {
     single<NetworkClient> {
         RetrofitClientImpl(get(), androidContext())
     }
-}
 
-val dataPlayerModule = module {
-    single {
-        androidContext()
-            .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
-    }
-
-    factory {
-        Gson()
-    }
-
+    /** Player
+     * */
     single<PlayerRepository> {
         PlayerRepositoryImpl(get(), get())
     }
-}
 
-val dataSettingModule = module {
-    single {
-        androidContext()
-            .getSharedPreferences(SettingPreferences.THEME_MODE.name, Context.MODE_PRIVATE)
-    }
-
+    /** Setting
+     * */
     single<SettingsRepository> {
         SettingsRepositoryImpl(get(), get())
     }
-}
 
-val dataSharingModule = module {
+    /** Sharing
+     * */
     single<ExternalNavigator> {
         ExternalNavigatorImpl(get())
     }

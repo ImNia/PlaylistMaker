@@ -12,28 +12,30 @@ import com.delirium.playlistmaker.sharing.domain.SharingInteractor
 import com.delirium.playlistmaker.sharing.domain.impl.SharingInteractorImpl
 import org.koin.dsl.module
 
-val interactorSearchModule = module {
+val interactorModule = module {
+    /** Search
+     * */
     single<RetrofitInteractor> {
         RetrofitInteractorImpl(get())
     }
     single<HistoryInteractor> {
         HistoryInteractorImpl(get())
     }
-}
 
-val interactorPlayerModule = module {
+    /** Player
+     * */
     single<TracksInteractor> {
         TracksInteractorImpl(get())
     }
-}
 
-val interactorSettingModule = module {
+    /** Setting
+     * */
     single<SettingsInteractor> {
         SettingsInteractorImpl(get())
     }
-}
 
-val interactorSharingModule = module {
+    /** Sharing
+     * */
     single<SharingInteractor> {
         SharingInteractorImpl(get())
     }

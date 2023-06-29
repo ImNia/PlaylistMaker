@@ -6,19 +6,21 @@ import com.delirium.playlistmaker.settings.ui.viewmodel.SettingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val viewModelSearchModule = module {
+val viewModelModule = module {
+    /** Search
+     * */
     viewModel {
         SearchViewModel(get(), get())
     }
-}
 
-val viewModelPlayerModule = module {
+    /** Player
+     * */
     viewModel { params ->
         TrackViewModel(params.get(), get())
     }
-}
 
-val viewModelSettingModule = module {
+    /** Setting
+     * */
     viewModel {
         SettingViewModel(get(), get())
     }
