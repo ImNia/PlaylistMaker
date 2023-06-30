@@ -17,6 +17,7 @@ import java.util.Locale
 class TrackViewModel(
     private val trackId: String,
     private val tracksInteractor: TracksInteractor,
+    private val mediaPlayer: MediaPlayer
 ) : ViewModel() {
     init {
         tracksInteractor.prepareData(
@@ -45,35 +46,32 @@ class TrackViewModel(
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
     fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
 
-    private val mediaPlayer = MediaPlayer()
     private var track: TrackModel? = null
 
     private var mainThreadHandler: Handler? = null
     private val runnable = updateTimer()
 
     fun preparePlayer() {
-        track?.previewUrl?.let {
-            mediaPlayer.setDataSource(it)
-            mediaPlayer.prepareAsync()
-            mediaPlayer.setOnPreparedListener {
-                playStatusLiveData.postValue(
-                    PlayStatus(
-                        progress = currentTimePlayer,
-                        isPlaying = false,
-                        playerStatus = PlayerState.STATE_PREPARED,
-                    )
+        mediaPlayer.setDataSource(track?.previewUrl)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            playStatusLiveData.postValue(
+                PlayStatus(
+                    progress = currentTimePlayer,
+                    isPlaying = false,
+                    playerStatus = PlayerState.STATE_PREPARED,
                 )
-            }
-            mediaPlayer.setOnCompletionListener {
-                playStatusLiveData.postValue(
-                    PlayStatus(
-                        progress = currentTimePlayer,
-                        isPlaying = false,
-                        playerStatus = PlayerState.STATE_PREPARED,
-                    )
+            )
+        }
+        mediaPlayer.setOnCompletionListener {
+            playStatusLiveData.postValue(
+                PlayStatus(
+                    progress = currentTimePlayer,
+                    isPlaying = false,
+                    playerStatus = PlayerState.STATE_PREPARED,
                 )
-                mediaPlayer.seekTo(0)
-            }
+            )
+            mediaPlayer.seekTo(0)
         }
         mainThreadHandler = Handler(Looper.getMainLooper())
     }

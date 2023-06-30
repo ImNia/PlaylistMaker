@@ -43,6 +43,7 @@ class TrackActivity : AppCompatActivity() {
                 is TrackScreenState.Content -> {
                     changeContentVisibility(loading = false)
                     updateScreen(screenState.trackModel)
+                    viewModel.preparePlayer()
                 }
 
                 is TrackScreenState.Loading -> {
@@ -71,8 +72,6 @@ class TrackActivity : AppCompatActivity() {
                 }
             }
         }
-
-        viewModel.preparePlayer()
 
         binding.playButtonDesc.setOnClickListener {
             viewModel.play()

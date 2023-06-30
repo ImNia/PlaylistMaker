@@ -1,5 +1,6 @@
 package com.delirium.playlistmaker.di
 
+import android.media.MediaPlayer
 import com.delirium.playlistmaker.player.ui.viewmodel.TrackViewModel
 import com.delirium.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.delirium.playlistmaker.settings.ui.viewmodel.SettingViewModel
@@ -13,10 +14,13 @@ val viewModelModule = module {
         SearchViewModel(get(), get())
     }
 
+    factory {
+        MediaPlayer()
+    }
     /** Player
      * */
     viewModel { params ->
-        TrackViewModel(params.get(), get())
+        TrackViewModel(params.get(), get(), get())
     }
 
     /** Setting

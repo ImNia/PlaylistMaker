@@ -3,7 +3,7 @@ package com.delirium.playlistmaker.di
 import android.content.Context
 import com.delirium.playlistmaker.player.data.repository.PlayerRepositoryImpl
 import com.delirium.playlistmaker.player.domain.repository.PlayerRepository
-import com.delirium.playlistmaker.search.data.network.ITunesSetting
+import com.delirium.playlistmaker.search.data.network.ITunesServiceApi
 import com.delirium.playlistmaker.search.data.repository.HistoryRepositoryImpl
 import com.delirium.playlistmaker.search.data.repository.RetrofitClientImpl
 import com.delirium.playlistmaker.search.domain.repository.HistoryRepository
@@ -16,10 +16,16 @@ import com.delirium.playlistmaker.utils.model.SettingPreferences
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 val dataModule = module {
     single {
-        ITunesSetting.itunesInstant
+        Retrofit.Builder()
+            .baseUrl("http://itunes.apple.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ITunesServiceApi::class.java)
     }
 
     single {
