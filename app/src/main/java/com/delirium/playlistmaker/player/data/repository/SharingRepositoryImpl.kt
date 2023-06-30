@@ -2,14 +2,14 @@ package com.delirium.playlistmaker.player.data.repository
 
 import android.content.SharedPreferences
 import com.delirium.playlistmaker.player.domain.model.TrackModel
-import com.delirium.playlistmaker.player.domain.repository.PlayerRepository
+import com.delirium.playlistmaker.player.domain.repository.SharingRepository
 import com.delirium.playlistmaker.utils.model.SettingPreferences
 import com.google.gson.Gson
 
-class PlayerRepositoryImpl(
+class SharingRepositoryImpl(
     private val sharedPrefs: SharedPreferences,
     private val gson: Gson,
-) : PlayerRepository {
+) : SharingRepository {
     override fun findSongInSharedPrefs(trackId: String): TrackModel? {
         val jsonHistory =
             sharedPrefs.getString(SettingPreferences.FINDING_SONG.name, null)

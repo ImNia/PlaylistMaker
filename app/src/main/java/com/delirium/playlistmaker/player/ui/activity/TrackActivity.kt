@@ -34,10 +34,6 @@ class TrackActivity : AppCompatActivity() {
             trackId = bundle?.getString(TRACK_ID)
         }
 
-        viewModel.getLoadingLiveData().observe(this) { isLoading ->
-            changeProgressBarVisibility(isLoading)
-        }
-
         viewModel.getScreenStateLiveData().observe(this) { screenState ->
             when (screenState) {
                 is TrackScreenState.Content -> {
@@ -68,7 +64,6 @@ class TrackActivity : AppCompatActivity() {
                 }
 
                 PlayerState.STATE_DEFAULT -> {
-
                 }
             }
         }
@@ -101,10 +96,6 @@ class TrackActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return super.onSupportNavigateUp()
-    }
-
-    private fun changeProgressBarVisibility(visible: Boolean) {
-        binding.progressBar.isVisible = visible
     }
 
     private fun changeContentVisibility(loading: Boolean) {

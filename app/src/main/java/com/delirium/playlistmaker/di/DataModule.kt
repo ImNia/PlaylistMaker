@@ -1,8 +1,11 @@
 package com.delirium.playlistmaker.di
 
 import android.content.Context
-import com.delirium.playlistmaker.player.data.repository.PlayerRepositoryImpl
-import com.delirium.playlistmaker.player.domain.repository.PlayerRepository
+import android.media.MediaPlayer
+import com.delirium.playlistmaker.player.data.repository.MediaPlayerRepositoryImpl
+import com.delirium.playlistmaker.player.data.repository.SharingRepositoryImpl
+import com.delirium.playlistmaker.player.domain.repository.MediaPlayerRepository
+import com.delirium.playlistmaker.player.domain.repository.SharingRepository
 import com.delirium.playlistmaker.search.data.network.ITunesServiceApi
 import com.delirium.playlistmaker.search.data.repository.HistoryRepositoryImpl
 import com.delirium.playlistmaker.search.data.repository.RetrofitClientImpl
@@ -47,8 +50,15 @@ val dataModule = module {
 
     /** Player
      * */
-    single<PlayerRepository> {
-        PlayerRepositoryImpl(get(), get())
+    single<SharingRepository> {
+        SharingRepositoryImpl(get(), get())
+    }
+    factory {
+        MediaPlayer()
+    }
+
+    factory<MediaPlayerRepository> {
+        MediaPlayerRepositoryImpl(get())
     }
 
     /** Setting

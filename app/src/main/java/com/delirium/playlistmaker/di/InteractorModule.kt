@@ -1,6 +1,8 @@
 package com.delirium.playlistmaker.di
 
+import com.delirium.playlistmaker.player.domain.api.PlayerInteractor
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
+import com.delirium.playlistmaker.player.domain.impl.PlayerInteractorImpl
 import com.delirium.playlistmaker.player.domain.impl.TracksInteractorImpl
 import com.delirium.playlistmaker.search.domain.api.HistoryInteractor
 import com.delirium.playlistmaker.search.domain.api.RetrofitInteractor
@@ -26,6 +28,9 @@ val interactorModule = module {
      * */
     single<TracksInteractor> {
         TracksInteractorImpl(get())
+    }
+    single<PlayerInteractor> {
+        PlayerInteractorImpl(get())
     }
 
     /** Setting
