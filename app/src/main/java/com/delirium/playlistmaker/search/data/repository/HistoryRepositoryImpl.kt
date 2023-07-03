@@ -8,10 +8,11 @@ import com.google.gson.Gson
 
 class HistoryRepositoryImpl(
     private val sharedPrefs: SharedPreferences,
+    private val gson: Gson,
 ): HistoryRepository {
 
     override fun saveSong(song: SongItem) {
-        val jsonNewHistory = Gson().toJson(formedHistory(song))
+        val jsonNewHistory = gson.toJson(formedHistory(song))
         sharedPrefs.edit()
             .putString(SettingPreferences.FINDING_SONG.name, jsonNewHistory)
             .apply()
@@ -20,7 +21,7 @@ class HistoryRepositoryImpl(
     override fun getHistory(): Array<SongItem> {
         val jsonHistory =
             sharedPrefs.getString(SettingPreferences.FINDING_SONG.name, null) ?: return arrayOf()
-        return Gson().fromJson(jsonHistory, Array<SongItem>::class.java)
+        return gson.fromJson(jsonHistory, Array<SongItem>::class.java)
     }
     override fun cleanHistory() {
         sharedPrefs.edit().clear().apply()
@@ -29,7 +30,7 @@ class HistoryRepositoryImpl(
     private fun formedHistory(song: SongItem): ArrayList<SongItem> {
         val json = sharedPrefs.getString(SettingPreferences.FINDING_SONG.name, null)
         return if (json != null) {
-            val oldHistory = Gson().fromJson(json, Array<SongItem>::class.java)
+            val oldHistory = gson.fromJson(json, Array<SongItem>::class.java)
             val newHistory = arrayListOf<SongItem>()
             newHistory.add(song)
             for (item in oldHistory) {

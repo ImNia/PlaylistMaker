@@ -1,27 +1,20 @@
 package com.delirium.playlistmaker.player.ui.viewmodel
 
-import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.delirium.playlistmaker.App
+import com.delirium.playlistmaker.player.domain.api.PlayerInteractor
 import com.delirium.playlistmaker.player.domain.model.TrackModel
-import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
 import com.delirium.playlistmaker.player.ui.models.PlayStatus
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class TrackViewModel(
     private val trackId: String,
     private val tracksInteractor: TracksInteractor,
+    private val playerInteractor: PlayerInteractor,
 ) : ViewModel() {
     init {
         tracksInteractor.prepareData(
@@ -39,85 +32,63 @@ class TrackViewModel(
         )
     }
 
-    private var isPlaying: Boolean = false
-    private var currentTimePlayer: String = "0"
-
-    private var loadingLiveData = MutableLiveData(true)
-    fun getLoadingLiveData(): LiveData<Boolean> = loadingLiveData
     private var screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
     fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateLiveData
 
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
     fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
 
-    private val mediaPlayer = MediaPlayer()
     private var track: TrackModel? = null
 
     private var mainThreadHandler: Handler? = null
     private val runnable = updateTimer()
 
     fun preparePlayer() {
-        mediaPlayer.setDataSource(track?.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            playStatusLiveData.postValue(
-                PlayStatus(
-                    progress = currentTimePlayer,
-                    isPlaying = false,
-                    playerStatus = PlayerState.STATE_PREPARED,
-                )
-            )
+        track?.let {
+            playerInteractor.preparePlayer(it)
         }
-        mediaPlayer.setOnCompletionListener {
-            playStatusLiveData.postValue(
-                PlayStatus(
-                    progress = currentTimePlayer,
-                    isPlaying = false,
-                    playerStatus = PlayerState.STATE_PREPARED,
-                )
-            )
-            mediaPlayer.seekTo(0)
-        }
+        getCurrentPlayStatus()
         mainThreadHandler = Handler(Looper.getMainLooper())
     }
 
     fun play() {
-        if (isPlaying) {
-            mediaPlayer.pause()
-            playStatusLiveData.value =
-                getCurrentPlayStatus().copy(playerStatus = PlayerState.STATE_PAUSED)
+        getCurrentPlayStatus()
+        if (playStatusLiveData.value?.isPlaying == true) {
+            playerInteractor.pausePlayer()
+            getCurrentPlayStatus()
             mainThreadHandler?.removeCallbacks(runnable)
         } else {
-            mediaPlayer.start()
-            playStatusLiveData.value =
-                getCurrentPlayStatus().copy(playerStatus = PlayerState.STATE_PLAYING)
+            playerInteractor.startPlayer()
+            getCurrentPlayStatus()
             mainThreadHandler?.post(runnable)
         }
-        isPlaying = !isPlaying
     }
 
     fun closeScreen() {
-        mediaPlayer.reset()
+        playerInteractor.closePlayer()
         mainThreadHandler?.removeCallbacks(runnable)
     }
 
-    private fun getCurrentPlayStatus(): PlayStatus {
-        return playStatusLiveData.value ?: PlayStatus(
-            progress = currentTimePlayer,
-            isPlaying = false,
-            PlayerState.STATE_DEFAULT
+    private fun getCurrentPlayStatus() {
+        playerInteractor.getPlayerStatus(
+            object : PlayerInteractor.PlayerConsumer {
+                override fun onComplete(playerStatus: PlayStatus) {
+                    playStatusLiveData.value = playerStatus
+                }
+            }
         )
     }
 
     private fun updateTimer(): Runnable {
         return object : Runnable {
             override fun run() {
-                val currentTime = SimpleDateFormat(
-                    "mm:ss",
-                    Locale.getDefault()
-                ).format(mediaPlayer.currentPosition)
-                playStatusLiveData.value = getCurrentPlayStatus().copy(progress = currentTime)
-                currentTimePlayer = currentTime
+                playerInteractor.getTimerPlayer(
+                    object : PlayerInteractor.PlayerConsumer {
+                        override fun onComplete(playerStatus: PlayStatus) {
+                            playStatusLiveData.value = playerStatus
+                        }
+                    }
+                )
                 mainThreadHandler?.postDelayed(this, DELAY)
             }
         }
@@ -125,16 +96,5 @@ class TrackViewModel(
 
     companion object {
         private const val DELAY = 1000L
-        fun getViewModelFactory(trackId: String): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val myApp = (this[APPLICATION_KEY] as App)
-                val interactor = myApp.provideTracksInteractor()
-
-                TrackViewModel(
-                    trackId,
-                    interactor
-                )
-            }
-        }
     }
 }

@@ -5,10 +5,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.delirium.playlistmaker.App
 import com.delirium.playlistmaker.search.domain.model.SongItem
 import com.delirium.playlistmaker.search.domain.model.SongListItem
 import com.delirium.playlistmaker.search.domain.api.HistoryInteractor
@@ -32,10 +28,13 @@ class SearchViewModel(
     private var historyLiveData = MutableLiveData<Array<SongItem>>()
     fun getHistoryLiveData(): MutableLiveData<Array<SongItem>> = historyLiveData
 
+    private val searchRunnable = Runnable { search() }
+    private var inputText: String? = null
     fun getSongOnInputText(expression: String) {
         searchStateLiveData.postValue(SearchState.Loading)
-        handler.removeCallbacks(searchRunnable(expression))
-        handler.postDelayed(searchRunnable(expression), SEARCH_DEBOUNCE_DELAY)
+        inputText = expression
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     fun getHistory() {
@@ -53,10 +52,10 @@ class SearchViewModel(
         historyLiveData.postValue(arrayOf())
     }
 
-    private fun searchRunnable(expression: String) =
-        Runnable {
+    private fun search() {
+        inputText?.let {
             retrofitInteractor.searchSongs(
-                expression,
+                it,
                 object : RetrofitInteractor.RetrofitConsumer {
                     override fun consume(foundSongs: List<SongItem>?, errorMessage: String?) {
                         if (errorMessage != null) {
@@ -80,6 +79,7 @@ class SearchViewModel(
                 }
             )
         }
+        }
 
     fun openSongOnId(songItem: SongItem) {
         if (isClickDebounce()) {
@@ -100,14 +100,6 @@ class SearchViewModel(
     }
 
     companion object {
-        fun getViewModelFactory() = viewModelFactory {
-            initializer {
-                val myApp = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App)
-                val retrofit = myApp.providerRetrofitInteractor()
-                val history = myApp.provideHistoryInteractor()
-                SearchViewModel(retrofit, history)
-            }
-        }
 
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
