@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:paddingBottom="20dp"
         android:text="@string/media"
         app:navigationIcon="@drawable/arrow_back"
         app:titleTextAppearance="@style/Toolbar.SubPage">
