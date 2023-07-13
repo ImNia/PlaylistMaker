@@ -1,29 +1,39 @@
-package com.delirium.playlistmaker.settings.ui.activity
+package com.delirium.playlistmaker.settings.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.databinding.ActivitySettingsBinding
+import com.delirium.playlistmaker.databinding.FragmentSettingsBinding
 import com.delirium.playlistmaker.settings.model.ContentSharing
 import com.delirium.playlistmaker.settings.model.StateSharing
 import com.delirium.playlistmaker.settings.ui.viewmodel.SettingViewModel
 import com.delirium.playlistmaker.sharing.model.EmailData
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySettingsBinding
+class SettingsFragment : Fragment() {
+    private lateinit var binding: FragmentSettingsBinding
     private val viewModel by viewModel<SettingViewModel>()
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        Log.d("TEST", "On Setting fragmnet")
+        binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
+        return  binding.root
+    }
 
-        setSupportActionBar(binding.toolBarSetting)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.getThemeSetting()
 
-        viewModel.getThemeSettingLiveData().observe(this) { isNight ->
+        viewModel.getThemeSettingLiveData().observe(viewLifecycleOwner) { isNight ->
             changeSwitchTheme(isNight)
         }
 
@@ -72,8 +82,8 @@ class SettingsActivity : AppCompatActivity() {
         binding.switchMode.isChecked = isNight
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return super.onSupportNavigateUp()
+    companion object {
+        const val TAG = "SettingFragment"
+        fun newInstance() = SettingsFragment()
     }
 }

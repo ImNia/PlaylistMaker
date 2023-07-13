@@ -2,16 +2,18 @@ package com.delirium.playlistmaker.search.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.databinding.ActivitySearchBinding
+import com.delirium.playlistmaker.databinding.FragmentSearchBinding
 import com.delirium.playlistmaker.player.ui.activity.TrackActivity
 import com.delirium.playlistmaker.search.domain.model.ErrorItem
 import com.delirium.playlistmaker.search.domain.model.ModelForAdapter
@@ -24,8 +26,8 @@ import com.delirium.playlistmaker.search.ui.models.SearchState
 import com.delirium.playlistmaker.search.ui.viewmodel.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity(), ClickListener {
-    private lateinit var binding: ActivitySearchBinding
+class SearchFragment : Fragment(), ClickListener {
+    private lateinit var binding: FragmentSearchBinding
     private var inputTextSave: String = ""
 
     private val adapter = AdapterModel(this)
@@ -34,17 +36,27 @@ class SearchActivity : AppCompatActivity(), ClickListener {
 
     private var isSearchSubmitted: Boolean = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.toolBarSearch)
+        binding = FragmentSearchBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
-        viewModel.getOpenPlayerLiveData().observe(this) { trackId ->
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        savedInstanceState?.let {
+            onRestoreInstanceState(savedInstanceState = it)
+        }
+
+        viewModel.getOpenPlayerLiveData().observe(viewLifecycleOwner) { trackId ->
             openSongDescription(trackId)
         }
 
-        viewModel.getSearchStateLiveData().observe(this) { searchState ->
+        viewModel.getSearchStateLiveData().observe(viewLifecycleOwner) { searchState ->
             when(searchState) {
                 is SearchState.Content -> {
                     changeContentVisibility(false)
@@ -75,19 +87,19 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             }
         }
 
-        viewModel.getHistoryLiveData().observe(this) { history ->
+        viewModel.getHistoryLiveData().observe(viewLifecycleOwner) { history ->
             renderHistory(history.asList())
         }
 
-        binding.recyclerSongs.layoutManager = LinearLayoutManager(this)
+        binding.recyclerSongs.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerSongs.adapter = adapter
 
         binding.clearSearch.setOnClickListener { it ->
             binding.editSearch.text.clear()
             it.visibility = View.INVISIBLE
 
-            this.currentFocus?.let {
-                val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            requireActivity().currentFocus?.let {
+                val keyboard = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 keyboard.hideSoftInputFromWindow(it.windowToken, 0)
             }
             viewModel.getHistory()
@@ -103,18 +115,13 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return super.onSupportNavigateUp()
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
+    private fun onRestoreInstanceState(savedInstanceState: Bundle) {
         val inputString = savedInstanceState.getString(EDIT_TEXT)
         isSearchSubmitted = savedInstanceState.getBoolean(IS_SEARCH_SUBMITTED)
         binding.editSearch.setText(inputString)
         if (isSearchSubmitted) viewModel.getSongOnInputText(inputTextSave)
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -148,8 +155,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             adapter.songs = data
         }
         adapter.notifyDataSetChanged()
-        this.currentFocus?.let {
-            val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        requireActivity().currentFocus?.let {
+            val keyboard = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             keyboard.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
@@ -170,7 +177,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     }
 
     private fun openSongDescription(trackId: String) {
-        val descSongIntent = Intent(this, TrackActivity::class.java)
+        val descSongIntent = Intent(requireContext(), TrackActivity::class.java)
         descSongIntent.putExtra(TRACK_ID, trackId)
         startActivity(descSongIntent)
     }
@@ -190,5 +197,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         private const val EDIT_TEXT = "EDIT_TEXT"
         private const val IS_SEARCH_SUBMITTED = "IS_SEARCH_SUBMITTED"
         private const val TRACK_ID = "TRACK_ID"
+
+        const val TAG = "SearchFragment"
+        fun newInstance() = SearchFragment()
     }
 }
