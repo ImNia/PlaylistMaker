@@ -32,4 +32,6 @@
     <dimen name="description_sub_button_size">50dp</dimen>
 
     <dimen name="corner_description_image">8dp</dimen>
+    <dimen name="corner_song_image">2dp</dimen>
+    <dimen name="text_tabs_layout_size">16sp</dimen>
 </resources>

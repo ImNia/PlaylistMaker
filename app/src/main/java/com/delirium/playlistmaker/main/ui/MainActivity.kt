@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.media.ui.MediaActivity
+import com.delirium.playlistmaker.media.ui.activity.MediaActivity
 import com.delirium.playlistmaker.search.ui.activity.SearchActivity
 import com.delirium.playlistmaker.settings.ui.activity.SettingsActivity
 

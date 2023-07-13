@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.search.domain.model.ErrorItem
@@ -34,7 +35,12 @@ class ViewHolderSongs(itemView: View, private val clickListener: ClickListener) 
         Glide.with(itemView)
             .load(data.artworkUrl100)
             .placeholder(R.drawable.not_image)
-            .transform(RoundedCorners(4))
+            .transform(
+                CenterCrop(),
+                RoundedCorners(
+                    itemView.resources.getDimensionPixelSize(R.dimen.corner_song_image)
+                )
+            )
             .into(imageSong)
         nameSong.text = data.trackName
         artistName.text = data.artistName
