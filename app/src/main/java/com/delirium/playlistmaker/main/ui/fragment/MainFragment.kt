@@ -5,12 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentMainBinding
-import com.delirium.playlistmaker.media.ui.fragment.MediaFragment
-import com.delirium.playlistmaker.search.ui.activity.SearchFragment
-import com.delirium.playlistmaker.settings.ui.fragment.SettingsFragment
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
@@ -26,36 +23,39 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.findButton.setOnClickListener {
-            parentFragmentManager.commit {
+            findNavController().navigate(R.id.action_mainFragment_to_searchFragment)
+            /*parentFragmentManager.commit {
                 replace(
                     R.id.fragment_container_view,
                     SearchFragment.newInstance(),
                     SearchFragment.TAG
                 )
                 addToBackStack(SearchFragment.TAG)
-            }
+            }*/
         }
 
         binding.mediaButton.setOnClickListener {
-            parentFragmentManager.commit {
+            findNavController().navigate(R.id.action_mainFragment_to_mediaFragment)
+            /*parentFragmentManager.commit {
                 replace(
                     R.id.fragment_container_view,
                     MediaFragment.newInstance(),
                     MediaFragment.TAG
                 )
                 addToBackStack(MediaFragment.TAG)
-            }
+            }*/
         }
 
         binding.settingButton.setOnClickListener {
-            parentFragmentManager.commit {
+            findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
+            /*parentFragmentManager.commit {
                 replace(
                     R.id.fragment_container_view,
                     SettingsFragment.newInstance(),
                     SettingsFragment.TAG
                 )
                 addToBackStack(SettingsFragment.TAG)
-            }
+            }*/
         }
     }
 
