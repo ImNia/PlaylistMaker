@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentSettingsBinding
 import com.delirium.playlistmaker.settings.model.ContentSharing
@@ -35,6 +36,10 @@ class SettingsFragment : Fragment() {
 
         viewModel.getThemeSettingLiveData().observe(viewLifecycleOwner) { isNight ->
             changeSwitchTheme(isNight)
+        }
+
+        binding.toolBarSetting.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
 
         binding.switchMode.setOnCheckedChangeListener { _, isNight ->
@@ -80,10 +85,5 @@ class SettingsFragment : Fragment() {
 
     private fun changeSwitchTheme(isNight: Boolean) {
         binding.switchMode.isChecked = isNight
-    }
-
-    companion object {
-        const val TAG = "SettingFragment"
-        fun newInstance() = SettingsFragment()
     }
 }

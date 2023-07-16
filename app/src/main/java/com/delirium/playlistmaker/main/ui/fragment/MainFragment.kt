@@ -24,42 +24,14 @@ class MainFragment : Fragment() {
 
         binding.findButton.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_searchFragment)
-            /*parentFragmentManager.commit {
-                replace(
-                    R.id.fragment_container_view,
-                    SearchFragment.newInstance(),
-                    SearchFragment.TAG
-                )
-                addToBackStack(SearchFragment.TAG)
-            }*/
         }
 
         binding.mediaButton.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_mediaFragment)
-            /*parentFragmentManager.commit {
-                replace(
-                    R.id.fragment_container_view,
-                    MediaFragment.newInstance(),
-                    MediaFragment.TAG
-                )
-                addToBackStack(MediaFragment.TAG)
-            }*/
         }
 
         binding.settingButton.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
-            /*parentFragmentManager.commit {
-                replace(
-                    R.id.fragment_container_view,
-                    SettingsFragment.newInstance(),
-                    SettingsFragment.TAG
-                )
-                addToBackStack(SettingsFragment.TAG)
-            }*/
         }
-    }
-
-    companion object {
-        fun newInstance() = MainFragment()
     }
 }

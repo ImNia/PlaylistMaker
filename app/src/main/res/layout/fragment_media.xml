@@ -8,7 +8,7 @@
     tools:context=".media.ui.fragment.MediaFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolBarSetting"
+        android:id="@+id/toolBarMedia"
         style="@style/Theme.PlaylistMaker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
