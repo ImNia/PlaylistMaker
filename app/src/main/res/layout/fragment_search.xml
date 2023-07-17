@@ -48,7 +48,7 @@
         android:autofillHints=""
         android:drawableStart="@drawable/edittext_search"
         android:drawablePadding="8dp"
-        android:background="@color/search_edit_background"
+        android:background="@color/light_gray"
         android:imeOptions="actionDone"
         android:singleLine="true"
         />
