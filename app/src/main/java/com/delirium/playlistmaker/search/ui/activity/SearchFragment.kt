@@ -97,11 +97,7 @@ class SearchFragment : Fragment(), ClickListener {
         binding.clearSearch.setOnClickListener { it ->
             binding.editSearch.text.clear()
             it.visibility = View.INVISIBLE
-
-            requireActivity().currentFocus?.let {
-                val keyboard = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                keyboard.hideSoftInputFromWindow(it.windowToken, 0)
-            }
+            hideKeyboard()
             viewModel.getHistory()
             isSearchSubmitted = false
         }
@@ -155,9 +151,13 @@ class SearchFragment : Fragment(), ClickListener {
             adapter.songs = data
         }
         adapter.notifyDataSetChanged()
-        requireActivity().currentFocus?.let {
-            val keyboard = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            keyboard.hideSoftInputFromWindow(it.windowToken, 0)
+        if (isSearchSubmitted) hideKeyboard()
+    }
+
+    private fun hideKeyboard() {
+        if(binding.editSearch.isFocused) {
+            val keyboard = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            keyboard.hideSoftInputFromWindow(binding.editSearch.applicationWindowToken, 0)
         }
     }
 
