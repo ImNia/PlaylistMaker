@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:paddingBottom="20dp"
-        android:text="@string/setting"
+        android:text="@string/setting_button"
         app:navigationIcon="@drawable/arrow_back"
         app:titleTextAppearance="@style/Toolbar.SubPage">
 
@@ -24,7 +24,7 @@
             style="@style/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/setting" />
+            android:text="@string/setting_button" />
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
