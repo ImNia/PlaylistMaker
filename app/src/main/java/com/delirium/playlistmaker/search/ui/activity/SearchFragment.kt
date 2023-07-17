@@ -138,10 +138,10 @@ class SearchFragment : Fragment(), ClickListener {
             inputTextSave = binding.editSearch.text.toString()
             if (binding.editSearch.hasFocus() && binding.editSearch.text.isEmpty()) {
                 viewModel.getHistory()
-            } else {
+            } else if (binding.editSearch.text.isNotEmpty()) {
                 viewModel.getSongOnInputText(inputTextSave)
+                isSearchSubmitted = true
             }
-            isSearchSubmitted = true
         }
 
         override fun afterTextChanged(p0: Editable?) {
