@@ -2,12 +2,10 @@ package com.delirium.playlistmaker.settings.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentSettingsBinding
 import com.delirium.playlistmaker.settings.model.ContentSharing
@@ -25,7 +23,6 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreate(savedInstanceState)
-        Log.d("TEST", "On Setting fragmnet")
         binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         return  binding.root
     }
@@ -36,10 +33,6 @@ class SettingsFragment : Fragment() {
 
         viewModel.getThemeSettingLiveData().observe(viewLifecycleOwner) { isNight ->
             changeSwitchTheme(isNight)
-        }
-
-        binding.toolBarSetting.setNavigationOnClickListener {
-            findNavController().navigateUp()
         }
 
         binding.switchMode.setOnCheckedChangeListener { _, isNight ->

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentMediaBinding
 import com.delirium.playlistmaker.media.ui.MediaViewPagerAdapter
@@ -32,10 +31,6 @@ class MediaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.toolBarMedia.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
 
         binding.viewPager.adapter = MediaViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->

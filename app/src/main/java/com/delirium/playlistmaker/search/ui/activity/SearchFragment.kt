@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentSearchBinding
@@ -51,10 +50,6 @@ class SearchFragment : Fragment(), ClickListener {
         super.onViewCreated(view, savedInstanceState)
         savedInstanceState?.let {
             onRestoreInstanceState(savedInstanceState = it)
-        }
-
-        binding.toolBarSearch.setNavigationOnClickListener {
-            findNavController().navigateUp()
         }
 
         viewModel.getOpenPlayerLiveData().observe(viewLifecycleOwner) { trackId ->
