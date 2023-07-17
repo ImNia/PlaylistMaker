@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button android:id="@+id/item_song_clean"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_song_height"
     android:layout_marginTop="@dimen/item_margin_horizontal"
+    android:orientation="horizontal"
+    android:gravity="center" >
+
+<Button android:id="@+id/item_song_clean"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/item_song_height"
     android:text="@string/clean_history"
     android:layout_gravity="center"
-    style="@style/button_item_update"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    style="@style/button_item_update" />
+</LinearLayout>
