@@ -33,7 +33,10 @@
         android:layout_height="@dimen/setting_height"
         android:layout_gravity="start"
         android:paddingHorizontal="@dimen/padding_setting_start_end"
-        android:text="@string/black_theme" />
+        android:text="@string/black_theme"
+        app:thumbTint="@color/switch_thumb_selector"
+        app:trackTint="@color/switch_track_selector"
+        />
 
     <TextView
         android:id="@+id/sharing_app"
