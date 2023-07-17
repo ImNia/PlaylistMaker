@@ -17,6 +17,10 @@ class MediaFragment : Fragment() {
     private lateinit var binding: FragmentMediaBinding
     private lateinit var tabMediator: TabLayoutMediator
     private val viewModel by viewModel<MediaViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,6 +29,13 @@ class MediaFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         binding = FragmentMediaBinding.inflate(layoutInflater)
+        binding.viewPager.adapter = MediaViewPagerAdapter(childFragmentManager, lifecycle)
+        tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when(position) {
+                0 -> tab.text = getString(R.string.favorite_track)
+                1 -> tab.text = getString(R.string.playlist)
+            }
+        }
 
         return binding.root
     }
@@ -32,19 +43,12 @@ class MediaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewPager.adapter = MediaViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
-        tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            when(position) {
-                0 -> tab.text = getString(R.string.favorite_track)
-                1 -> tab.text = getString(R.string.playlist)
-            }
-        }
         tabMediator.attach()
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         tabMediator.detach()
     }
 }
