@@ -50,33 +50,41 @@ class SearchFragment : Fragment(), ClickListener {
         }
 
         viewModel.getSearchStateLiveData().observe(viewLifecycleOwner) { searchState ->
-            when(searchState) {
+            when (searchState) {
                 is SearchState.Content -> {
                     changeContentVisibility(false)
                     updateData(listOf(searchState.data))
                 }
+
                 is SearchState.Error -> {
                     changeContentVisibility(false)
-                    updateData(listOf(
-                        ErrorItem(
-                            res = R.drawable.not_connect_search,
-                            text = getString(R.string.not_connect_item_text),
-                            textSub = getString(R.string.not_connect_item_text_sub),
+                    updateData(
+                        listOf(
+                            ErrorItem(
+                                res = R.drawable.not_connect_search,
+                                text = getString(R.string.not_connect_item_text),
+                                textSub = getString(R.string.not_connect_item_text_sub),
+                            )
                         )
-                    ))
+                    )
                 }
+
                 is SearchState.Empty -> {
                     changeContentVisibility(false)
-                    updateData(listOf(
-                        NotFoundItem(
-                            res = R.drawable.not_search,
-                            textProblem = getString(R.string.not_found),
+                    updateData(
+                        listOf(
+                            NotFoundItem(
+                                res = R.drawable.not_search,
+                                textProblem = getString(R.string.not_found),
+                            )
                         )
-                    ))
+                    )
                 }
+
                 is SearchState.Loading -> {
                     changeContentVisibility(true)
                 }
+
                 is SearchState.History -> {
                     renderHistory(searchState.data)
                 }
@@ -101,6 +109,7 @@ class SearchFragment : Fragment(), ClickListener {
             }
         }
     }
+
     private fun createTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             binding.clearSearch.visibility = View.VISIBLE
@@ -129,8 +138,9 @@ class SearchFragment : Fragment(), ClickListener {
     }
 
     private fun hideKeyboard() {
-        if(binding.editSearch.isFocused) {
-            val keyboard = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (binding.editSearch.isFocused) {
+            val keyboard =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             keyboard.hideSoftInputFromWindow(binding.editSearch.applicationWindowToken, 0)
         }
     }
@@ -155,6 +165,7 @@ class SearchFragment : Fragment(), ClickListener {
         descSongIntent.putExtra(TRACK_ID, trackId)
         startActivity(descSongIntent)
     }
+
     override fun clickUpdate() {
         viewModel.updateInputText(binding.editSearch.text.toString())
     }

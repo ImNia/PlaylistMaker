@@ -29,7 +29,7 @@ class SearchViewModel(
     private var inputText: String? = null
 
     fun updateInputText(expression: String) {
-        if (expression != "") {
+        if (expression.isNotEmpty()) {
             searchStateLiveData.postValue(SearchState.Loading)
             inputText = expression
             handler.removeCallbacks(searchRunnable)
