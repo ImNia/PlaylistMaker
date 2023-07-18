@@ -115,5 +115,6 @@
     <style name="bottom_navigation" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="itemTextColor">@color/bottom_nav_color</item>
         <item name="itemIconTint">@color/bottom_nav_color</item>
+        <item name="android:background">@drawable/background_bottom_drawer</item>
     </style>
 </resources>
