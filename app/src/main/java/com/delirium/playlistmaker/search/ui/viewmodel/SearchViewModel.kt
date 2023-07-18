@@ -25,31 +25,37 @@ class SearchViewModel(
     private var searchStateLiveData = MutableLiveData<SearchState>()
     fun getSearchStateLiveData(): MutableLiveData<SearchState> = searchStateLiveData
 
-    private var historyLiveData = MutableLiveData<Array<SongItem>>()
-    fun getHistoryLiveData(): MutableLiveData<Array<SongItem>> = historyLiveData
-
     private val searchRunnable = Runnable { search() }
     private var inputText: String? = null
-    fun getSongOnInputText(expression: String) {
-        searchStateLiveData.postValue(SearchState.Loading)
-        inputText = expression
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-    }
 
-    fun getHistory() {
-        historyInteractor.getHistory(
-            object : HistoryInteractor.HistoryConsumer {
-                override fun consume(foundSongs: Array<SongItem>) {
-                    historyLiveData.postValue(foundSongs)
+    fun updateInputText(expression: String) {
+        if (expression != "") {
+            searchStateLiveData.postValue(SearchState.Loading)
+            inputText = expression
+            handler.removeCallbacks(searchRunnable)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        } else {
+            historyInteractor.getHistory(
+                object : HistoryInteractor.HistoryConsumer {
+                    override fun consume(foundSongs: Array<SongItem>) {
+                        searchStateLiveData.postValue(
+                            SearchState.History(
+                                data = foundSongs.asList()
+                            )
+                        )
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
     fun clearHistory() {
         historyInteractor.clearHistory()
-        historyLiveData.postValue(arrayOf())
+        searchStateLiveData.postValue(
+            SearchState.History(
+                data = emptyList()
+            )
+        )
     }
 
     private fun search() {

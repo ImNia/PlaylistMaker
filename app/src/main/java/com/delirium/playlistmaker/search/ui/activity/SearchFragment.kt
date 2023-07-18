@@ -28,13 +28,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), ClickListener {
     private lateinit var binding: FragmentSearchBinding
-    private var inputTextSave: String = ""
-
     private val adapter = AdapterModel(this)
 
     private val viewModel by viewModel<SearchViewModel>()
-
-    private var isSearchSubmitted: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,9 +44,6 @@ class SearchFragment : Fragment(), ClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        savedInstanceState?.let {
-            onRestoreInstanceState(savedInstanceState = it)
-        }
 
         viewModel.getOpenPlayerLiveData().observe(viewLifecycleOwner) { trackId ->
             openSongDescription(trackId)
@@ -84,11 +77,10 @@ class SearchFragment : Fragment(), ClickListener {
                 is SearchState.Loading -> {
                     changeContentVisibility(true)
                 }
+                is SearchState.History -> {
+                    renderHistory(searchState.data)
+                }
             }
-        }
-
-        viewModel.getHistoryLiveData().observe(viewLifecycleOwner) { history ->
-            renderHistory(history.asList())
         }
 
         binding.recyclerSongs.layoutManager = LinearLayoutManager(requireContext())
@@ -98,45 +90,27 @@ class SearchFragment : Fragment(), ClickListener {
             binding.editSearch.text.clear()
             it.visibility = View.INVISIBLE
             hideKeyboard()
-            viewModel.getHistory()
-            isSearchSubmitted = false
+            viewModel.updateInputText(binding.editSearch.text.toString())
         }
 
         binding.editSearch.addTextChangedListener(createTextWatcher())
 
         binding.editSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && binding.editSearch.text.isEmpty()) {
-                viewModel.getHistory()
+                viewModel.updateInputText(binding.editSearch.text.toString())
             }
         }
     }
-
-    private fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        val inputString = savedInstanceState.getString(EDIT_TEXT)
-        isSearchSubmitted = savedInstanceState.getBoolean(IS_SEARCH_SUBMITTED)
-        binding.editSearch.setText(inputString)
-        if (isSearchSubmitted) viewModel.getSongOnInputText(inputTextSave)
-    }
-
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(EDIT_TEXT, inputTextSave)
-        outState.putBoolean(IS_SEARCH_SUBMITTED, isSearchSubmitted)
-    }
-
     private fun createTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             binding.clearSearch.visibility = View.VISIBLE
         }
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            inputTextSave = binding.editSearch.text.toString()
             if (binding.editSearch.hasFocus() && binding.editSearch.text.isEmpty()) {
-                viewModel.getHistory()
+                viewModel.updateInputText(binding.editSearch.text.toString())
             } else if (binding.editSearch.text.isNotEmpty()) {
-                viewModel.getSongOnInputText(inputTextSave)
-                isSearchSubmitted = true
+                viewModel.updateInputText(binding.editSearch.text.toString())
             }
         }
 
@@ -144,14 +118,14 @@ class SearchFragment : Fragment(), ClickListener {
         }
     }
 
-    private fun updateData(data: List<ModelForAdapter>) {
+    private fun updateData(data: List<ModelForAdapter>, hideKeyboard: Boolean = true) {
         if (data.isNotEmpty() && data.first() is SongListItem) {
             adapter.songs = (data.first() as SongListItem).songs
         } else {
             adapter.songs = data
         }
         adapter.notifyDataSetChanged()
-        if (isSearchSubmitted) hideKeyboard()
+        if (hideKeyboard) hideKeyboard()
     }
 
     private fun hideKeyboard() {
@@ -168,7 +142,7 @@ class SearchFragment : Fragment(), ClickListener {
             data.addAll(history)
             data.add(SongItemButton(text = getString(R.string.clean_history)))
         }
-        updateData(data)
+        updateData(data, false)
     }
 
     private fun changeContentVisibility(loading: Boolean) {
@@ -182,7 +156,7 @@ class SearchFragment : Fragment(), ClickListener {
         startActivity(descSongIntent)
     }
     override fun clickUpdate() {
-        viewModel.getSongOnInputText(inputTextSave)
+        viewModel.updateInputText(binding.editSearch.text.toString())
     }
 
     override fun clickOnSong(item: SongItem) {
@@ -194,8 +168,6 @@ class SearchFragment : Fragment(), ClickListener {
     }
 
     companion object {
-        private const val EDIT_TEXT = "EDIT_TEXT"
-        private const val IS_SEARCH_SUBMITTED = "IS_SEARCH_SUBMITTED"
         private const val TRACK_ID = "TRACK_ID"
     }
 }
