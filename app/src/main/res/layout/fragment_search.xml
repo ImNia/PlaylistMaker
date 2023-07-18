@@ -51,6 +51,7 @@
         android:background="@color/light_gray"
         android:imeOptions="actionDone"
         android:singleLine="true"
+        style="@style/editText"
         />
     <ImageView
         android:id="@+id/clear_search"
