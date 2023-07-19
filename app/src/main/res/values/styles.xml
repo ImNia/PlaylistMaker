@@ -120,5 +120,7 @@
 
     <style name="editText" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:textColorHint">@color/setting_icon_color</item>
+        <item name="android:drawableTint">@color/setting_icon_color</item>
+        <item name="android:tint">@color/setting_icon_color</item>
     </style>
 </resources>
