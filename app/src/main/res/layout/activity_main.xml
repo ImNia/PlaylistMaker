@@ -1,64 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    style="@style/main_screen"
-    tools:context=".main.ui.MainActivity">
+    tools:context=".main.ui.activity.MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolBar"
-        android:minHeight="?attr/actionBarSize"
-        android:layout_width="match_parent"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/main_navigation_graph"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        app:titleTextColor="@color/white"
-        app:titleTextAppearance="@style/Toolbar.TitleText"
-        >
-        <TextView
-            style="@style/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/app_name" />
-    </androidx.appcompat.widget.Toolbar>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="28dp"
-        >
-        <Button
-            android:id="@+id/findButton"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="@string/find_button"
-            app:icon="@drawable/search"
-            style="@style/button_main_screen"
-            />
 
-        <Button
-            android:id="@+id/mediaButton"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="@string/media_button"
-            app:icon="@drawable/media"
-            style="@style/button_main_screen"
-            />
-        <Button
-            android:id="@+id/settingButton"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="@string/setting"
-            app:icon="@drawable/setting"
-            style="@style/button_main_screen"
-            />
-    </LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
 
-</LinearLayout>
+        app:menu="@menu/bottom_navigation_menu"
+        style="@style/bottom_navigation"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

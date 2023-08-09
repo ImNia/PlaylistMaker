@@ -1,7 +1,6 @@
 package com.delirium.playlistmaker.search.ui.models
 
-import com.delirium.playlistmaker.search.domain.model.ErrorItem
-import com.delirium.playlistmaker.search.domain.model.NotFoundItem
+import com.delirium.playlistmaker.search.domain.model.SongItem
 import com.delirium.playlistmaker.search.domain.model.SongListItem
 
 sealed interface SearchState {
@@ -14,4 +13,8 @@ sealed interface SearchState {
     object Error: SearchState
 
     object Empty: SearchState
+
+    data class History(
+        val data: List<SongItem>
+    ): SearchState
 }

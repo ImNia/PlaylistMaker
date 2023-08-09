@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.delirium.playlistmaker"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -50,6 +50,9 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "androidx.navigation:navigation-fragment-ktx:2.6.0"
+    implementation "androidx.navigation:navigation-ui-ktx:2.6.0"
+    implementation "androidx.fragment:fragment-ktx:1.6.0"
 
     implementation "io.insert-koin:koin-android:3.3.1"
 

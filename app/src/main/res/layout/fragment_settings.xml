@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/additional_screen"
+    android:id="@id/settingsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".settings.ui.fragment.SettingsFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBarSetting"
@@ -12,16 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:paddingBottom="20dp"
-        android:text="@string/setting"
-        app:navigationIcon="@drawable/arrow_back"
+        android:paddingBottom="10dp"
+        android:text="@string/setting_button"
         app:titleTextAppearance="@style/Toolbar.SubPage">
 
         <TextView
             style="@style/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/setting" />
+            android:text="@string/setting_button" />
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -31,7 +33,10 @@
         android:layout_height="@dimen/setting_height"
         android:layout_gravity="start"
         android:paddingHorizontal="@dimen/padding_setting_start_end"
-        android:text="@string/black_theme" />
+        android:text="@string/black_theme"
+        app:thumbTint="@color/switch_thumb_selector"
+        app:trackTint="@color/switch_track_selector"
+        />
 
     <TextView
         android:id="@+id/sharing_app"

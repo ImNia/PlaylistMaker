@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/mediaFragment">
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.delirium.playlistmaker.settings.ui.fragment.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings"/>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.delirium.playlistmaker.search.ui.fragment.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/mediaFragment"
+        android:name="com.delirium.playlistmaker.media.ui.fragment.MediaFragment"
+        android:label="fragment_media"
+        tools:layout="@layout/fragment_media" >
+        <action
+            android:id="@+id/action_mediaFragment_to_favoriteTrackFragment"
+            app:destination="@id/favoriteTrackFragment" />
+        <action
+            android:id="@+id/action_mediaFragment_to_playListMediaFragment"
+            app:destination="@id/playListMediaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playListMediaFragment"
+        android:name="com.delirium.playlistmaker.media.ui.fragment.PlayListMediaFragment"
+        android:label="fragment_play_list_media"
+        tools:layout="@layout/fragment_play_list_media" />
+    <fragment
+        android:id="@+id/favoriteTrackFragment"
+        android:name="com.delirium.playlistmaker.media.ui.fragment.FavoriteTrackFragment"
+        android:label="fragment_favorite_track"
+        tools:layout="@layout/fragment_favorite_track" />
+</navigation>

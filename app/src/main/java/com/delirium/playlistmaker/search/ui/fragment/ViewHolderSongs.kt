@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.search.ui.activity
+package com.delirium.playlistmaker.search.ui.fragment
 
 import android.view.View
 import android.widget.Button
