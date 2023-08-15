@@ -12,13 +12,9 @@ class PlayerInteractorImpl(
         mediaPlayerRepository.preparePlayer(track)
     }
 
-    override fun getPlayerStatus(consumer: PlayerInteractor.PlayerConsumer) {
-        val status = mediaPlayerRepository.getPlayStatus()
-        consumer.onComplete(playerStatus = status)
-    }
-
-    override fun pausePlayer() {
-        mediaPlayerRepository.pausePlayer()
+    override fun pausePlayer(consumer: PlayerInteractor.PlayerConsumer) {
+        val playerState = mediaPlayerRepository.pausePlayer()
+        consumer.onComplete(playerState = playerState)
     }
 
     override fun startPlayer() {
@@ -31,7 +27,7 @@ class PlayerInteractorImpl(
 
     override fun getTimerPlayer(consumer: PlayerInteractor.PlayerConsumer) {
         val stateWithTimer = mediaPlayerRepository.getTimer()
-        consumer.onComplete(playerStatus = stateWithTimer)
+        consumer.onComplete(playerState = stateWithTimer)
     }
 
 }

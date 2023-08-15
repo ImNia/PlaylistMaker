@@ -1,15 +1,17 @@
 package com.delirium.playlistmaker.player.ui.viewmodel
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.delirium.playlistmaker.player.domain.api.PlayerInteractor
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
-import com.delirium.playlistmaker.player.ui.models.PlayStatus
+import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TrackViewModel(
     private val trackId: String,
@@ -35,66 +37,79 @@ class TrackViewModel(
     private var screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
     fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateLiveData
 
-    private val playStatusLiveData = MutableLiveData<PlayStatus>()
-    fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
+    private val playerStateLiveData = MutableLiveData<PlayerState>()
+    fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
 
     private var track: TrackModel? = null
-
-    private var mainThreadHandler: Handler? = null
-    private val runnable = updateTimer()
+    private var timerJob: Job? = null
 
     fun preparePlayer() {
         track?.let {
             playerInteractor.preparePlayer(it)
+
         }
-        getCurrentPlayStatus()
-        mainThreadHandler = Handler(Looper.getMainLooper())
+        playerStateLiveData.postValue(PlayerState.Prepared())
+        startTimer()
     }
 
-    fun play() {
-        getCurrentPlayStatus()
-        if (playStatusLiveData.value?.isPlaying == true) {
-            playerInteractor.pausePlayer()
-            getCurrentPlayStatus()
-            mainThreadHandler?.removeCallbacks(runnable)
-        } else {
-            playerInteractor.startPlayer()
-            getCurrentPlayStatus()
-            mainThreadHandler?.post(runnable)
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (playerStateLiveData.value?.isPlayButtonEnabled == true) {
+                delay(DELAY)
+                getCurrentPlayStatus()
+            }
         }
+    }
+
+    fun clickButtonPlay() {
+        if (playerStateLiveData.value is PlayerState.Playing) {
+            pausePlayer()
+        } else {
+            startPlayer()
+        }
+    }
+    private fun startPlayer() {
+        playerInteractor.startPlayer()
+        getCurrentPlayStatus()
+        startTimer()
+
+    }
+
+    private fun pausePlayer() {
+        playerInteractor.pausePlayer(
+            object : PlayerInteractor.PlayerConsumer {
+                override fun onComplete(playerState: String) {
+                    playerStateLiveData.postValue(
+                        PlayerState.Paused(
+                            progress = playerState
+                        )
+                    )
+                }
+            }
+        )
+        timerJob?.cancel()
     }
 
     fun closeScreen() {
         playerInteractor.closePlayer()
-        mainThreadHandler?.removeCallbacks(runnable)
+        playerStateLiveData.postValue(PlayerState.Default())
     }
 
     private fun getCurrentPlayStatus() {
-        playerInteractor.getPlayerStatus(
+        playerInteractor.getTimerPlayer(
             object : PlayerInteractor.PlayerConsumer {
-                override fun onComplete(playerStatus: PlayStatus) {
-                    playStatusLiveData.value = playerStatus
+                override fun onComplete(playerState: String) {
+                    playerStateLiveData.postValue(
+                        PlayerState.Playing(
+                            progress = playerState
+                        )
+                    )
                 }
             }
         )
     }
 
-    private fun updateTimer(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                playerInteractor.getTimerPlayer(
-                    object : PlayerInteractor.PlayerConsumer {
-                        override fun onComplete(playerStatus: PlayStatus) {
-                            playStatusLiveData.value = playerStatus
-                        }
-                    }
-                )
-                mainThreadHandler?.postDelayed(this, DELAY)
-            }
-        }
-    }
-
     companion object {
-        private const val DELAY = 1000L
+        private const val DELAY = 300L
     }
 }

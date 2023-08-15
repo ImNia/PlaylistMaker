@@ -47,29 +47,29 @@ class TrackActivity : AppCompatActivity() {
                 }
             }
         }
-        viewModel.getPlayStatusLiveData().observe(this) { playStatus ->
-            when (playStatus.playerStatus) {
-                PlayerState.STATE_PREPARED -> {
+        viewModel.getPlayerStateLiveData().observe(this) { playerState ->
+            when (playerState) {
+                is PlayerState.Prepared -> {
                     preparePlayer()
-                    playbackControl(true)
                 }
 
-                PlayerState.STATE_PLAYING -> {
-                    playbackControl(false)
-                    binding.currentDurationSong.text = playStatus.progress
+                is PlayerState.Playing -> {
+                    startPlayer()
+                    binding.currentDurationSong.text = playerState.progress
                 }
 
-                PlayerState.STATE_PAUSED -> {
-                    playbackControl(true)
+                is PlayerState.Paused -> {
+                    pausePlayer()
                 }
 
-                PlayerState.STATE_DEFAULT -> {
+                is PlayerState.Default -> {
+                    pausePlayer()
                 }
             }
         }
 
         binding.playButtonDesc.setOnClickListener {
-            viewModel.play()
+            viewModel.clickButtonPlay()
         }
     }
 
@@ -133,14 +133,6 @@ class TrackActivity : AppCompatActivity() {
                 R.drawable.play_button
             )
         )
-    }
-
-    private fun playbackControl(isPlaying: Boolean) {
-        if (isPlaying) {
-            pausePlayer()
-        } else {
-            startPlayer()
-        }
     }
 
     private fun startPlayer() {
