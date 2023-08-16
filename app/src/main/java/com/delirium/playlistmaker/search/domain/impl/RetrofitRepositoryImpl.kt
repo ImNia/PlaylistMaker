@@ -6,19 +6,21 @@ import com.delirium.playlistmaker.search.domain.model.SongItem
 import com.delirium.playlistmaker.search.domain.model.SongsSearchRequest
 import com.delirium.playlistmaker.search.domain.model.SongsSearchResponse
 import com.delirium.playlistmaker.search.domain.api.RetrofitRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class RetrofitRepositoryImpl(
     private val networkClient: NetworkClient,
 ): RetrofitRepository {
-    override fun searchSongs(expression: String): Resource<List<SongItem>> {
+    override fun searchSongs(expression: String): Flow<Resource<List<SongItem>>> = flow {
         val response = networkClient.getSongs(SongsSearchRequest(expression))
-        return when (response.resultCode) {
+        when (response.resultCode) {
             -1 -> {
-                Resource.Error("Проверьте подключение к интернету")
+                emit(Resource.Error("Проверьте подключение к интернету"))
             }
             200 -> {
-                Resource.Success(
-                    (response as SongsSearchResponse).results.map {
+                with(response as SongsSearchResponse) {
+                    val data = results.map {
                         SongItem(
                             trackId = it.trackId,
                             trackName = it.trackName,
@@ -32,10 +34,11 @@ class RetrofitRepositoryImpl(
                             previewUrl = it.previewUrl
                         )
                     }
-                )
+                    emit(Resource.Success(data))
+                }
             }
             else -> {
-                Resource.Error("Ошибка сервера")
+                emit(Resource.Error("Ошибка сервера"))
             }
         }
     }

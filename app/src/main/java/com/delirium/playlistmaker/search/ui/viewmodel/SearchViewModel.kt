@@ -12,6 +12,7 @@ import com.delirium.playlistmaker.search.ui.models.SearchState
 import com.delirium.playlistmaker.settings.SingleLiveEvent
 import com.delirium.playlistmaker.utils.debounce
 import com.delirium.playlistmaker.utils.debounceClick
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val retrofitInteractor: RetrofitInteractor,
@@ -67,15 +68,14 @@ class SearchViewModel(
     }
 
     private fun search(expression: String) {
-        retrofitInteractor.searchSongs(
-            expression,
-            object : RetrofitInteractor.RetrofitConsumer {
-                override fun consume(foundSongs: List<SongItem>?, errorMessage: String?) {
-                    if (errorMessage != null) {
+        viewModelScope.launch {
+            retrofitInteractor.searchSongs(expression)
+                .collect { pair ->
+                    if (pair.second != null) {
                         searchStateLiveData.postValue(
                             SearchState.Error
                         )
-                    } else if (foundSongs?.isEmpty() == true) {
+                    } else if (pair.first?.isEmpty() == true) {
                         searchStateLiveData.postValue(
                             SearchState.Empty
                         )
@@ -83,14 +83,13 @@ class SearchViewModel(
                         searchStateLiveData.postValue(
                             SearchState.Content(
                                 SongListItem(
-                                    songs = foundSongs!!
+                                    songs = pair.first!!
                                 )
                             )
                         )
                     }
                 }
-            }
-        )
+        }
         isSearching = false
     }
 
