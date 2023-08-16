@@ -21,7 +21,7 @@ class MediaPlayerRepositoryImpl(
 
     override fun closePlayer() {
         mediaPlayer.stop()
-        mediaPlayer.release()
+        mediaPlayer.reset()
     }
 
     override fun getTimer(): String {
