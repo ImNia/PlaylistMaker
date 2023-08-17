@@ -1,16 +1,14 @@
 package com.delirium.playlistmaker.player.domain.api
 
 import com.delirium.playlistmaker.player.domain.model.TrackModel
+import com.delirium.playlistmaker.player.ui.models.PlayerState
+import kotlinx.coroutines.flow.Flow
 
 interface PlayerInteractor {
-    fun preparePlayer(track: TrackModel)
-    fun pausePlayer(consumer: PlayerConsumer)
-    fun startPlayer()
+    fun preparePlayer(track: TrackModel): Flow<PlayerState>
+    fun pausePlayer(): Flow<PlayerState>
+    fun startPlayer(): Flow<PlayerState>
     fun closePlayer()
-    fun getTimerPlayer(consumer: PlayerConsumer)
-
-    interface PlayerConsumer {
-        fun onComplete(playerState: String)
-    }
-
+    fun getTimerPlayer(): Flow<PlayerState>
+    suspend fun getStatePlayer(): Flow<PlayerState>
 }

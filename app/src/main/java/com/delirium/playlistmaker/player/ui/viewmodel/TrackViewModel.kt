@@ -45,18 +45,24 @@ class TrackViewModel(
 
     fun preparePlayer() {
         track?.let {
-            playerInteractor.preparePlayer(it)
-
+            viewModelScope.launch {
+                playerInteractor.preparePlayer(it).collect {
+                    playerStateLiveData.value = it
+                }
+            }
         }
-        playerStateLiveData.postValue(PlayerState.Prepared())
-        startTimer()
     }
 
     private fun startTimer() {
         timerJob = viewModelScope.launch {
+            playerInteractor.startPlayer().collect {
+                playerStateLiveData.value = it
+            }
             while (playerStateLiveData.value?.isPlayButtonEnabled == true) {
                 delay(DELAY)
-                getCurrentPlayStatus()
+                playerInteractor.getTimerPlayer().collect {
+                    playerStateLiveData.value = it
+                }
             }
         }
     }
@@ -69,44 +75,20 @@ class TrackViewModel(
         }
     }
     private fun startPlayer() {
-        playerInteractor.startPlayer()
-        getCurrentPlayStatus()
         startTimer()
-
     }
 
     private fun pausePlayer() {
-        playerInteractor.pausePlayer(
-            object : PlayerInteractor.PlayerConsumer {
-                override fun onComplete(playerState: String) {
-                    playerStateLiveData.postValue(
-                        PlayerState.Paused(
-                            progress = playerState
-                        )
-                    )
-                }
+        viewModelScope.launch {
+            playerInteractor.pausePlayer().collect {
+                playerStateLiveData.value = it
             }
-        )
+        }
         timerJob?.cancel()
     }
 
     fun closeScreen() {
         playerInteractor.closePlayer()
-        playerStateLiveData.postValue(PlayerState.Default())
-    }
-
-    private fun getCurrentPlayStatus() {
-        playerInteractor.getTimerPlayer(
-            object : PlayerInteractor.PlayerConsumer {
-                override fun onComplete(playerState: String) {
-                    playerStateLiveData.postValue(
-                        PlayerState.Playing(
-                            progress = playerState
-                        )
-                    )
-                }
-            }
-        )
     }
 
     companion object {
