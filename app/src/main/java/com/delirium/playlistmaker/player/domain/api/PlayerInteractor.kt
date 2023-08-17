@@ -10,5 +10,4 @@ interface PlayerInteractor {
     fun startPlayer(): Flow<PlayerState>
     fun closePlayer()
     fun getTimerPlayer(): Flow<PlayerState>
-    suspend fun getStatePlayer(): Flow<PlayerState>
 }

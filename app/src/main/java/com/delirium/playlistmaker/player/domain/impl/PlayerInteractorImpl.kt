@@ -35,8 +35,4 @@ class PlayerInteractorImpl(
         emit(mediaPlayerRepository.playerState.value)
     }
 
-    override suspend fun getStatePlayer(): Flow<PlayerState> = flow {
-        emit(mediaPlayerRepository.playerState.value)
-    }
-
 }
