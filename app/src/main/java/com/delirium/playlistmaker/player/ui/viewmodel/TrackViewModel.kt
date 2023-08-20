@@ -78,7 +78,7 @@ class TrackViewModel(
         startTimer()
     }
 
-    private fun pausePlayer() {
+    fun pausePlayer() {
         viewModelScope.launch {
             playerInteractor.pausePlayer().collect {
                 playerStateLiveData.value = it
