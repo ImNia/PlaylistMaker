@@ -70,12 +70,12 @@ class SearchViewModel(
     private fun search(expression: String) {
         viewModelScope.launch {
             retrofitInteractor.searchSongs(expression)
-                .collect { pair ->
-                    if (pair.second != null) {
+                .collect { result ->
+                    if (result.error != null) {
                         searchStateLiveData.postValue(
                             SearchState.Error
                         )
-                    } else if (pair.first?.isEmpty() == true) {
+                    } else if (result.listSong?.isEmpty() == true) {
                         searchStateLiveData.postValue(
                             SearchState.Empty
                         )
@@ -83,7 +83,7 @@ class SearchViewModel(
                         searchStateLiveData.postValue(
                             SearchState.Content(
                                 SongListItem(
-                                    songs = pair.first!!
+                                    songs = result.listSong!!
                                 )
                             )
                         )
