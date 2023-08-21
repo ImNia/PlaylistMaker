@@ -54,13 +54,8 @@ class MediaPlayerRepositoryImpl(
     }
     override fun preparePlayer(track: TrackModel) {
         mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
+        mediaPlayer.prepare()
 
-        mediaPlayer.setOnPreparedListener {
-            _playerState.update {
-                PlayerState.Prepared()
-            }
-        }
         mediaPlayer.setOnCompletionListener {
             mediaPlayer.seekTo(0)
         }
@@ -68,5 +63,9 @@ class MediaPlayerRepositoryImpl(
         _playerState.update {
             PlayerState.Prepared()
         }
+    }
+
+    override fun isPlayerNotPrepared(): Boolean {
+        return playerState.value is PlayerState.Default
     }
 }

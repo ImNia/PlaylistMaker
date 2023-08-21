@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlayerInteractor {
     fun preparePlayer(track: TrackModel): Flow<PlayerState>
+    fun isPlayerNotPrepared(): Flow<Boolean>
     fun pausePlayer(): Flow<PlayerState>
     fun startPlayer(): Flow<PlayerState>
     fun closePlayer()

@@ -2,6 +2,7 @@ package com.delirium.playlistmaker.player.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -38,12 +39,16 @@ class TrackActivity : AppCompatActivity() {
             when (screenState) {
                 is TrackScreenState.Content -> {
                     changeContentVisibility(loading = false)
-                    updateScreen(screenState.trackModel)
                     viewModel.preparePlayer()
+                    updateScreen(screenState.trackModel)
                 }
 
                 is TrackScreenState.Loading -> {
                     changeContentVisibility(loading = true)
+                }
+
+                is TrackScreenState.PlayerNotPrepared -> {
+                    playerNotPrepared()
                 }
             }
         }
@@ -63,7 +68,7 @@ class TrackActivity : AppCompatActivity() {
                 }
 
                 is PlayerState.Default -> {
-                    pausePlayer()
+                    preparePlayer()
                 }
             }
         }
@@ -151,6 +156,10 @@ class TrackActivity : AppCompatActivity() {
                 R.drawable.play_button
             )
         )
+    }
+
+    private fun playerNotPrepared() {
+        Toast.makeText(this, "Player not prepared", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

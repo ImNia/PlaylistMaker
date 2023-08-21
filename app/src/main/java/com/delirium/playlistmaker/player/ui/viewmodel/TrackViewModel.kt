@@ -54,15 +54,28 @@ class TrackViewModel(
     }
 
     private fun startTimer() {
-        timerJob = viewModelScope.launch {
-            playerInteractor.startPlayer().collect {
-                playerStateLiveData.value = it
+        var isNotPrepared = false
+        viewModelScope.launch {
+            playerInteractor.isPlayerNotPrepared().collect {
+                isNotPrepared = it
             }
-            while (playerStateLiveData.value?.isPlayButtonEnabled == true) {
-                delay(DELAY)
-                playerInteractor.getTimerPlayer().collect {
-                    playerStateLiveData.value = it
+            if (isNotPrepared) {
+                screenStateLiveData.postValue(
+                    TrackScreenState.PlayerNotPrepared
+                )
+            } else {
+                timerJob = launch {
+                    playerInteractor.startPlayer().collect {
+                        playerStateLiveData.value = it
+                    }
+                    while (playerStateLiveData.value?.isPlayButtonEnabled == true) {
+                        delay(DELAY)
+                        playerInteractor.getTimerPlayer().collect {
+                            playerStateLiveData.value = it
+                        }
+                    }
                 }
+
             }
         }
     }

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface MediaPlayerRepository {
     val playerState: StateFlow<PlayerState>
     fun preparePlayer(track: TrackModel)
+    fun isPlayerNotPrepared(): Boolean
     fun pausePlayer(): String
     fun startPlayer()
     fun closePlayer()
