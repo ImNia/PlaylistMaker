@@ -159,7 +159,7 @@ class TrackActivity : AppCompatActivity() {
     }
 
     private fun playerNotPrepared() {
-        Toast.makeText(this, "Player not prepared", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.player_not_prepared), Toast.LENGTH_SHORT).show()
     }
 
     companion object {
