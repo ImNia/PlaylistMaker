@@ -45,11 +45,7 @@ class TrackViewModel(
 
     fun preparePlayer() {
         track?.let {
-            viewModelScope.launch {
-                playerInteractor.preparePlayer(it).collect {
-                    playerStateLiveData.value = it
-                }
-            }
+            playerInteractor.preparePlayer(it)
         }
     }
 
@@ -63,6 +59,7 @@ class TrackViewModel(
                 screenStateLiveData.postValue(
                     TrackScreenState.PlayerNotPrepared
                 )
+                preparePlayer()
             } else {
                 timerJob = launch {
                     playerInteractor.startPlayer().collect {

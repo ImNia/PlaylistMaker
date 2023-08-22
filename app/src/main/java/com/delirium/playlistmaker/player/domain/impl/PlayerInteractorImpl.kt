@@ -4,19 +4,16 @@ import com.delirium.playlistmaker.player.domain.api.PlayerInteractor
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.domain.repository.MediaPlayerRepository
 import com.delirium.playlistmaker.player.ui.models.PlayerState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class PlayerInteractorImpl(
     private val mediaPlayerRepository: MediaPlayerRepository
 ): PlayerInteractor {
 
-    override fun preparePlayer(track: TrackModel): Flow<PlayerState> = flow {
+    override fun preparePlayer(track: TrackModel) {
         mediaPlayerRepository.preparePlayer(track)
-        emit(mediaPlayerRepository.playerState.value)
-    }.flowOn(Dispatchers.IO)
+    }
 
     override fun isPlayerNotPrepared(): Flow<Boolean> = flow {
         emit(mediaPlayerRepository.isPlayerNotPrepared())

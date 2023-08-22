@@ -1,12 +1,14 @@
 package com.delirium.playlistmaker.player.data.repository
 
 import android.media.MediaPlayer
+import android.util.Log
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.domain.repository.MediaPlayerRepository
 import com.delirium.playlistmaker.player.ui.models.PlayerState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -21,23 +23,26 @@ class MediaPlayerRepositoryImpl(
 
     private val _playerState = MutableStateFlow<PlayerState>(PlayerState.Default())
     override val playerState = _playerState.asStateFlow()
-    override fun pausePlayer(): String {
-        mediaPlayer.pause()
-        _playerState.update {
-            PlayerState.Paused(currentTimePlayer)
+    override fun pausePlayer() {
+        if(isPlayerActive()){
+            mediaPlayer.pause()
+            _playerState.update {
+                PlayerState.Paused(currentTimePlayer)
+            }
         }
-        return currentTimePlayer
     }
 
     override fun startPlayer() {
-        mediaPlayer.start()
-        _playerState.update {
-            PlayerState.Playing(currentTimePlayer)
+        if (!isPlayerNotPrepared()){
+            mediaPlayer.start()
+            _playerState.update {
+                PlayerState.Playing(currentTimePlayer)
+            }
         }
     }
 
     override fun closePlayer() {
-        mediaPlayer.stop()
+        if(isPlayerActive()) mediaPlayer.stop()
         mediaPlayer.reset()
     }
 
@@ -53,19 +58,34 @@ class MediaPlayerRepositoryImpl(
         }
     }
     override fun preparePlayer(track: TrackModel) {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepare()
+        try {
+            mediaPlayer.setDataSource(track.previewUrl)
+            mediaPlayer.prepareAsync()
+            mediaPlayer.setOnPreparedListener {
+                _playerState.update {
+                    PlayerState.Prepared()
+                }
+            }
 
-        mediaPlayer.setOnCompletionListener {
-            mediaPlayer.seekTo(0)
-        }
-
-        _playerState.update {
-            PlayerState.Prepared()
+            mediaPlayer.setOnCompletionListener {
+                if (isPlayerActive())
+                    mediaPlayer.seekTo(0)
+            }
+        } catch (ex: Exception) {
+            Log.d("MEDIA_PLAYER", "${ex.message}")
+            _playerState.update {
+                PlayerState.Error()
+            }
         }
     }
 
     override fun isPlayerNotPrepared(): Boolean {
-        return playerState.value is PlayerState.Default
+        return _playerState.value is PlayerState.Default
+                || _playerState.value is PlayerState.Error
+    }
+
+    private fun isPlayerActive(): Boolean {
+        return _playerState.value is PlayerState.Playing
+                || _playerState.value is PlayerState.Paused
     }
 }

@@ -5,7 +5,7 @@ import com.delirium.playlistmaker.player.ui.models.PlayerState
 import kotlinx.coroutines.flow.Flow
 
 interface PlayerInteractor {
-    fun preparePlayer(track: TrackModel): Flow<PlayerState>
+    fun preparePlayer(track: TrackModel)
     fun isPlayerNotPrepared(): Flow<Boolean>
     fun pausePlayer(): Flow<PlayerState>
     fun startPlayer(): Flow<PlayerState>
