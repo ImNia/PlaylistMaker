@@ -39,10 +39,8 @@ class SearchViewModel(
         if (expression.isNotEmpty()) {
             searchStateLiveData.postValue(SearchState.Loading)
 
-            if (latestSearchText != expression) {
-                latestSearchText = expression
-                searchDebounce(expression)
-            }
+            latestSearchText = expression
+            searchDebounce(expression)
         } else {
             historyInteractor.getHistory(
                 object : HistoryInteractor.HistoryConsumer {

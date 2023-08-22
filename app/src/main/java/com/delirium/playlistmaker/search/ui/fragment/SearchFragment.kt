@@ -45,6 +45,8 @@ class SearchFragment : Fragment(), ClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        clickUpdate()
+
         viewModel.getOpenPlayerLiveData().observe(viewLifecycleOwner) { trackId ->
             openSongDescription(trackId)
         }
