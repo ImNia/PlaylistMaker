@@ -35,6 +35,7 @@ class TrackActivity : AppCompatActivity() {
             trackId = bundle?.getString(TRACK_ID)
         }
 
+        viewModel.initViewModel()
         viewModel.getScreenStateLiveData().observe(this) { screenState ->
             when (screenState) {
                 is TrackScreenState.Content -> {

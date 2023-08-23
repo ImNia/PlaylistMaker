@@ -18,7 +18,17 @@ class TrackViewModel(
     private val tracksInteractor: TracksInteractor,
     private val playerInteractor: PlayerInteractor,
 ) : ViewModel() {
-    init {
+
+    private var screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
+    fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateLiveData
+
+    private val playerStateLiveData = MutableLiveData<PlayerState>()
+    fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
+
+    private var track: TrackModel? = null
+    private var timerJob: Job? = null
+
+    fun initViewModel() {
         tracksInteractor.prepareData(
             trackId,
             object : TracksInteractor.TracksConsumer {
@@ -33,16 +43,6 @@ class TrackViewModel(
             }
         )
     }
-
-    private var screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
-    fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateLiveData
-
-    private val playerStateLiveData = MutableLiveData<PlayerState>()
-    fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
-
-    private var track: TrackModel? = null
-    private var timerJob: Job? = null
-
     fun updateState() {
         viewModelScope.launch {
             playerInteractor.getState().collect {
