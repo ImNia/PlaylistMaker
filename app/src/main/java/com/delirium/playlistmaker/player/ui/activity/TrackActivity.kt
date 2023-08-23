@@ -71,10 +71,6 @@ class TrackActivity : AppCompatActivity() {
                 is PlayerState.Default -> {
                     preparePlayer(playerState.progress)
                 }
-
-                is PlayerState.Error -> {
-                    Toast.makeText(this, "Ошибка", Toast.LENGTH_SHORT).show()
-                }
             }
         }
 

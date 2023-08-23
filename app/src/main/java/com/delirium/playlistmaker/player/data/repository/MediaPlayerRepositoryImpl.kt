@@ -77,14 +77,13 @@ class MediaPlayerRepositoryImpl(
         } catch (ex: Exception) {
             Log.d("MEDIA_PLAYER", "${ex.message}")
             _playerState.update {
-                PlayerState.Error()
+                PlayerState.Default()
             }
         }
     }
 
     override fun isPlayerNotPrepared(): Boolean {
         return _playerState.value is PlayerState.Default
-                || _playerState.value is PlayerState.Error
     }
 
     private fun isPlayerActive(): Boolean {
