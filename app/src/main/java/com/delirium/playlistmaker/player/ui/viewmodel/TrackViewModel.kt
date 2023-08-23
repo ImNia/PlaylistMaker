@@ -43,6 +43,14 @@ class TrackViewModel(
     private var track: TrackModel? = null
     private var timerJob: Job? = null
 
+    fun updateState() {
+        viewModelScope.launch {
+            playerInteractor.getState().collect {
+                playerStateLiveData.value = it
+            }
+        }
+    }
+
     fun preparePlayer() {
         track?.let {
             playerInteractor.preparePlayer(it)
@@ -98,7 +106,12 @@ class TrackViewModel(
     }
 
     fun closeScreen() {
-        playerInteractor.closePlayer()
+        viewModelScope.launch {
+            playerInteractor.closePlayer().collect() {
+                playerStateLiveData.value = it
+            }
+        }
+        timerJob?.cancel()
     }
 
     companion object {

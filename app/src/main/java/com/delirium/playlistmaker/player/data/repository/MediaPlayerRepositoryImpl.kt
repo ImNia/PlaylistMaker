@@ -44,6 +44,9 @@ class MediaPlayerRepositoryImpl(
     override fun closePlayer() {
         if(isPlayerActive()) mediaPlayer.stop()
         mediaPlayer.reset()
+        _playerState.update {
+            PlayerState.Default()
+        }
     }
 
     override fun getTimer() {

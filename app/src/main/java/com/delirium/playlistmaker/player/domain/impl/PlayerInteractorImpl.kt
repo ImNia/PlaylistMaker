@@ -29,7 +29,7 @@ class PlayerInteractorImpl(
         emit(mediaPlayerRepository.playerState.value)
     }
 
-    override fun closePlayer() {
+    override fun closePlayer(): Flow<PlayerState> = flow {
         mediaPlayerRepository.closePlayer()
     }
 
@@ -38,4 +38,7 @@ class PlayerInteractorImpl(
         emit(mediaPlayerRepository.playerState.value)
     }
 
+    override fun getState(): Flow<PlayerState> = flow {
+        emit(mediaPlayerRepository.playerState.value)
+    }
 }

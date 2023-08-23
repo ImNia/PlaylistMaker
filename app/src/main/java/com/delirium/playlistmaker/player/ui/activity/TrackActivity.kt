@@ -55,7 +55,7 @@ class TrackActivity : AppCompatActivity() {
         viewModel.getPlayerStateLiveData().observe(this) { playerState ->
             when (playerState) {
                 is PlayerState.Prepared -> {
-                    preparePlayer()
+                    preparePlayer(playerState.progress)
                 }
 
                 is PlayerState.Playing -> {
@@ -68,7 +68,7 @@ class TrackActivity : AppCompatActivity() {
                 }
 
                 is PlayerState.Default -> {
-                    preparePlayer()
+                    preparePlayer(playerState.progress)
                 }
 
                 is PlayerState.Error -> {
@@ -82,6 +82,10 @@ class TrackActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateState()
+    }
     override fun onPause() {
         super.onPause()
         viewModel.pausePlayer()
@@ -134,8 +138,8 @@ class TrackActivity : AppCompatActivity() {
         binding.countrySong.text = track.country
     }
 
-    private fun preparePlayer() {
-        binding.currentDurationSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(0)
+    private fun preparePlayer(duration: String) {
+        binding.currentDurationSong.text = duration
         binding.playButtonDesc.setImageDrawable(
             AppCompatResources.getDrawable(
                 this,

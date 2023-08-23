@@ -9,6 +9,7 @@ interface PlayerInteractor {
     fun isPlayerNotPrepared(): Flow<Boolean>
     fun pausePlayer(): Flow<PlayerState>
     fun startPlayer(): Flow<PlayerState>
-    fun closePlayer()
+    fun closePlayer(): Flow<PlayerState>
     fun getTimerPlayer(): Flow<PlayerState>
+    fun getState(): Flow<PlayerState>
 }
