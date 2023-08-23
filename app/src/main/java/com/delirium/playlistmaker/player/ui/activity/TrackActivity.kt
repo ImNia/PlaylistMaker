@@ -133,6 +133,7 @@ class TrackActivity : AppCompatActivity() {
         }
         binding.genreSong.text = track.primaryGenreName
         binding.countrySong.text = track.country
+        binding.currentDurationSong.text = "00:00"
     }
 
     private fun preparePlayer(duration: String) {
