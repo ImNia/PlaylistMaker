@@ -3,21 +3,27 @@ package com.delirium.playlistmaker.search.domain.impl
 import com.delirium.playlistmaker.search.Resource
 import com.delirium.playlistmaker.search.domain.api.RetrofitInteractor
 import com.delirium.playlistmaker.search.domain.api.RetrofitRepository
-import java.util.concurrent.Executors
+import com.delirium.playlistmaker.search.domain.model.ResultRetrofitInteractor
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class RetrofitInteractorImpl(
     private val repository: RetrofitRepository,
 ): RetrofitInteractor {
-    private val executor = Executors.newCachedThreadPool()
-
-    override fun searchSongs(expression: String, consumer: RetrofitInteractor.RetrofitConsumer) {
-        executor.execute {
-            when(val resource = repository.searchSongs(expression)) {
+    override fun searchSongs(expression: String): Flow<ResultRetrofitInteractor> {
+        return repository.searchSongs(expression).map { result ->
+            when(result) {
                 is Resource.Success -> {
-                    consumer.consume(resource.data, null)
+                    ResultRetrofitInteractor(
+                        listSong = result.data,
+                        error = null
+                    )
                 }
                 is Resource.Error -> {
-                    consumer.consume(null, resource.message)
+                    ResultRetrofitInteractor(
+                        listSong = null,
+                        error = result.message
+                    )
                 }
             }
         }

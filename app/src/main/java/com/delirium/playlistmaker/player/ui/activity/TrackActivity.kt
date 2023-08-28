@@ -2,6 +2,7 @@ package com.delirium.playlistmaker.player.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -34,48 +35,57 @@ class TrackActivity : AppCompatActivity() {
             trackId = bundle?.getString(TRACK_ID)
         }
 
+        viewModel.initViewModel()
         viewModel.getScreenStateLiveData().observe(this) { screenState ->
             when (screenState) {
                 is TrackScreenState.Content -> {
                     changeContentVisibility(loading = false)
-                    updateScreen(screenState.trackModel)
                     viewModel.preparePlayer()
+                    updateScreen(screenState.trackModel)
                 }
 
                 is TrackScreenState.Loading -> {
                     changeContentVisibility(loading = true)
                 }
+
+                is TrackScreenState.PlayerNotPrepared -> {
+                    playerNotPrepared()
+                }
             }
         }
-        viewModel.getPlayStatusLiveData().observe(this) { playStatus ->
-            when (playStatus.playerStatus) {
-                PlayerState.STATE_PREPARED -> {
-                    preparePlayer()
-                    playbackControl(true)
+        viewModel.getPlayerStateLiveData().observe(this) { playerState ->
+            when (playerState) {
+                is PlayerState.Prepared -> {
+                    preparePlayer(playerState.progress)
                 }
 
-                PlayerState.STATE_PLAYING -> {
-                    playbackControl(false)
-                    binding.currentDurationSong.text = playStatus.progress
+                is PlayerState.Playing -> {
+                    startPlayer()
+                    binding.currentDurationSong.text = playerState.progress
                 }
 
-                PlayerState.STATE_PAUSED -> {
-                    playbackControl(true)
+                is PlayerState.Paused -> {
+                    pausePlayer()
                 }
 
-                PlayerState.STATE_DEFAULT -> {
+                is PlayerState.Default -> {
+                    preparePlayer(playerState.progress)
                 }
             }
         }
 
         binding.playButtonDesc.setOnClickListener {
-            viewModel.play()
+            viewModel.clickButtonPlay()
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateState()
+    }
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        viewModel.pausePlayer()
     }
 
     override fun onDestroy() {
@@ -123,24 +133,17 @@ class TrackActivity : AppCompatActivity() {
         }
         binding.genreSong.text = track.primaryGenreName
         binding.countrySong.text = track.country
+        binding.currentDurationSong.text = "00:00"
     }
 
-    private fun preparePlayer() {
-        binding.currentDurationSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(0)
+    private fun preparePlayer(duration: String) {
+        binding.currentDurationSong.text = duration
         binding.playButtonDesc.setImageDrawable(
             AppCompatResources.getDrawable(
                 this,
                 R.drawable.play_button
             )
         )
-    }
-
-    private fun playbackControl(isPlaying: Boolean) {
-        if (isPlaying) {
-            pausePlayer()
-        } else {
-            startPlayer()
-        }
     }
 
     private fun startPlayer() {
@@ -159,6 +162,10 @@ class TrackActivity : AppCompatActivity() {
                 R.drawable.play_button
             )
         )
+    }
+
+    private fun playerNotPrepared() {
+        Toast.makeText(this, getString(R.string.player_not_prepared), Toast.LENGTH_SHORT).show()
     }
 
     companion object {

@@ -1,8 +1,8 @@
 package com.delirium.playlistmaker.player.ui.models
 
-enum class PlayerState(value: Int) {
-    STATE_DEFAULT(0),
-    STATE_PREPARED(1),
-    STATE_PLAYING(2),
-    STATE_PAUSED(3),
+sealed class PlayerState(val isPlayButtonEnabled: Boolean, var progress: String) {
+    class Default : PlayerState(false, "00:00")
+    class Prepared : PlayerState(false, "00:00")
+    class Playing(progress: String) : PlayerState(true, progress)
+    class Paused(progress: String) : PlayerState(true, progress)
 }

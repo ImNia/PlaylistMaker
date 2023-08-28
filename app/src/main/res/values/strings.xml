@@ -41,4 +41,5 @@
     <string name="favorite_track">Избранные треки</string>
     <string name="playlist">Плейлисты</string>
     <string name="media">Медиатека</string>
+    <string name="player_not_prepared">Медиаплеер еще не готов,\nповторите попытку позже.</string>
 </resources>

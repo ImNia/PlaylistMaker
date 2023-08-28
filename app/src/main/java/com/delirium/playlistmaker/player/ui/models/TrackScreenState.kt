@@ -7,4 +7,6 @@ sealed class TrackScreenState {
     data class Content(
         val trackModel: TrackModel,
     ): TrackScreenState()
+
+    object PlayerNotPrepared: TrackScreenState()
 }

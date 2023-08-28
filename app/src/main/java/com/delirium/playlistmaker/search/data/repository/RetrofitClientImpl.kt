@@ -7,12 +7,14 @@ import com.delirium.playlistmaker.search.domain.repository.NetworkClient
 import com.delirium.playlistmaker.search.data.models.Response
 import com.delirium.playlistmaker.search.data.network.ITunesServiceApi
 import com.delirium.playlistmaker.search.domain.model.SongsSearchRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RetrofitClientImpl(
     private val ITunesService: ITunesServiceApi,
     private val context: Context,
 ): NetworkClient {
-    override fun getSongs(dto: Any): Response {
+    override suspend fun getSongs(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
@@ -20,13 +22,13 @@ class RetrofitClientImpl(
             return Response().apply { resultCode = 400 }
         }
 
-        val response = ITunesService.getSongs(dto.expression).execute()
-        val body = response.body()
-
-        return if (body != null) {
-            body.apply { resultCode = response.code() }
-        } else {
-            Response().apply { resultCode = response.code() }
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = ITunesService.getSongs(dto.expression)
+                response.apply { resultCode = 200 }
+            } catch (e: Throwable) {
+                Response().apply { resultCode = 500 }
+            }
         }
     }
 
