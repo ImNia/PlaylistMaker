@@ -2,7 +2,7 @@ package com.delirium.playlistmaker.search.data.repository
 
 import com.delirium.playlistmaker.search.data.converters.SongDbConverters
 import com.delirium.playlistmaker.utils.db.AppDatabase
-import com.delirium.playlistmaker.search.data.db.SongEntity
+import com.delirium.playlistmaker.utils.db.SongEntity
 import com.delirium.playlistmaker.search.domain.repository.HistoryRepository
 import com.delirium.playlistmaker.search.domain.model.SongItem
 import kotlinx.coroutines.flow.Flow

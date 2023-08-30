@@ -11,6 +11,7 @@ import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class TrackViewModel(
@@ -40,6 +41,7 @@ class TrackViewModel(
             }
         }
     }
+
     fun updateState() {
         viewModelScope.launch {
             playerInteractor.getState().collect {
@@ -89,6 +91,7 @@ class TrackViewModel(
             startPlayer()
         }
     }
+
     private fun startPlayer() {
         startTimer()
     }
@@ -109,6 +112,18 @@ class TrackViewModel(
             }
         }
         timerJob?.cancel()
+    }
+
+    fun clickFavoriteButton() {
+        track?.let {
+            viewModelScope.launch {
+                tracksInteractor.changeFavoriteState(it.trackId).collect {
+                    screenStateLiveData.postValue(
+                        TrackScreenState.Content(it)
+                    )
+                }
+            }
+        }
     }
 
     companion object {

@@ -12,4 +12,8 @@ class TracksInteractorImpl(
     override fun prepareData(trackId: String): Flow<TrackModel?> {
         return repository.findSongInDB(trackId)
     }
+
+    override fun changeFavoriteState(trackId: String): Flow<TrackModel> {
+        return repository.changeFavoriteState(trackId)
+    }
 }

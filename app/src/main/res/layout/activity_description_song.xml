@@ -87,6 +87,8 @@
             android:layout_height="@dimen/description_sub_button_size"
             android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
             android:src="@drawable/favorite_desc"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="@+id/play_button_desc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/play_button_desc" />

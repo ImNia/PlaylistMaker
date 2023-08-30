@@ -1,10 +1,10 @@
 package com.delirium.playlistmaker.search.data.db
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.delirium.playlistmaker.utils.db.SongEntity
 
 @Dao
 interface SongDao {

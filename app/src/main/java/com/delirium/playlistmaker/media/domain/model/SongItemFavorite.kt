@@ -1,11 +1,6 @@
-package com.delirium.playlistmaker.player.data.db
+package com.delirium.playlistmaker.media.domain.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "song_table")
-data class SongEntity(
-    @PrimaryKey
+data class SongItemFavorite(
     val trackId: String,
     val trackName: String? = null,
     val artistName: String? = null,
@@ -16,4 +11,5 @@ data class SongEntity(
     val country: String? = null,
     val primaryGenreName: String? = null,
     val previewUrl: String? = null,
+    val isFavorite: Boolean = false
 )

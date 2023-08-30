@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface DatabaseRepository {
     fun findSongInDB(trackId: String): Flow<TrackModel?>
+    fun changeFavoriteState(trackId: String): Flow<TrackModel>
 }

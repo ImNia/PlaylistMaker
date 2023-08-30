@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.search.data.db
+package com.delirium.playlistmaker.utils.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,5 +16,6 @@ data class SongEntity(
     val country: String? = null,
     val primaryGenreName: String? = null,
     val previewUrl: String? = null,
-    var saveData: String? = null
+    var saveData: String? = null,
+    val isFavorite: Int? = 0,
 )

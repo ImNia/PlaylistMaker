@@ -11,4 +11,5 @@ data class SongItem(
     val country: String? = null,
     val primaryGenreName: String? = null,
     val previewUrl: String? = null,
+    val isFavorite: Boolean = false
 ) : ModelForAdapter

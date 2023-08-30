@@ -33,7 +33,7 @@
         tools:layout="@layout/fragment_play_list_media" />
     <fragment
         android:id="@+id/favoriteTrackFragment"
-        android:name="com.delirium.playlistmaker.media.ui.fragment.FavoriteTrackFragment"
+        android:name="com.delirium.playlistmaker.media.ui.fragment.favorite.FavoriteTrackFragment"
         android:label="fragment_favorite_track"
         tools:layout="@layout/fragment_favorite_track" />
 </navigation>

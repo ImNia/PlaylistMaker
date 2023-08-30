@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface TracksInteractor {
     fun prepareData(trackId: String): Flow<TrackModel?>
+
+    fun changeFavoriteState(trackId: String): Flow<TrackModel>
 }

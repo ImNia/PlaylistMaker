@@ -1,6 +1,6 @@
 package com.delirium.playlistmaker.search.data.converters
 
-import com.delirium.playlistmaker.search.data.db.SongEntity
+import com.delirium.playlistmaker.utils.db.SongEntity
 import com.delirium.playlistmaker.search.domain.model.SongItem
 
 class SongDbConverters {
@@ -15,7 +15,8 @@ class SongDbConverters {
             releaseDate = song.releaseDate,
             country = song.country,
             primaryGenreName = song.primaryGenreName,
-            previewUrl = song.previewUrl
+            previewUrl = song.previewUrl,
+            isFavorite = if(song.isFavorite) 1 else 0
         )
     }
 
@@ -30,7 +31,8 @@ class SongDbConverters {
             releaseDate = songEntity.releaseDate,
             country = songEntity.country,
             primaryGenreName = songEntity.primaryGenreName,
-            previewUrl = songEntity.previewUrl
+            previewUrl = songEntity.previewUrl,
+            isFavorite = songEntity.isFavorite != 0
         )
     }
 }

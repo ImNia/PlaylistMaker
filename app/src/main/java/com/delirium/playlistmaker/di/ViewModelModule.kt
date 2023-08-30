@@ -40,6 +40,6 @@ val viewModelModule = module {
     }
 
     viewModel {
-        FavoriteTrackViewModel()
+        FavoriteTrackViewModel(get())
     }
 }

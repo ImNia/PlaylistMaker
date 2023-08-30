@@ -18,6 +18,13 @@ class DatabaseRepositoryImpl(
         ))
     }
 
+    override fun changeFavoriteState(trackId: String): Flow<TrackModel> = flow {
+        var item = appDatabase.songPlayerDao().getSong(trackId)
+        item = item.copy(isFavorite = if(item.isFavorite == 0) 1 else 0)
+        appDatabase.songPlayerDao().changeFavoriteState(item)
+        emit(songDbConverter.map(appDatabase.songPlayerDao().getSong(trackId)))
+    }
+
     private fun getCoverArtwork(artworkUrl: String) =
         artworkUrl.replaceAfterLast('/', "512x512bb.jpg")
 }
