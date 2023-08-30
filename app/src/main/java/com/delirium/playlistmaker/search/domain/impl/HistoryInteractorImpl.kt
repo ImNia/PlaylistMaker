@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class HistoryInteractorImpl(
     private val historyRepository: HistoryRepository
 ): HistoryInteractor {
-    override fun clearHistory() {
+    override suspend fun clearHistory() {
         historyRepository.cleanHistory()
     }
 

@@ -12,8 +12,8 @@ class HistoryRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val songDbConverter: SongDbConverters,
 ): HistoryRepository {
-    override fun cleanHistory() {
-//        sharedPrefs.edit().clear().apply()
+    override suspend fun cleanHistory() {
+        appDatabase.songDao().deleteSongs()
     }
 
     override fun getHistoryDB(): Flow<List<SongItem>> = flow {
@@ -28,7 +28,7 @@ class HistoryRepositoryImpl(
     private fun formedHistory(songs: List<SongEntity>): List<SongEntity> {
         return songs.sortedByDescending { item ->
             item.saveData
-        }
+        }.take(MAX_SIZE_HISTORY)
     }
 
     override suspend fun saveSongDB(song: SongItem) {

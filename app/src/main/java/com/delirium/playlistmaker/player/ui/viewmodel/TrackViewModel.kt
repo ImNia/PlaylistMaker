@@ -39,19 +39,6 @@ class TrackViewModel(
                 }
             }
         }
-        /*tracksInteractor.prepareData(
-            trackId,
-            object : TracksInteractor.TracksConsumer {
-                override fun onComplete(trackModel: TrackModel?) {
-                    if (trackModel != null) {
-                        screenStateLiveData.postValue(
-                            TrackScreenState.Content(trackModel)
-                        )
-                        track = trackModel
-                    }
-                }
-            }
-        )*/
     }
     fun updateState() {
         viewModelScope.launch {

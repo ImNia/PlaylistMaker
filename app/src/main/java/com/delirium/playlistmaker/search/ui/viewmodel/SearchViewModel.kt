@@ -55,7 +55,9 @@ class SearchViewModel(
     }
 
     fun clearHistory() {
-        historyInteractor.clearHistory()
+        viewModelScope.launch {
+            historyInteractor.clearHistory()
+        }
         searchStateLiveData.postValue(
             SearchState.History(
                 data = emptyList()
