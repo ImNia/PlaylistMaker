@@ -1,5 +1,7 @@
 package com.delirium.playlistmaker.di
 
+import com.delirium.playlistmaker.player.data.converters.SongPlayerDbConverters
+import com.delirium.playlistmaker.search.data.converters.SongDbConverters
 import com.delirium.playlistmaker.search.domain.api.RetrofitRepository
 import com.delirium.playlistmaker.search.domain.impl.RetrofitRepositoryImpl
 import org.koin.dsl.module
@@ -9,5 +11,14 @@ val repositoryModule = module {
      * */
     single<RetrofitRepository> {
         RetrofitRepositoryImpl(get())
+    }
+
+    /** Database
+     * */
+    factory {
+        SongDbConverters()
+    }
+    factory {
+        SongPlayerDbConverters()
     }
 }

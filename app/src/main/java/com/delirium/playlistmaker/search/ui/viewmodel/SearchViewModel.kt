@@ -42,17 +42,15 @@ class SearchViewModel(
             latestSearchText = expression
             searchDebounce(expression)
         } else {
-            historyInteractor.getHistory(
-                object : HistoryInteractor.HistoryConsumer {
-                    override fun consume(foundSongs: Array<SongItem>) {
-                        searchStateLiveData.postValue(
-                            SearchState.History(
-                                data = foundSongs.asList()
-                            )
+            viewModelScope.launch {
+                historyInteractor.getHistoryDB().collect { history ->
+                    searchStateLiveData.postValue(
+                        SearchState.History(
+                            data = history
                         )
-                    }
+                    )
                 }
-            )
+            }
         }
     }
 
@@ -96,7 +94,9 @@ class SearchViewModel(
     }
 
     private fun handleClickOnSong(songItem: SongItem) {
-        historyInteractor.saveSong(songItem)
+        viewModelScope.launch {
+            historyInteractor.saveSongDB(songItem)
+        }
         openPlayerLiveData.postValue(songItem.trackId)
     }
 

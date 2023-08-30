@@ -29,7 +29,17 @@ class TrackViewModel(
     private var timerJob: Job? = null
 
     fun initViewModel() {
-        tracksInteractor.prepareData(
+        viewModelScope.launch {
+            tracksInteractor.prepareData(trackId).collect { trackModel ->
+                if (trackModel != null) {
+                    screenStateLiveData.postValue(
+                        TrackScreenState.Content(trackModel)
+                    )
+                    track = trackModel
+                }
+            }
+        }
+        /*tracksInteractor.prepareData(
             trackId,
             object : TracksInteractor.TracksConsumer {
                 override fun onComplete(trackModel: TrackModel?) {
@@ -41,7 +51,7 @@ class TrackViewModel(
                     }
                 }
             }
-        )
+        )*/
     }
     fun updateState() {
         viewModelScope.launch {
