@@ -30,7 +30,7 @@ class FavoriteRepositoryImpl(
 
     private fun formedFavorite(songs: List<SongEntity>): List<SongEntity> {
         return songs.sortedByDescending { item ->
-            item.saveData
+            item.addFavoriteDate
         }
     }
 
