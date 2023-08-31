@@ -1,6 +1,6 @@
 package com.delirium.playlistmaker.media.ui.fragment.favorite
 
-import android.opengl.Visibility
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.delirium.playlistmaker.databinding.FragmentFavoriteTrackBinding
+import com.delirium.playlistmaker.media.domain.model.ModelAdapterFavorite
 import com.delirium.playlistmaker.media.domain.model.SongItemFavorite
 import com.delirium.playlistmaker.media.ui.viewmodel.FavoriteTrackViewModel
+import com.delirium.playlistmaker.player.ui.activity.TrackActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteTrackFragment : Fragment(), ClickListenerFavorite {
@@ -32,6 +34,10 @@ class FavoriteTrackFragment : Fragment(), ClickListenerFavorite {
 
         viewModel.initData()
 
+        viewModel.getOpenPlayerLiveData().observe(viewLifecycleOwner) { trackId ->
+            openSongDescription(trackId)
+        }
+
         viewModel.getFavoriteLiveData().observe(viewLifecycleOwner) { screenState ->
             when(screenState) {
                 is FavoriteStateScreen.Content -> {
@@ -47,24 +53,28 @@ class FavoriteTrackFragment : Fragment(), ClickListenerFavorite {
         binding.recyclerSongsFavorite.adapter = adapter
     }
 
-    private fun updateScreen(data: List<SongItemFavorite>) {
+    override fun onResume() {
+        super.onResume()
+        viewModel.initData()
+    }
+
+    private fun updateScreen(data: List<ModelAdapterFavorite>) {
         adapter.songs = data
         adapter.notifyDataSetChanged()
-        if (data.isNotEmpty()) {
-            binding.imageProblemItem.visibility = View.INVISIBLE
-            binding.textProblemItem.visibility = View.INVISIBLE
+    }
 
-        } else  {
-            binding.imageProblemItem.visibility = View.VISIBLE
-            binding.textProblemItem.visibility = View.VISIBLE
-        }
+    private fun openSongDescription(trackId: String) {
+        val descSongIntent = Intent(requireContext(), TrackActivity::class.java)
+        descSongIntent.putExtra(TRACK_ID, trackId)
+        startActivity(descSongIntent)
     }
 
     override fun clickOnSong(item: SongItemFavorite) {
-        TODO("Not yet implemented")
+        viewModel.openSongById(item)
     }
 
     companion object {
         fun newInstance() = FavoriteTrackFragment()
+        private const val TRACK_ID = "TRACK_ID"
     }
 }

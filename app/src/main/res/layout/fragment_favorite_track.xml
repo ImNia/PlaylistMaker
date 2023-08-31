@@ -7,6 +7,7 @@
     tools:context=".media.ui.fragment.favorite.FavoriteTrackFragment">
 
     <FrameLayout
+        android:id="@+id/favorite_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="24dp">
@@ -23,22 +24,4 @@
             android:layout_height="match_parent"
             />
     </FrameLayout>
-    <ImageView
-        android:id="@+id/image_problem_item"
-        android:layout_width="@dimen/item_size_image_error"
-        android:layout_height="@dimen/item_size_image_error"
-        android:layout_gravity="center"
-        android:layout_marginTop="110dp"
-        android:contentDescription="@string/media_empty"
-        android:src="@drawable/not_search" />
-
-    <TextView
-        android:id="@+id/text_problem_item"
-        style="@style/text_error_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/item_margin_vertical"
-        android:gravity="center_horizontal"
-        android:text="@string/media_empty" />
-
 </LinearLayout>

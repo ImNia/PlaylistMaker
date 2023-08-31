@@ -14,6 +14,6 @@ interface FavoriteDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun changeFavoriteState(song: SongEntity)
 
-    @Query("SELECT * FROM song_table")
+    @Query("SELECT * FROM song_table WHERE isFavorite == 1")
     suspend fun getSongs(): List<SongEntity>
 }

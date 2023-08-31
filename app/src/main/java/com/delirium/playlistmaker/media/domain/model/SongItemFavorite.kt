@@ -12,4 +12,4 @@ data class SongItemFavorite(
     val primaryGenreName: String? = null,
     val previewUrl: String? = null,
     val isFavorite: Boolean = false
-)
+): ModelAdapterFavorite

@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
+import com.delirium.playlistmaker.media.domain.model.EmptyFavorite
 import com.delirium.playlistmaker.media.domain.model.SongItemFavorite
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -46,5 +47,21 @@ class ViewHolderFavorite(
         itemView.setOnClickListener {
             clickListener.clickOnSong(data)
         }
+    }
+}
+
+class ViewHolderEmptyFavorite(
+    itemView: View
+): RecyclerView.ViewHolder(itemView) {
+    private val imageError: ImageView
+    private val textError: TextView
+    init {
+        imageError = itemView.findViewById(R.id.image_problem_item)
+        textError = itemView.findViewById(R.id.text_problem_item)
+    }
+
+    fun bind(data: EmptyFavorite) {
+        imageError.setImageResource(data.res)
+        textError.setText(data.textProblem)
     }
 }
