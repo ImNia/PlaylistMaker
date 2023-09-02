@@ -1,11 +1,11 @@
 package com.delirium.playlistmaker.media.data.converters
 
 import com.delirium.playlistmaker.media.domain.model.SongItemFavorite
-import com.delirium.playlistmaker.utils.db.SongEntity
+import com.delirium.playlistmaker.utils.db.FavoriteSongEntity
 
 class FavoriteSongDbConverters {
-    fun map(song: SongItemFavorite): SongEntity {
-        return SongEntity(
+    fun map(song: SongItemFavorite): FavoriteSongEntity {
+        return FavoriteSongEntity(
             trackId = song.trackId,
             trackName = song.trackName,
             artistName = song.artistName,
@@ -20,7 +20,7 @@ class FavoriteSongDbConverters {
         )
     }
 
-    fun map(songEntity: SongEntity): SongItemFavorite {
+    fun map(songEntity: FavoriteSongEntity): SongItemFavorite {
         return SongItemFavorite(
             trackId = songEntity.trackId,
             trackName = songEntity.trackName ?: "",

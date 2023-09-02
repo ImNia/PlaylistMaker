@@ -6,7 +6,7 @@ import com.delirium.playlistmaker.media.data.db.FavoriteDao
 import com.delirium.playlistmaker.player.data.db.SongPlayerDao
 import com.delirium.playlistmaker.search.data.db.SongDao
 
-@Database(version = 1, entities = [SongEntity::class])
+@Database(version = 1, entities = [SongEntity::class, FavoriteSongEntity::class])
 abstract class AppDatabase: RoomDatabase() {
     abstract fun songDao(): SongDao
     abstract fun songPlayerDao(): SongPlayerDao

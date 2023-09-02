@@ -18,7 +18,6 @@ class SongDbConverters {
             previewUrl = song.previewUrl,
             isFavorite = if(song.isFavorite) 1 else 0,
             saveData = song.saveData,
-            addFavoriteDate = song.addFavoriteDate
         )
     }
 
@@ -36,7 +35,6 @@ class SongDbConverters {
             previewUrl = songEntity.previewUrl,
             isFavorite = songEntity.isFavorite != 0,
             saveData = songEntity.saveData,
-            addFavoriteDate = songEntity.addFavoriteDate
         )
     }
 }

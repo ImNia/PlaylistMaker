@@ -3,8 +3,8 @@ package com.delirium.playlistmaker.utils.db
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "song_table")
-data class SongEntity(
+@Entity(tableName = "favorite_song_table")
+data class FavoriteSongEntity(
     @PrimaryKey
     val trackId: String,
     val trackName: String? = null,
@@ -16,6 +16,6 @@ data class SongEntity(
     val country: String? = null,
     val primaryGenreName: String? = null,
     val previewUrl: String? = null,
-    var saveData: String? = null,
     var isFavorite: Int? = 0,
+    var addFavoriteDate: String? = null
 )

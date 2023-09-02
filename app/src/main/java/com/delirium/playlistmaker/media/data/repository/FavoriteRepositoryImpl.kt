@@ -4,7 +4,7 @@ import com.delirium.playlistmaker.media.data.converters.FavoriteSongDbConverters
 import com.delirium.playlistmaker.media.domain.model.SongItemFavorite
 import com.delirium.playlistmaker.media.domain.repository.FavoriteRepository
 import com.delirium.playlistmaker.utils.db.AppDatabase
-import com.delirium.playlistmaker.utils.db.SongEntity
+import com.delirium.playlistmaker.utils.db.FavoriteSongEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -24,11 +24,11 @@ class FavoriteRepositoryImpl(
         emit(convertFromSongEntity(songs))
     }
 
-    private fun convertFromSongEntity(songs: List<SongEntity>): List<SongItemFavorite> {
+    private fun convertFromSongEntity(songs: List<FavoriteSongEntity>): List<SongItemFavorite> {
         return formedFavorite(songs).map { song -> converter.map(song) }
     }
 
-    private fun formedFavorite(songs: List<SongEntity>): List<SongEntity> {
+    private fun formedFavorite(songs: List<FavoriteSongEntity>): List<FavoriteSongEntity> {
         return songs.sortedByDescending { item ->
             item.addFavoriteDate
         }
