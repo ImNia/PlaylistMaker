@@ -16,4 +16,7 @@ interface SongDao {
 
     @Query("DELETE FROM song_table")
     suspend fun deleteSongs()
+
+    @Query("SELECT * FROM song_table WHERE trackId = :songId")
+    suspend fun getSong(songId: String): SongEntity?
 }

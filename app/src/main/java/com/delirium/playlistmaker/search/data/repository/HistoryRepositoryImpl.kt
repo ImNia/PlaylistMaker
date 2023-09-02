@@ -32,11 +32,14 @@ class HistoryRepositoryImpl(
     }
 
     override suspend fun saveSongDB(song: SongItem) {
-        val songEntities = songDbConverter.map(song)
-        songEntities.saveData = (System.currentTimeMillis()/1000).toString()
+        val songEntities = findSongInDB(song.trackId) ?: songDbConverter.map(song)
+        songEntities.saveData = (System.currentTimeMillis() / 1000).toString()
         appDatabase.songDao().insertSong(songEntities)
     }
 
+    private suspend fun findSongInDB(trackId: String): SongEntity? {
+        return appDatabase.songDao().getSong(trackId)
+    }
     companion object {
         const val MAX_SIZE_HISTORY = 10
     }

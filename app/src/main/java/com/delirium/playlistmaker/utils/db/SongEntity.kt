@@ -17,6 +17,6 @@ data class SongEntity(
     val primaryGenreName: String? = null,
     val previewUrl: String? = null,
     var saveData: String? = null,
-    val isFavorite: Int? = 0,
+    var isFavorite: Int? = 0,
     var addFavoriteDate: String? = null
 )

@@ -17,7 +17,8 @@ class SongPlayerDbConverters {
             primaryGenreName = song.primaryGenreName,
             previewUrl = song.previewUrl,
             isFavorite = if(song.isFavorite) 1 else 0,
-            addFavoriteDate = song.addFavoriteDate
+            addFavoriteDate = song.addFavoriteDate,
+            saveData = song.saveDate
         )
     }
 
@@ -34,7 +35,8 @@ class SongPlayerDbConverters {
             primaryGenreName = songEntity.primaryGenreName ?: "",
             previewUrl = songEntity.previewUrl ?: "",
             isFavorite = songEntity.isFavorite != 0,
-            addFavoriteDate = songEntity.addFavoriteDate
+            addFavoriteDate = songEntity.addFavoriteDate,
+            saveDate = songEntity.saveData
         )
     }
 }
