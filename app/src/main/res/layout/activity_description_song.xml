@@ -130,7 +130,7 @@
                 tools:text="0:00" />
         </FrameLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/collection_song_desc"
             android:layout_width="match_parent"
             android:layout_height="@dimen/description_height_item"
@@ -143,17 +143,22 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="@string/collection_text" />
 
             <TextView
                 android:id="@+id/collection_song"
                 style="@style/sub_description_song_input"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_gravity="end"
-                android:gravity="center"
+                android:gravity="end|center"
+                android:maxLines="1"
+                android:ellipsize="end"
                 tools:text="Collection" />
-        </FrameLayout>
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/year_song_desc"

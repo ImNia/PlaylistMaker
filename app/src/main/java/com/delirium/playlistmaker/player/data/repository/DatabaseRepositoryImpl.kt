@@ -37,6 +37,12 @@ class DatabaseRepositoryImpl(
             item.addFavoriteDate = (System.currentTimeMillis() / 1000).toString()
 
             appDatabase.songPlayerDao().changeFavoriteState(item)
+
+            emit(
+                songDbConverter.mapFavoriteToModel(item).copy(
+                    artworkUrl100 = getCoverArtwork(item.artworkUrl100 ?: "")
+                )
+            )
         } else {
             val newItem = appDatabase.songPlayerDao().getSong(trackId)
             if (newItem != null) {
@@ -51,11 +57,6 @@ class DatabaseRepositoryImpl(
         appDatabase.songPlayerDao().getSong(trackId)?.let {
             it.isFavorite = if (it.isFavorite == 0) 1 else 0
             appDatabase.songPlayerDao().changeFavoriteStateHistory(it)
-            emit(
-                songDbConverter.map(it).copy(
-                    artworkUrl100 = getCoverArtwork(it.artworkUrl100 ?: "")
-                )
-            )
         }
 
     }
