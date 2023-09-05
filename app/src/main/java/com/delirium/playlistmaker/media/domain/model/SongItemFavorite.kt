@@ -1,6 +1,6 @@
-package com.delirium.playlistmaker.search.domain.model
+package com.delirium.playlistmaker.media.domain.model
 
-data class SongItem(
+data class SongItemFavorite(
     val trackId: String,
     val trackName: String? = null,
     val artistName: String? = null,
@@ -11,7 +11,5 @@ data class SongItem(
     val country: String? = null,
     val primaryGenreName: String? = null,
     val previewUrl: String? = null,
-    val isFavorite: Boolean = false,
-    val saveData: String? = null,
-    val addFavoriteDate: String? = null
-) : ModelForAdapter
+    val isFavorite: Boolean = false
+): ModelAdapterFavorite

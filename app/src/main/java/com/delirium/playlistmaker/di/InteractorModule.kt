@@ -1,5 +1,7 @@
 package com.delirium.playlistmaker.di
 
+import com.delirium.playlistmaker.media.domain.api.FavoriteInteractor
+import com.delirium.playlistmaker.media.domain.impl.FavoriteInteractorImpl
 import com.delirium.playlistmaker.player.domain.api.PlayerInteractor
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
 import com.delirium.playlistmaker.player.domain.impl.PlayerInteractorImpl
@@ -43,5 +45,11 @@ val interactorModule = module {
      * */
     single<SharingInteractor> {
         SharingInteractorImpl(get())
+    }
+
+    /** Media
+     * */
+    single<FavoriteInteractor> {
+        FavoriteInteractorImpl(get())
     }
 }

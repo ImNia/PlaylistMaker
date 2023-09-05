@@ -1,49 +1,45 @@
 package com.delirium.playlistmaker.search.data.repository
 
-import android.content.SharedPreferences
+import com.delirium.playlistmaker.search.data.converters.SongDbConverters
+import com.delirium.playlistmaker.utils.db.AppDatabase
+import com.delirium.playlistmaker.utils.db.SongEntity
 import com.delirium.playlistmaker.search.domain.repository.HistoryRepository
 import com.delirium.playlistmaker.search.domain.model.SongItem
-import com.delirium.playlistmaker.utils.model.SettingPreferences
-import com.google.gson.Gson
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class HistoryRepositoryImpl(
-    private val sharedPrefs: SharedPreferences,
-    private val gson: Gson,
+    private val appDatabase: AppDatabase,
+    private val songDbConverter: SongDbConverters,
 ): HistoryRepository {
-
-    override fun saveSong(song: SongItem) {
-        val jsonNewHistory = gson.toJson(formedHistory(song))
-        sharedPrefs.edit()
-            .putString(SettingPreferences.FINDING_SONG.name, jsonNewHistory)
-            .apply()
+    override suspend fun cleanHistory() {
+        appDatabase.songDao().deleteSongs()
     }
 
-    override fun getHistory(): Array<SongItem> {
-        val jsonHistory =
-            sharedPrefs.getString(SettingPreferences.FINDING_SONG.name, null) ?: return arrayOf()
-        return gson.fromJson(jsonHistory, Array<SongItem>::class.java)
-    }
-    override fun cleanHistory() {
-        sharedPrefs.edit().clear().apply()
+    override fun getHistoryDB(): Flow<List<SongItem>> = flow {
+        val songs = appDatabase.songDao().getSongs()
+        emit(convertFromSongEntity(songs))
     }
 
-    private fun formedHistory(song: SongItem): ArrayList<SongItem> {
-        val json = sharedPrefs.getString(SettingPreferences.FINDING_SONG.name, null)
-        return if (json != null) {
-            val oldHistory = gson.fromJson(json, Array<SongItem>::class.java)
-            val newHistory = arrayListOf<SongItem>()
-            newHistory.add(song)
-            for (item in oldHistory) {
-                if (item.trackId != song.trackId && newHistory.size < MAX_SIZE_HISTORY) {
-                    newHistory.add(item)
-                }
-            }
-            newHistory
-        } else {
-            arrayListOf(song)
-        }
+    private fun convertFromSongEntity(songs: List<SongEntity>): List<SongItem> {
+        return formedHistory(songs).map { song -> songDbConverter.map(song) }
     }
 
+    private fun formedHistory(songs: List<SongEntity>): List<SongEntity> {
+        return songs.sortedByDescending { item ->
+            item.saveData
+        }.take(MAX_SIZE_HISTORY)
+    }
+
+    override suspend fun saveSongDB(song: SongItem) {
+        val songEntities = findSongInDB(song.trackId) ?: songDbConverter.map(song)
+        songEntities.saveData = (System.currentTimeMillis() / 1000).toString()
+        appDatabase.songDao().insertSong(songEntities)
+    }
+
+    private suspend fun findSongInDB(trackId: String): SongEntity? {
+        return appDatabase.songDao().getSong(trackId)
+    }
     companion object {
         const val MAX_SIZE_HISTORY = 10
     }

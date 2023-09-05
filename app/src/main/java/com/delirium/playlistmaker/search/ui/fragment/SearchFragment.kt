@@ -112,6 +112,11 @@ class SearchFragment : Fragment(), ClickListener {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (binding.editSearch.text.isEmpty())
+            viewModel.updateInputText(binding.editSearch.text.toString())
+    }
     private fun createTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             if (binding.editSearch.text.isNotEmpty())

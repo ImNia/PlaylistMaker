@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.delirium.playlistmaker.media.ui.fragment.FavoriteTrackFragment
+import com.delirium.playlistmaker.media.ui.fragment.favorite.FavoriteTrackFragment
 import com.delirium.playlistmaker.media.ui.fragment.PlayListMediaFragment
 import java.lang.IllegalArgumentException
 

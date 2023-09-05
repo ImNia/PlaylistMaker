@@ -3,24 +3,20 @@ package com.delirium.playlistmaker.search.domain.impl
 import com.delirium.playlistmaker.search.domain.repository.HistoryRepository
 import com.delirium.playlistmaker.search.domain.model.SongItem
 import com.delirium.playlistmaker.search.domain.api.HistoryInteractor
-import java.util.concurrent.Executors
+import kotlinx.coroutines.flow.Flow
 
 class HistoryInteractorImpl(
     private val historyRepository: HistoryRepository
 ): HistoryInteractor {
-    private val executor = Executors.newCachedThreadPool()
-
-    override fun saveSong(item: SongItem) {
-        historyRepository.saveSong(item)
-    }
-
-    override fun getHistory(consumer: HistoryInteractor.HistoryConsumer) {
-        executor.execute {
-            consumer.consume(historyRepository.getHistory())
-        }
-    }
-
-    override fun clearHistory() {
+    override suspend fun clearHistory() {
         historyRepository.cleanHistory()
+    }
+
+    override fun getHistoryDB(): Flow<List<SongItem>> {
+        return historyRepository.getHistoryDB()
+    }
+
+    override suspend fun saveSongDB(song: SongItem) {
+        historyRepository.saveSongDB(song)
     }
 }

@@ -11,4 +11,7 @@ data class TrackModel(
     val country: String,
     val primaryGenreName: String,
     val previewUrl: String,
+    val saveDate: String? = null,
+    val isFavorite: Boolean,
+    val addFavoriteDate: String? = null
 )

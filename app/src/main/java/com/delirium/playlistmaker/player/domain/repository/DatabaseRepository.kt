@@ -1,10 +1,9 @@
-package com.delirium.playlistmaker.player.domain.api
+package com.delirium.playlistmaker.player.domain.repository
 
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import kotlinx.coroutines.flow.Flow
 
-interface TracksInteractor {
-    fun prepareData(trackId: String): Flow<TrackModel?>
-
+interface DatabaseRepository {
+    fun findSongInDB(trackId: String): Flow<TrackModel?>
     fun changeFavoriteState(trackId: String): Flow<TrackModel>
 }

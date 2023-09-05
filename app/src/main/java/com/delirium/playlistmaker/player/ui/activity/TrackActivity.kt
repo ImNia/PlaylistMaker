@@ -2,6 +2,7 @@ package com.delirium.playlistmaker.player.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
@@ -77,6 +78,10 @@ class TrackActivity : AppCompatActivity() {
         binding.playButtonDesc.setOnClickListener {
             viewModel.clickButtonPlay()
         }
+
+        binding.favoriteButtonDesc.setOnClickListener {
+            viewModel.clickFavoriteButton()
+        }
     }
 
     override fun onResume() {
@@ -134,6 +139,12 @@ class TrackActivity : AppCompatActivity() {
         binding.genreSong.text = track.primaryGenreName
         binding.countrySong.text = track.country
         binding.currentDurationSong.text = "00:00"
+
+        if (track.isFavorite) {
+            binding.favoriteButtonDesc.setImageResource(R.drawable.favorite_active)
+        } else {
+            binding.favoriteButtonDesc.setImageResource(R.drawable.favorite_desc)
+        }
     }
 
     private fun preparePlayer(duration: String) {

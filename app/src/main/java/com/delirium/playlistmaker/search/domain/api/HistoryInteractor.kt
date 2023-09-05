@@ -1,13 +1,11 @@
 package com.delirium.playlistmaker.search.domain.api
 
 import com.delirium.playlistmaker.search.domain.model.SongItem
+import kotlinx.coroutines.flow.Flow
 
 interface HistoryInteractor {
-    fun saveSong(item: SongItem)
-    fun getHistory(consumer: HistoryInteractor.HistoryConsumer)
-    fun clearHistory()
+    suspend fun clearHistory()
 
-    interface HistoryConsumer{
-        fun consume(foundSongs: Array<SongItem>)
-    }
+    fun getHistoryDB(): Flow<List<SongItem>>
+    suspend fun saveSongDB(song: SongItem)
 }

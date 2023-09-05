@@ -1,6 +1,11 @@
-package com.delirium.playlistmaker.search.domain.model
+package com.delirium.playlistmaker.utils.db
 
-data class SongItem(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "song_table")
+data class SongEntity(
+    @PrimaryKey
     val trackId: String,
     val trackName: String? = null,
     val artistName: String? = null,
@@ -11,7 +16,6 @@ data class SongItem(
     val country: String? = null,
     val primaryGenreName: String? = null,
     val previewUrl: String? = null,
-    val isFavorite: Boolean = false,
-    val saveData: String? = null,
-    val addFavoriteDate: String? = null
-) : ModelForAdapter
+    var saveData: String? = null,
+    var isFavorite: Int? = 0,
+)

@@ -46,7 +46,7 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingHorizontal="@dimen/padding_setting_start_end"
-        android:paddingVertical="@dimen/padding_setting_top_bottom"
+        android:gravity="center_vertical"
         android:text="@string/provide_app"
         app:drawableEndCompat="@drawable/share" />
 
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
         android:paddingHorizontal="@dimen/padding_setting_start_end"
-        android:paddingVertical="@dimen/padding_setting_top_bottom"
+        android:gravity="center_vertical"
         android:text="@string/send_support"
         app:drawableEndCompat="@drawable/support" />
 
@@ -66,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/setting_height"
         android:paddingHorizontal="@dimen/padding_setting_start_end"
-        android:paddingVertical="@dimen/padding_setting_top_bottom"
+        android:gravity="center_vertical"
         android:text="@string/user_term"
         app:drawableEndCompat="@drawable/arrow" />
 
