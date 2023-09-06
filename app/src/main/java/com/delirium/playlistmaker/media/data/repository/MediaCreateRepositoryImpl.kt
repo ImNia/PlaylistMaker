@@ -12,9 +12,17 @@ class MediaCreateRepositoryImpl(
     private val converter: MediaDbConverters
 ): MediaCreateRepository {
     override fun createMediaPlayer(playList: PlayListData): Flow<Boolean> = flow {
-        appDatabase.mediaDao().createPlayList(
-            converter.map(playList)
-        )
+        appDatabase.mediaDao().createPlayList(converter.map(playList))
         emit(true)
+    }
+
+    override fun getPlayLists(): Flow<List<PlayListData>> = flow {
+        appDatabase.mediaDao().getPlaylists().apply {
+            val data: MutableList<PlayListData> = mutableListOf()
+            this.forEach {
+                data.add(converter.map(it))
+            }
+            emit(data)
+        }
     }
 }

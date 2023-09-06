@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/playListMediaFragment"
-        android:name="com.delirium.playlistmaker.media.ui.fragment.PlayListMediaFragment"
+        android:name="com.delirium.playlistmaker.media.ui.fragment.playlist.PlayListMediaFragment"
         android:label="fragment_play_list_media"
         tools:layout="@layout/fragment_play_list_media" />
     <fragment

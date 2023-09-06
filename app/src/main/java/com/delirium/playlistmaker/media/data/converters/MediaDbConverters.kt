@@ -9,7 +9,9 @@ class MediaDbConverters {
         return PlayListData(
             name = entity.name ?: "",
             description = entity.description,
-            image = entity.image
+            image = entity.image,
+            songList = entity.songList,
+            countSong = entity.countSong
         )
     }
 
@@ -19,6 +21,8 @@ class MediaDbConverters {
             name = data.name,
             description = data.description,
             image = data.image,
+            songList = data.songList,
+            countSong = data.countSong
         )
     }
 }

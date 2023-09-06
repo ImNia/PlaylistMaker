@@ -11,4 +11,8 @@ class MediaCreateInteractorImpl(
     override fun savePlayList(playList: PlayListData): Flow<Boolean> {
         return repository.createMediaPlayer(playList)
     }
+
+    override fun getPlayLists(): Flow<List<PlayListData>> {
+        return repository.getPlayLists()
+    }
 }

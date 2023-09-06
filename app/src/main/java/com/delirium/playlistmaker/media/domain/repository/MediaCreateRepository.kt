@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface MediaCreateRepository {
     fun createMediaPlayer(playList: PlayListData): Flow<Boolean>
+    fun getPlayLists(): Flow<List<PlayListData>>
 }

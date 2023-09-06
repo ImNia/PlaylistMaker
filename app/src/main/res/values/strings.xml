@@ -48,4 +48,5 @@
     <string name="edit_hint_media_create_description">Описание</string>
     <string name="create_button_media">Создать</string>
     <string name="playlist_created">Плейлист %1$s создан</string>
+    <string name="playlist_count_song">%1$s треков</string>
 </resources>
