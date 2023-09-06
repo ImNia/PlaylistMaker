@@ -4,7 +4,9 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.room.Room
 import com.delirium.playlistmaker.media.data.repository.FavoriteRepositoryImpl
+import com.delirium.playlistmaker.media.data.repository.MediaCreateRepositoryImpl
 import com.delirium.playlistmaker.media.domain.repository.FavoriteRepository
+import com.delirium.playlistmaker.media.domain.repository.MediaCreateRepository
 import com.delirium.playlistmaker.player.data.repository.MediaPlayerRepositoryImpl
 import com.delirium.playlistmaker.player.data.repository.DatabaseRepositoryImpl
 import com.delirium.playlistmaker.player.domain.repository.MediaPlayerRepository
@@ -88,5 +90,9 @@ val dataModule = module {
      * */
     single<FavoriteRepository> {
         FavoriteRepositoryImpl(get(), get())
+    }
+
+    single<MediaCreateRepository> {
+        MediaCreateRepositoryImpl(get(), get())
     }
 }

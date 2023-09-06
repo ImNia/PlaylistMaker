@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
                 R.id.mediaCreateFragment -> {
-                    bottomNavigationView.visibility = View.INVISIBLE
+                    bottomNavigationView.visibility = View.GONE
                 }
                 else -> {
                     bottomNavigationView.visibility = View.VISIBLE
