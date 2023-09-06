@@ -18,7 +18,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentMediaCreateBinding
 import com.delirium.playlistmaker.media.ui.models.MediaCreateState
@@ -44,7 +48,16 @@ class MediaCreateFragment : Fragment() {
         binding = FragmentMediaCreateBinding.inflate(layoutInflater)
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
-                binding.mediaCreateImage.setImageURI(uri)
+                Glide.with(this)
+                    .load(uri)
+                    .placeholder(R.drawable.not_image)
+                    .transform(
+                        CenterCrop(),
+                        RoundedCorners(
+                            resources.getDimensionPixelSize(R.dimen.corner_description_image)
+                        )
+                    )
+                    .into(binding.mediaCreateImage)
                 currentImageUri = uri
             } else {
                 Log.d("TEST", "No media selected")
@@ -52,10 +65,10 @@ class MediaCreateFragment : Fragment() {
         }
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Завершить создание плейлиста?")
-            .setMessage("Все несохраненные данные будут потеряны")
-            .setNeutralButton("Отмена") { dialog, which ->
-            }.setNegativeButton("Завершить") { dialog, which ->
+            .setTitle(getString(R.string.create_playlist_dialog_title))
+            .setMessage(getString(R.string.create_playlist_dialog_message))
+            .setNeutralButton(getString(R.string.create_playlist_dialog_neutral)) { dialog, which ->
+            }.setNegativeButton(getString(R.string.create_playlist_dialog_close)) { dialog, which ->
                 findNavController().popBackStack()
             }
 

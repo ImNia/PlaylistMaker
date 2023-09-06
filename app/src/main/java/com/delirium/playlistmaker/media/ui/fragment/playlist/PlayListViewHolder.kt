@@ -7,6 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.media.domain.model.PlayListData
 import java.io.File
@@ -32,8 +35,17 @@ class PlayListViewHolder(
         data.image?.let {
             val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_maker_image")
             val file = File(filePath, it)
-            image.setImageURI(file.toUri())
-            image.scaleType = ImageView.ScaleType.CENTER_CROP
+
+            Glide.with(itemView)
+                .load(file.toUri())
+                .placeholder(R.drawable.not_image)
+                .transform(
+                    CenterCrop(),
+                    RoundedCorners(
+                        itemView.resources.getDimensionPixelSize(R.dimen.corner_description_image)
+                    )
+                )
+                .into(image)
         }
     }
 }

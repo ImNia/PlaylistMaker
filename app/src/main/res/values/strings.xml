@@ -49,4 +49,8 @@
     <string name="create_button_media">Создать</string>
     <string name="playlist_created">Плейлист %1$s создан</string>
     <string name="playlist_count_song">%1$s треков</string>
+    <string name="create_playlist_dialog_title">Завершить создание плейлиста?</string>
+    <string name="create_playlist_dialog_message">Все несохраненные данные будут потеряны</string>
+    <string name="create_playlist_dialog_neutral">Отмена</string>
+    <string name="create_playlist_dialog_close">Завершить</string>
 </resources>
