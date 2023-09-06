@@ -1,5 +1,6 @@
 package com.delirium.playlistmaker.di
 
+import com.delirium.playlistmaker.media.ui.fragment.create.MediaCreateViewModel
 import com.delirium.playlistmaker.media.ui.viewmodel.FavoriteTrackViewModel
 import com.delirium.playlistmaker.media.ui.viewmodel.MediaViewModel
 import com.delirium.playlistmaker.media.ui.viewmodel.PlayListMediaViewModel
@@ -41,5 +42,9 @@ val viewModelModule = module {
 
     viewModel {
         FavoriteTrackViewModel(get())
+    }
+
+    viewModel {
+        MediaCreateViewModel()
     }
 }

@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_mediaFragment_to_playListMediaFragment"
             app:destination="@id/playListMediaFragment" />
+        <action
+            android:id="@+id/action_mediaFragment_to_mediaCreateFragment"
+            app:destination="@id/mediaCreateFragment" />
     </fragment>
     <fragment
         android:id="@+id/playListMediaFragment"
@@ -36,4 +39,9 @@
         android:name="com.delirium.playlistmaker.media.ui.fragment.favorite.FavoriteTrackFragment"
         android:label="fragment_favorite_track"
         tools:layout="@layout/fragment_favorite_track" />
+    <fragment
+        android:id="@+id/mediaCreateFragment"
+        android:name="com.delirium.playlistmaker.media.ui.fragment.create.MediaCreateFragment"
+        android:label="fragment_media_create"
+        tools:layout="@layout/fragment_media_create" />
 </navigation>

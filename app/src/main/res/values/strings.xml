@@ -42,4 +42,9 @@
     <string name="playlist">Плейлисты</string>
     <string name="media">Медиатека</string>
     <string name="player_not_prepared">Медиаплеер еще не готов,\nповторите попытку позже.</string>
+
+    <string name="title_media_create">Новый плейлист</string>
+    <string name="edit_hint_media_create">Название*</string>
+    <string name="edit_hint_media_create_description">Описание</string>
+    <string name="create_button_media">Создать</string>
 </resources>

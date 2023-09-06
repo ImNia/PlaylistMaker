@@ -7,7 +7,7 @@
     tools:context=".media.ui.fragment.PlayListMediaFragment">
 
     <Button
-        android:id="@+id/button_update_item"
+        android:id="@+id/button_create_new_playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/new_playlist"
