@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.player.ui.models
+package com.delirium.playlistmaker.player.domain.model
 
 data class PlayListData(
     val id: Long,

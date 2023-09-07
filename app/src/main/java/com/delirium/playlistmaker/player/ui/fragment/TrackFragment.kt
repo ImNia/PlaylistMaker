@@ -1,6 +1,7 @@
 package com.delirium.playlistmaker.player.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -18,12 +18,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentDescriptionSongBinding
 import com.delirium.playlistmaker.player.domain.model.TrackModel
-import com.delirium.playlistmaker.player.ui.models.PlayListData
+import com.delirium.playlistmaker.player.domain.model.PlayListData
 import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
 import com.delirium.playlistmaker.player.ui.viewmodel.TrackViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -37,7 +36,7 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     private val adapter by lazy {
-        BottomSheetAdapter(requireContext())
+        BottomSheetAdapter(requireContext(), this)
     }
 
     override fun onCreateView(
@@ -161,15 +160,10 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
         viewModel.closeScreen()
     }
 
-    /*override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        trackId = savedInstanceState.getString(SAVE_TRACK)
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SAVE_TRACK, trackId)
-    }*/
+    }
 
     private fun changeContentVisibility(loading: Boolean) {
         binding.progressBar.isVisible = loading
@@ -248,7 +242,8 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
         const val TRACK_ID = "TRACK_ID"
     }
 
-    override fun clickOnPlaylist() {
-
+    override fun clickOnPlaylist(playlist: PlayListData) {
+        Log.d("TEST", "esrsf $trackId")
+        trackId?.let { viewModel.addSongToPlaylist(it, playlist) }
     }
 }

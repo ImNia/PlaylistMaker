@@ -11,12 +11,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.player.ui.models.PlayListData
+import com.delirium.playlistmaker.player.domain.model.PlayListData
 import java.io.File
 
 class BottomSheetViewHolder(
     itemView: View,
-    private val context: Context
+    private val context: Context,
+    private val clickListener: ClickOnPlaylist
 ): RecyclerView.ViewHolder(itemView) {
     private val image: ImageView
     private val name: TextView
@@ -46,6 +47,9 @@ class BottomSheetViewHolder(
                     )
                 )
                 .into(image)
+        }
+        itemView.setOnClickListener {
+            clickListener.clickOnPlaylist(data)
         }
     }
 }

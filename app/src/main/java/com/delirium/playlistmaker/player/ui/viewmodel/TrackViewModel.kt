@@ -1,5 +1,6 @@
 package com.delirium.playlistmaker.player.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import com.delirium.playlistmaker.player.domain.api.PlayerInteractor
 import com.delirium.playlistmaker.player.domain.api.PlaylistInteractor
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
+import com.delirium.playlistmaker.player.domain.model.PlayListData
 import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
 import kotlinx.coroutines.Job
@@ -139,6 +141,28 @@ class TrackViewModel(
             }
         }
     }
+
+    fun addSongToPlaylist(songId: String, playlist: PlayListData) {
+        val newPlaylist = playlist.copy(
+            songList = playlist.songList + songId,
+            countSong = playlist.countSong.inc()
+        )
+        viewModelScope.launch {
+            var tmp: TrackModel? = null
+            tracksInteractor.prepareData(songId).collect { song ->
+                tmp = song
+
+            }
+            Log.d("TEST", "$tmp")
+            playlistInteractor.saveSong(tmp!!)
+        }
+        viewModelScope.launch {
+            tracksInteractor.prepareData(songId).collect { song ->
+                playlistInteractor.addSongToPlaylist(newPlaylist, song!!)
+            }
+        }
+    }
+
     companion object {
         private const val DELAY = 300L
     }

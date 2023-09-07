@@ -1,6 +1,6 @@
 package com.delirium.playlistmaker.player.data.converters
 
-import com.delirium.playlistmaker.player.ui.models.PlayListData
+import com.delirium.playlistmaker.player.domain.model.PlayListData
 import com.delirium.playlistmaker.utils.db.PlayListEntity
 
 class PlaylistDbConverters {
