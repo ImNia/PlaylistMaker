@@ -145,8 +145,8 @@ class MediaCreateFragment : Fragment() {
         pickMedia.launch(
             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
         )
-        binding.mediaCreateImage.scaleType = ImageView.ScaleType.CENTER_CROP
-        binding.mediaCreateImage.setBackgroundResource(R.drawable.rounder_create_media)
+//        binding.mediaCreateImage.scaleType = ImageView.ScaleType.CENTER_CROP
+//        binding.mediaCreateImage.setBackgroundResource(R.drawable.rounder_create_media)
     }
 
     private fun saveImageToPrivateStorage(uri: Uri, nameImage: String) {
