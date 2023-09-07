@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -21,4 +21,10 @@
     <color name="progress_bar">#6200EE</color>
 
     <color name="background_with_bottom_sheet">#801A1B22</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">
+        @color/setting_icon_color
+    </color>
+    <color name="text_hint">#FF000000</color>
+    <color name="text">#000000</color>
 </resources>

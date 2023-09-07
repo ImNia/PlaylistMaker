@@ -31,7 +31,7 @@ class BottomSheetViewHolder(
 
     fun bind(data: PlayListData) {
         name.text = data.name
-        countSong.text = data.countSong.toString()
+        countSong.text = context.getString(R.string.playlist_count_song, data.countSong.toString())
 
         data.image?.let {
             val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_maker_image")
