@@ -5,8 +5,10 @@ import com.delirium.playlistmaker.media.domain.api.MediaCreateInteractor
 import com.delirium.playlistmaker.media.domain.impl.FavoriteInteractorImpl
 import com.delirium.playlistmaker.media.domain.impl.MediaCreateInteractorImpl
 import com.delirium.playlistmaker.player.domain.api.PlayerInteractor
+import com.delirium.playlistmaker.player.domain.api.PlaylistInteractor
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
 import com.delirium.playlistmaker.player.domain.impl.PlayerInteractorImpl
+import com.delirium.playlistmaker.player.domain.impl.PlaylistInteractorImpl
 import com.delirium.playlistmaker.player.domain.impl.TracksInteractorImpl
 import com.delirium.playlistmaker.search.domain.api.HistoryInteractor
 import com.delirium.playlistmaker.search.domain.api.RetrofitInteractor
@@ -35,6 +37,9 @@ val interactorModule = module {
     }
     single<PlayerInteractor> {
         PlayerInteractorImpl(get())
+    }
+    single<PlaylistInteractor> {
+        PlaylistInteractorImpl(get())
     }
 
     /** Setting

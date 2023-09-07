@@ -9,4 +9,8 @@ sealed class TrackScreenState {
     ): TrackScreenState()
 
     object PlayerNotPrepared: TrackScreenState()
+
+    data class BottomSheetShow(
+        val data: List<PlayListData>
+    ): TrackScreenState()
 }

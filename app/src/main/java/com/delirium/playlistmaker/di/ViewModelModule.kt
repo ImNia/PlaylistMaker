@@ -20,7 +20,7 @@ val viewModelModule = module {
     /** Player
      * */
     viewModel { params ->
-        TrackViewModel(params.get(), get(), get())
+        TrackViewModel(params.get(), get(), get(), get())
     }
 
     /** Setting

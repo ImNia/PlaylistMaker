@@ -2,18 +2,21 @@ package com.delirium.playlistmaker.player.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.ActivityDescriptionSongBinding
 import com.delirium.playlistmaker.player.domain.model.TrackModel
+import com.delirium.playlistmaker.player.ui.models.PlayListData
 import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
 import com.delirium.playlistmaker.player.ui.viewmodel.TrackViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -24,6 +27,11 @@ class TrackActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDescriptionSongBinding
 
     private val viewModel : TrackViewModel by inject { parametersOf(trackId) }
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+
+    private val adapter by lazy {
+        BottomSheetAdapter(applicationContext)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +43,8 @@ class TrackActivity : AppCompatActivity() {
         if (trackId == null) {
             trackId = bundle?.getString(TRACK_ID)
         }
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
 
         viewModel.initViewModel()
         viewModel.getScreenStateLiveData().observe(this) { screenState ->
@@ -51,6 +61,9 @@ class TrackActivity : AppCompatActivity() {
 
                 is TrackScreenState.PlayerNotPrepared -> {
                     playerNotPrepared()
+                }
+                is TrackScreenState.BottomSheetShow -> {
+                    openBottomSheet(screenState.data)
                 }
             }
         }
@@ -82,11 +95,19 @@ class TrackActivity : AppCompatActivity() {
         binding.favoriteButtonDesc.setOnClickListener {
             viewModel.clickFavoriteButton()
         }
+
+        binding.addedButtonDesc.setOnClickListener {
+            viewModel.openBottomSheet()
+        }
+        binding.playlistRecyclerPlayer.layoutManager = LinearLayoutManager(applicationContext)
+        binding.playlistRecyclerPlayer.adapter = adapter
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.updateState()
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
     }
     override fun onPause() {
         super.onPause()
@@ -177,6 +198,12 @@ class TrackActivity : AppCompatActivity() {
 
     private fun playerNotPrepared() {
         Toast.makeText(this, getString(R.string.player_not_prepared), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun openBottomSheet(data: List<PlayListData>) {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        adapter.data = data
+        adapter.notifyDataSetChanged()
     }
 
     companion object {

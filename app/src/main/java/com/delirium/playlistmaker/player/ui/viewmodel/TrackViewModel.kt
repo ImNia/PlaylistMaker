@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delirium.playlistmaker.player.domain.api.PlayerInteractor
+import com.delirium.playlistmaker.player.domain.api.PlaylistInteractor
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
 import com.delirium.playlistmaker.player.ui.models.PlayerState
@@ -18,6 +19,7 @@ class TrackViewModel(
     private val trackId: String,
     private val tracksInteractor: TracksInteractor,
     private val playerInteractor: PlayerInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private var screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
@@ -126,6 +128,17 @@ class TrackViewModel(
         }
     }
 
+    fun openBottomSheet() {
+        viewModelScope.launch {
+            playlistInteractor.getPlaylists().collect { result ->
+                screenStateLiveData.postValue(
+                    TrackScreenState.BottomSheetShow(
+                        data = result
+                    )
+                )
+            }
+        }
+    }
     companion object {
         private const val DELAY = 300L
     }

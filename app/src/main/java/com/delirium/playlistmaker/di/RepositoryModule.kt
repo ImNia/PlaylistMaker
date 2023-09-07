@@ -2,6 +2,7 @@ package com.delirium.playlistmaker.di
 
 import com.delirium.playlistmaker.media.data.converters.FavoriteSongDbConverters
 import com.delirium.playlistmaker.media.data.converters.MediaDbConverters
+import com.delirium.playlistmaker.player.data.converters.PlaylistDbConverters
 import com.delirium.playlistmaker.player.data.converters.SongPlayerDbConverters
 import com.delirium.playlistmaker.search.data.converters.SongDbConverters
 import com.delirium.playlistmaker.search.domain.api.RetrofitRepository
@@ -28,5 +29,8 @@ val repositoryModule = module {
     }
     factory {
         MediaDbConverters()
+    }
+    factory {
+        PlaylistDbConverters()
     }
 }

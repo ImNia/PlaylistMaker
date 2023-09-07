@@ -9,8 +9,10 @@ import com.delirium.playlistmaker.media.domain.repository.FavoriteRepository
 import com.delirium.playlistmaker.media.domain.repository.MediaCreateRepository
 import com.delirium.playlistmaker.player.data.repository.MediaPlayerRepositoryImpl
 import com.delirium.playlistmaker.player.data.repository.DatabaseRepositoryImpl
+import com.delirium.playlistmaker.player.data.repository.PlaylistRepositoryImpl
 import com.delirium.playlistmaker.player.domain.repository.MediaPlayerRepository
 import com.delirium.playlistmaker.player.domain.repository.DatabaseRepository
+import com.delirium.playlistmaker.player.domain.repository.PlaylistRepository
 import com.delirium.playlistmaker.utils.db.AppDatabase
 import com.delirium.playlistmaker.search.data.network.ITunesServiceApi
 import com.delirium.playlistmaker.search.data.repository.HistoryRepositoryImpl
@@ -67,6 +69,9 @@ val dataModule = module {
         MediaPlayerRepositoryImpl(get())
     }
 
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(get(), get())
+    }
     /** Setting
      * */
     single<SettingsRepository> {
