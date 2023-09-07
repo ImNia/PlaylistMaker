@@ -1,53 +1,84 @@
-package com.delirium.playlistmaker.player.ui.activity
+package com.delirium.playlistmaker.player.ui.fragment
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
-import com.delirium.playlistmaker.databinding.ActivityDescriptionSongBinding
+import com.delirium.playlistmaker.databinding.FragmentDescriptionSongBinding
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.ui.models.PlayListData
 import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
 import com.delirium.playlistmaker.player.ui.viewmodel.TrackViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TrackActivity : AppCompatActivity() {
+class TrackFragment : Fragment(), ClickOnPlaylist {
     private var trackId: String? = null
-    private lateinit var binding: ActivityDescriptionSongBinding
+    private lateinit var binding: FragmentDescriptionSongBinding
 
     private val viewModel : TrackViewModel by inject { parametersOf(trackId) }
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     private val adapter by lazy {
-        BottomSheetAdapter(applicationContext)
+        BottomSheetAdapter(requireContext())
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityDescriptionSongBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentDescriptionSongBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
-        setSupportActionBar(binding.toolBarDescriptionSong)
-        val bundle = intent.extras
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        }
+        activity?.onBackPressedDispatcher?.addCallback(callback)
+
         if (trackId == null) {
-            trackId = bundle?.getString(TRACK_ID)
+            trackId = arguments?.getString(TRACK_ID)
         }
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
 
         viewModel.initViewModel()
-        viewModel.getScreenStateLiveData().observe(this) { screenState ->
+        viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
             when (screenState) {
                 is TrackScreenState.Content -> {
                     changeContentVisibility(loading = false)
@@ -67,7 +98,7 @@ class TrackActivity : AppCompatActivity() {
                 }
             }
         }
-        viewModel.getPlayerStateLiveData().observe(this) { playerState ->
+        viewModel.getPlayerStateLiveData().observe(viewLifecycleOwner) { playerState ->
             when (playerState) {
                 is PlayerState.Prepared -> {
                     preparePlayer(playerState.progress)
@@ -99,7 +130,18 @@ class TrackActivity : AppCompatActivity() {
         binding.addedButtonDesc.setOnClickListener {
             viewModel.openBottomSheet()
         }
-        binding.playlistRecyclerPlayer.layoutManager = LinearLayoutManager(applicationContext)
+
+        binding.arrowBackPlayer.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.buttonCreateNewPlaylistPlayer.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_trackFragment_to_mediaCreateFragment
+            )
+        }
+
+        binding.playlistRecyclerPlayer.layoutManager = LinearLayoutManager(requireContext())
         binding.playlistRecyclerPlayer.adapter = adapter
     }
 
@@ -119,7 +161,7 @@ class TrackActivity : AppCompatActivity() {
         viewModel.closeScreen()
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+    /*override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         trackId = savedInstanceState.getString(SAVE_TRACK)
     }
@@ -127,12 +169,7 @@ class TrackActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SAVE_TRACK, trackId)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return super.onSupportNavigateUp()
-    }
+    }*/
 
     private fun changeContentVisibility(loading: Boolean) {
         binding.progressBar.isVisible = loading
@@ -172,7 +209,7 @@ class TrackActivity : AppCompatActivity() {
         binding.currentDurationSong.text = duration
         binding.playButtonDesc.setImageDrawable(
             AppCompatResources.getDrawable(
-                this,
+                requireContext(),
                 R.drawable.play_button
             )
         )
@@ -181,7 +218,7 @@ class TrackActivity : AppCompatActivity() {
     private fun startPlayer() {
         binding.playButtonDesc.setImageDrawable(
             AppCompatResources.getDrawable(
-                this,
+                requireContext(),
                 R.drawable.pause_button
             )
         )
@@ -190,14 +227,14 @@ class TrackActivity : AppCompatActivity() {
     private fun pausePlayer() {
         binding.playButtonDesc.setImageDrawable(
             AppCompatResources.getDrawable(
-                this,
+                requireContext(),
                 R.drawable.play_button
             )
         )
     }
 
     private fun playerNotPrepared() {
-        Toast.makeText(this, getString(R.string.player_not_prepared), Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), getString(R.string.player_not_prepared), Toast.LENGTH_SHORT).show()
     }
 
     private fun openBottomSheet(data: List<PlayListData>) {
@@ -209,5 +246,9 @@ class TrackActivity : AppCompatActivity() {
     companion object {
         const val SAVE_TRACK = "SAVE_TRACK"
         const val TRACK_ID = "TRACK_ID"
+    }
+
+    override fun clickOnPlaylist() {
+
     }
 }

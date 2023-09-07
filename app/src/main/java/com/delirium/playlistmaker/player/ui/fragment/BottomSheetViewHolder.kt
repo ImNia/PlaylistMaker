@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.player.ui.activity
+package com.delirium.playlistmaker.player.ui.fragment
 
 import android.content.Context
 import android.os.Environment

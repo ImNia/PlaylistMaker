@@ -13,7 +13,11 @@
         android:id="@+id/searchFragment"
         android:name="com.delirium.playlistmaker.search.ui.fragment.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_trackFragment"
+            app:destination="@id/trackFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mediaFragment"
         android:name="com.delirium.playlistmaker.media.ui.fragment.MediaFragment"
@@ -38,10 +42,23 @@
         android:id="@+id/favoriteTrackFragment"
         android:name="com.delirium.playlistmaker.media.ui.fragment.favorite.FavoriteTrackFragment"
         android:label="fragment_favorite_track"
-        tools:layout="@layout/fragment_favorite_track" />
+        tools:layout="@layout/fragment_favorite_track" >
+        <action
+            android:id="@+id/action_favoriteTrackFragment_to_trackFragment"
+            app:destination="@id/trackFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mediaCreateFragment"
         android:name="com.delirium.playlistmaker.media.ui.fragment.create.MediaCreateFragment"
         android:label="fragment_media_create"
         tools:layout="@layout/fragment_media_create" />
+    <fragment
+        android:id="@+id/trackFragment"
+        android:name="com.delirium.playlistmaker.player.ui.fragment.TrackFragment"
+        android:label="activity_description_song"
+        tools:layout="@layout/fragment_description_song" >
+        <action
+            android:id="@+id/action_trackFragment_to_mediaCreateFragment"
+            app:destination="@id/mediaCreateFragment" />
+    </fragment>
 </navigation>

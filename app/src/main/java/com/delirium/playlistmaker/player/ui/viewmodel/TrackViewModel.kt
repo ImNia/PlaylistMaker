@@ -109,7 +109,7 @@ class TrackViewModel(
 
     fun closeScreen() {
         viewModelScope.launch {
-            playerInteractor.closePlayer().collect() {
+            playerInteractor.closePlayer().collect {
                 playerStateLiveData.value = it
             }
         }

@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.player.ui.activity
+package com.delirium.playlistmaker.player.ui.fragment
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -22,4 +22,8 @@ class BottomSheetAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as BottomSheetViewHolder).bind(data[position])
     }
+}
+
+interface ClickOnPlaylist {
+    fun clickOnPlaylist()
 }

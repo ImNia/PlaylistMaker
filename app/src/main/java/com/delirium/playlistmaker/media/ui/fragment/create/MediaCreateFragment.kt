@@ -18,6 +18,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -27,6 +28,8 @@ import com.delirium.playlistmaker.databinding.FragmentMediaCreateBinding
 import com.delirium.playlistmaker.media.ui.models.MediaCreateState
 import com.delirium.playlistmaker.media.ui.viewmodel.MediaCreateViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -68,7 +71,9 @@ class MediaCreateFragment : Fragment() {
             .setMessage(getString(R.string.create_playlist_dialog_message))
             .setNeutralButton(getString(R.string.create_playlist_dialog_neutral)) { dialog, which ->
             }.setNegativeButton(getString(R.string.create_playlist_dialog_close)) { dialog, which ->
-                findNavController().popBackStack()
+                lifecycleScope.launch {
+                    findNavController().popBackStack()
+                }
             }
 
         return binding.root
@@ -126,7 +131,9 @@ class MediaCreateFragment : Fragment() {
             when(state) {
                 is MediaCreateState.Created -> {
                     Toast.makeText(requireContext(), getString(R.string.playlist_created, state.name), Toast.LENGTH_SHORT).show()
-                    findNavController().popBackStack()
+                    lifecycleScope.launch {
+                        findNavController().popBackStack()
+                    }
                 }
             }
         }
@@ -162,7 +169,9 @@ class MediaCreateFragment : Fragment() {
             || currentImageUri != null) {
             confirmDialog.show()
         } else {
-            findNavController().popBackStack()
+            lifecycleScope.launch {
+                findNavController().popBackStack()
+            }
         }
     }
 
