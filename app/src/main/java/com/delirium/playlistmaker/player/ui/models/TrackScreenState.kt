@@ -14,4 +14,9 @@ sealed class TrackScreenState {
     data class BottomSheetShow(
         val data: List<PlayListData>
     ): TrackScreenState()
+
+    data class BottomSheetFinished(
+        val isSuccess: Boolean,
+        val name: String
+    ): TrackScreenState()
 }

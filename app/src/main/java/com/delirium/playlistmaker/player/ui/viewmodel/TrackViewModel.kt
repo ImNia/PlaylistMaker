@@ -122,6 +122,7 @@ class TrackViewModel(
         track?.let {
             viewModelScope.launch {
                 tracksInteractor.changeFavoriteState(it.trackId).collect {
+                    Log.d("TEST", "${it}")
                     screenStateLiveData.postValue(
                         TrackScreenState.Content(it)
                     )
@@ -143,23 +144,35 @@ class TrackViewModel(
     }
 
     fun addSongToPlaylist(songId: String, playlist: PlayListData) {
-        val newPlaylist = playlist.copy(
-            songList = playlist.songList + songId,
-            countSong = playlist.countSong.inc()
-        )
-        viewModelScope.launch {
-            var tmp: TrackModel? = null
-            tracksInteractor.prepareData(songId).collect { song ->
-                tmp = song
+        if(playlist.songList?.contains(songId) == true) {
+            screenStateLiveData.postValue(
+                TrackScreenState.BottomSheetFinished(
+                    isSuccess = false,
+                    name = playlist.name
+                )
+            )
+        } else {
+            val newPlaylist = playlist.copy(
+                songList = if (playlist.songList == null) songId else playlist.songList + songId,
+                countSong = playlist.countSong.inc()
+            )
+            viewModelScope.launch {
+                tracksInteractor.prepareData(songId).collect { song ->
+                    playlistInteractor.saveSong(song!!)
+                }
+            }
+            viewModelScope.launch {
+                tracksInteractor.prepareData(songId).collect { song ->
+                    playlistInteractor.addSongToPlaylist(newPlaylist, song!!)
+                }
+            }
 
-            }
-            Log.d("TEST", "$tmp")
-            playlistInteractor.saveSong(tmp!!)
-        }
-        viewModelScope.launch {
-            tracksInteractor.prepareData(songId).collect { song ->
-                playlistInteractor.addSongToPlaylist(newPlaylist, song!!)
-            }
+            screenStateLiveData.postValue(
+                TrackScreenState.BottomSheetFinished(
+                    isSuccess = true,
+                    name = playlist.name
+                )
+            )
         }
     }
 

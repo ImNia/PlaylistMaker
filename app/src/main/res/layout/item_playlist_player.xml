@@ -9,7 +9,7 @@
         android:id="@+id/image_item_bottom_sheet"
         android:layout_width="@dimen/image_song_size"
         android:layout_height="@dimen/image_song_size"
-        android:layout_marginHorizontal="@dimen/padding_item_recycler_horizontal"
+        android:layout_marginEnd="@dimen/padding_item_recycler_horizontal"
         android:layout_marginVertical="@dimen/padding_item_recycler_vertical"
         android:background="@drawable/round_image"
         android:contentDescription="@string/image_song"

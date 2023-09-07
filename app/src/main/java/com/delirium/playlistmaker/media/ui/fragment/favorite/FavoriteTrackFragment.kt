@@ -67,7 +67,7 @@ class FavoriteTrackFragment : Fragment(), ClickListenerFavorite {
         val bundle = Bundle()
         bundle.putString(TRACK_ID, trackId)
         findNavController().navigate(
-            R.id.action_favoriteTrackFragment_to_trackFragment,
+            R.id.action_mediaFragment_to_trackFragment,
             bundle
         )
     }

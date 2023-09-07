@@ -81,7 +81,6 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
             when (screenState) {
                 is TrackScreenState.Content -> {
                     changeContentVisibility(loading = false)
-                    viewModel.preparePlayer()
                     updateScreen(screenState.trackModel)
                 }
 
@@ -90,10 +89,18 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
                 }
 
                 is TrackScreenState.PlayerNotPrepared -> {
-                    playerNotPrepared()
+                    showMessage(getString(R.string.player_not_prepared))
                 }
                 is TrackScreenState.BottomSheetShow -> {
                     openBottomSheet(screenState.data)
+                }
+                is TrackScreenState.BottomSheetFinished -> {
+                    if(screenState.isSuccess) {
+                        showMessage(getString(R.string.bottom_sheet_added_to_playlist, screenState.name))
+                    } else {
+                        showMessage(getString(R.string.bottom_sheet_exist_to_playlist, screenState.name))
+                    }
+                    closeBottomSheet()
                 }
             }
         }
@@ -147,7 +154,7 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
     override fun onResume() {
         super.onResume()
         viewModel.updateState()
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        closeBottomSheet()
 
     }
     override fun onPause() {
@@ -167,10 +174,7 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
 
     private fun changeContentVisibility(loading: Boolean) {
         binding.progressBar.isVisible = loading
-
-        binding.imageDesc.isVisible = !loading
-        binding.groupDesc.isVisible = !loading
-        binding.nameSongDesc.isVisible = !loading
+        binding.playerScreen.isVisible = !loading
     }
 
     private fun updateScreen(track: TrackModel) {
@@ -190,7 +194,7 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
         }
         binding.genreSong.text = track.primaryGenreName
         binding.countrySong.text = track.country
-        binding.currentDurationSong.text = "00:00"
+//        binding.currentDurationSong.text = "00:00"
 
         if (track.isFavorite) {
             binding.favoriteButtonDesc.setImageResource(R.drawable.favorite_active)
@@ -227,8 +231,8 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
         )
     }
 
-    private fun playerNotPrepared() {
-        Toast.makeText(requireContext(), getString(R.string.player_not_prepared), Toast.LENGTH_SHORT).show()
+    private fun showMessage(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun openBottomSheet(data: List<PlayListData>) {
@@ -237,13 +241,16 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
         adapter.notifyDataSetChanged()
     }
 
+    private fun closeBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
     companion object {
         const val SAVE_TRACK = "SAVE_TRACK"
         const val TRACK_ID = "TRACK_ID"
     }
 
     override fun clickOnPlaylist(playlist: PlayListData) {
-        Log.d("TEST", "esrsf $trackId")
         trackId?.let { viewModel.addSongToPlaylist(it, playlist) }
     }
 }
