@@ -173,7 +173,7 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
     }
 
     private fun changeContentVisibility(loading: Boolean) {
-        binding.progressBar.isVisible = loading
+        binding.progressBar.visibility = if(loading) View.VISIBLE else View.GONE
         binding.playerScreen.isVisible = !loading
     }
 

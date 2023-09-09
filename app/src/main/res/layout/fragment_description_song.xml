@@ -1,280 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".player.ui.fragment.TrackFragment">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <FrameLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/player_screen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            style="@style/additional_screen"
-            tools:context=".player.ui.fragment.TrackFragment">
+        android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/toolBarDescriptionSong"
-                style="@style/Theme.PlaylistMaker"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/player_screen"
+                style="@style/additional_screen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize"
-                android:paddingVertical="10dp"
-                android:gravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:paddingBottom="20dp"
+                tools:context=".player.ui.fragment.TrackFragment">
+
+                <LinearLayout
+                    android:id="@+id/toolBarDescriptionSong"
+                    style="@style/Theme.PlaylistMaker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="?attr/actionBarSize"
+                    android:paddingVertical="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/arrow_back_player"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/arrow_back" />
+                </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/arrow_back_player"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/arrow_back"
-                    android:layout_marginHorizontal="16dp"
-                    android:clickable="true"
-                    android:focusable="true" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/image_desc"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolBarDescriptionSong"
-                tools:src="@drawable/not_image" />
-
-            <TextView
-                android:id="@+id/name_song_desc"
-                style="@style/description_song_main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
-                android:layout_marginVertical="@dimen/description_margin_sub"
-                app:layout_constraintTop_toBottomOf="@+id/image_desc"
-                tools:text="Name Song" />
-
-            <TextView
-                android:id="@+id/group_desc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
-                android:layout_marginVertical="@dimen/description_margin_sub"
-                app:layout_constraintTop_toBottomOf="@+id/name_song_desc"
-                tools:text="Group name" />
-
-            <ImageView
-                android:id="@+id/play_button_desc"
-                android:layout_width="@dimen/description_play_button_size"
-                android:layout_height="@dimen/description_play_button_size"
-                android:layout_marginVertical="40dp"
-                android:src="@drawable/play_button"
-                android:focusable="true"
-                android:clickable="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/group_desc" />
-
-            <ImageView
-                android:id="@+id/added_button_desc"
-                android:layout_width="@dimen/description_sub_button_size"
-                android:layout_height="@dimen/description_sub_button_size"
-                android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
-                android:src="@drawable/added_desc"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_constraintBottom_toBottomOf="@+id/play_button_desc"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/play_button_desc" />
-
-            <ImageView
-                android:id="@+id/favorite_button_desc"
-                android:layout_width="@dimen/description_sub_button_size"
-                android:layout_height="@dimen/description_sub_button_size"
-                android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
-                android:src="@drawable/favorite_desc"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_constraintBottom_toBottomOf="@+id/play_button_desc"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/play_button_desc" />
-
-            <TextView
-                android:id="@+id/current_duration_song"
-                style="@style/description_song_main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/description_margin_sub"
-                android:gravity="center"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@+id/play_button_desc"
-                tools:text="0:00" />
-
-            <FrameLayout
-                android:id="@+id/duration_song_desc"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/description_height_item"
-                android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
-                android:layout_marginVertical="30dp"
-                app:layout_constraintTop_toBottomOf="@+id/current_duration_song">
-
-                <TextView
-                    style="@style/sub_description_song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start"
-                    android:gravity="center"
-                    android:text="@string/duration_text" />
-
-                <TextView
-                    android:id="@+id/duration_song"
-                    style="@style/sub_description_song_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:gravity="center"
-                    tools:text="0:00" />
-            </FrameLayout>
-
-            <LinearLayout
-                android:id="@+id/collection_song_desc"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/description_height_item"
-                android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
-                app:layout_constraintTop_toBottomOf="@+id/duration_song_desc">
-
-                <TextView
-                    style="@style/sub_description_song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:text="@string/collection_text" />
-
-                <TextView
-                    android:id="@+id/collection_song"
-                    style="@style/sub_description_song_input"
+                    android:id="@+id/image_desc"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_gravity="end"
-                    android:gravity="end|center"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    tools:text="Collection" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/year_song_desc"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/description_height_item"
-                android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
-                app:layout_constraintTop_toBottomOf="@+id/collection_song_desc">
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toolBarDescriptionSong"
+                    tools:src="@drawable/not_image" />
 
                 <TextView
-                    style="@style/sub_description_song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start"
-                    android:gravity="center"
-                    android:text="@string/year_song_text" />
+                    android:id="@+id/name_song_desc"
+                    style="@style/description_song_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
+                    android:layout_marginVertical="@dimen/description_margin_sub"
+                    app:layout_constraintTop_toBottomOf="@+id/image_desc"
+                    tools:text="Name Song" />
 
                 <TextView
-                    android:id="@+id/year_song"
-                    style="@style/sub_description_song_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:gravity="center"
-                    tools:text="1999" />
-            </FrameLayout>
+                    android:id="@+id/group_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
+                    android:layout_marginVertical="@dimen/description_margin_sub"
+                    app:layout_constraintTop_toBottomOf="@+id/name_song_desc"
+                    tools:text="Group name" />
 
-            <FrameLayout
-                android:id="@+id/genre_song_desc"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/description_height_item"
-                android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
-                app:layout_constraintTop_toBottomOf="@+id/year_song_desc">
+                <ImageView
+                    android:id="@+id/play_button_desc"
+                    android:layout_width="@dimen/description_play_button_size"
+                    android:layout_height="@dimen/description_play_button_size"
+                    android:layout_marginVertical="40dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/play_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/group_desc" />
+
+                <ImageView
+                    android:id="@+id/added_button_desc"
+                    android:layout_width="@dimen/description_sub_button_size"
+                    android:layout_height="@dimen/description_sub_button_size"
+                    android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/added_desc"
+                    app:layout_constraintBottom_toBottomOf="@+id/play_button_desc"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/play_button_desc" />
+
+                <ImageView
+                    android:id="@+id/favorite_button_desc"
+                    android:layout_width="@dimen/description_sub_button_size"
+                    android:layout_height="@dimen/description_sub_button_size"
+                    android:layout_marginHorizontal="@dimen/description_margin_vertical_main"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/favorite_desc"
+                    app:layout_constraintBottom_toBottomOf="@+id/play_button_desc"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/play_button_desc" />
 
                 <TextView
-                    style="@style/sub_description_song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start"
+                    android:id="@+id/current_duration_song"
+                    style="@style/description_song_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/description_margin_sub"
                     android:gravity="center"
-                    android:text="@string/genre_song_desc" />
-
-                <TextView
-                    android:id="@+id/genre_song"
-                    style="@style/sub_description_song_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:gravity="center"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/play_button_desc"
                     tools:text="0:00" />
-            </FrameLayout>
 
-            <FrameLayout
-                android:id="@+id/country_song_desc"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/description_height_item"
-                android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
-                app:layout_constraintTop_toBottomOf="@+id/genre_song_desc">
+                <FrameLayout
+                    android:id="@+id/duration_song_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/description_height_item"
+                    android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
+                    android:layout_marginVertical="30dp"
+                    app:layout_constraintTop_toBottomOf="@+id/current_duration_song">
 
-                <TextView
-                    style="@style/sub_description_song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start"
-                    android:gravity="center"
-                    android:text="@string/country_song_text" />
+                    <TextView
+                        style="@style/sub_description_song"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:gravity="center"
+                        android:text="@string/duration_text" />
 
-                <TextView
-                    android:id="@+id/country_song"
-                    style="@style/sub_description_song_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:gravity="center"
-                    tools:text="0:00" />
-            </FrameLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/duration_song"
+                        style="@style/sub_description_song_input"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:gravity="center"
+                        tools:text="0:00" />
+                </FrameLayout>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
-    </FrameLayout>
-</ScrollView>
+                <LinearLayout
+                    android:id="@+id/collection_song_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/description_height_item"
+                    android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
+                    app:layout_constraintTop_toBottomOf="@+id/duration_song_desc">
 
-    <View android:id="@+id/overlay"
+                    <TextView
+                        style="@style/sub_description_song"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="@string/collection_text" />
+
+                    <TextView
+                        android:id="@+id/collection_song"
+                        style="@style/sub_description_song_input"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="end|center"
+                        android:maxLines="1"
+                        tools:text="Collection" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/year_song_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/description_height_item"
+                    android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
+                    app:layout_constraintTop_toBottomOf="@+id/collection_song_desc">
+
+                    <TextView
+                        style="@style/sub_description_song"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:gravity="center"
+                        android:text="@string/year_song_text" />
+
+                    <TextView
+                        android:id="@+id/year_song"
+                        style="@style/sub_description_song_input"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:gravity="center"
+                        tools:text="1999" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/genre_song_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/description_height_item"
+                    android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
+                    app:layout_constraintTop_toBottomOf="@+id/year_song_desc">
+
+                    <TextView
+                        style="@style/sub_description_song"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:gravity="center"
+                        android:text="@string/genre_song_desc" />
+
+                    <TextView
+                        android:id="@+id/genre_song"
+                        style="@style/sub_description_song_input"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:gravity="center"
+                        tools:text="0:00" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/country_song_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/description_height_item"
+                    android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
+                    app:layout_constraintTop_toBottomOf="@+id/genre_song_desc">
+
+                    <TextView
+                        style="@style/sub_description_song"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:gravity="center"
+                        android:text="@string/country_song_text" />
+
+                    <TextView
+                        android:id="@+id/country_song"
+                        style="@style/sub_description_song_input"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:gravity="center"
+                        tools:text="0:00" />
+                </FrameLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </FrameLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_with_bottom_sheet"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="500dp"
+        android:background="@drawable/rounder_bottom_sheet"
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
-        android:background="@drawable/rounder_bottom_sheet"
         app:behavior_hideable="true"
         app:behavior_peekHeight="240dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -287,30 +289,30 @@
             android:background="@drawable/rounder_view_bottom_sheet" />
 
         <TextView
+            style="@style/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:fontFamily="@font/ys_display_medium"
             android:gravity="center"
             android:paddingHorizontal="16dp"
-            android:layout_marginVertical="16dp"
             android:paddingTop="12dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:text="@string/bottom_sheet_add_to_playlist"
-            style="@style/bottom_sheet" />
+            android:text="@string/bottom_sheet_add_to_playlist" />
 
         <Button
             android:id="@+id/button_create_new_playlist_player"
+            style="@style/button_item_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/new_playlist"
             android:layout_gravity="center_horizontal"
             android:layout_marginVertical="16dp"
-            style="@style/button_item_update"
-            />
+            android:text="@string/new_playlist" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playlist_recycler_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"/>
+            android:layout_marginVertical="8dp" />
 
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
