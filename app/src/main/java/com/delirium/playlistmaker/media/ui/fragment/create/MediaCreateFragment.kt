@@ -1,10 +1,7 @@
 package com.delirium.playlistmaker.media.ui.fragment.create
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,7 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -28,11 +24,8 @@ import com.delirium.playlistmaker.databinding.FragmentMediaCreateBinding
 import com.delirium.playlistmaker.media.ui.models.MediaCreateState
 import com.delirium.playlistmaker.media.ui.viewmodel.MediaCreateViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
 
 class MediaCreateFragment : Fragment() {
     private val viewModel by viewModel<MediaCreateViewModel>()
@@ -114,15 +107,10 @@ class MediaCreateFragment : Fragment() {
         })
         binding.mediaCreateButton.setOnClickListener {
             if (it.isEnabled) {
-                var nameImage: String? = null
-                currentImageUri?.let { imageUri ->
-                    nameImage = (System.currentTimeMillis()/1000).toString()
-                    saveImageToPrivateStorage(imageUri, nameImage!!)
-                }
                 viewModel.clickButtonCreate(
                     name = binding.mediaCreateName.text.toString(),
                     description = binding.mediaCreateDescription.text.toString(),
-                    image = nameImage
+                    uri = currentImageUri
                 )
             }
         }
@@ -145,24 +133,7 @@ class MediaCreateFragment : Fragment() {
         pickMedia.launch(
             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
         )
-//        binding.mediaCreateImage.scaleType = ImageView.ScaleType.CENTER_CROP
-//        binding.mediaCreateImage.setBackgroundResource(R.drawable.rounder_create_media)
     }
-
-    private fun saveImageToPrivateStorage(uri: Uri, nameImage: String) {
-        val filePath =
-            File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), FILES_DIR)
-        if (!filePath.exists()) {
-            filePath.mkdirs()
-        }
-        val file = File(filePath, nameImage)
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
-    }
-
     private fun closeScreen() {
         if(binding.mediaCreateName.text.toString().trim() != ""
             || binding.mediaCreateDescription.text.toString().trim() != ""
@@ -173,9 +144,5 @@ class MediaCreateFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
-    }
-
-    companion object {
-        const val FILES_DIR = "playlist_maker_image"
     }
 }

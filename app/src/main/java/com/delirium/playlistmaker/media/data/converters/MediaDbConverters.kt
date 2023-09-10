@@ -11,7 +11,8 @@ class MediaDbConverters {
             description = entity.description,
             image = entity.image,
             songList = entity.songList,
-            countSong = entity.countSong
+            countSong = entity.countSong,
+            filePath = entity.filePath
         )
     }
 
@@ -22,7 +23,8 @@ class MediaDbConverters {
             description = data.description,
             image = data.image,
             songList = data.songList,
-            countSong = data.countSong
+            countSong = data.countSong,
+            filePath = data.filePath
         )
     }
 }
