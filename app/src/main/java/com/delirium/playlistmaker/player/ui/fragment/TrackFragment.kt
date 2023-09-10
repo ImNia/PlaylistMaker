@@ -96,10 +96,10 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
                 is TrackScreenState.BottomSheetFinished -> {
                     if(screenState.isSuccess) {
                         showMessage(getString(R.string.bottom_sheet_added_to_playlist, screenState.name))
+                        closeBottomSheet()
                     } else {
                         showMessage(getString(R.string.bottom_sheet_exist_to_playlist, screenState.name))
                     }
-                    closeBottomSheet()
                 }
             }
         }
