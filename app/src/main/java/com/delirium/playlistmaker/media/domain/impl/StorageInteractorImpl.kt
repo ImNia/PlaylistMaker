@@ -20,7 +20,7 @@ class StorageInteractorImpl(
             filePath.mkdirs()
         }
 
-        val nameImage: String = (System.currentTimeMillis()/1000).toString()
+        val nameImage: String = (System.currentTimeMillis()/ COUNT_MILLIS).toString()
         val file = File(filePath, nameImage)
         val inputStream = context.contentResolver.openInputStream(uri)
         val outputStream = FileOutputStream(file)
@@ -32,5 +32,8 @@ class StorageInteractorImpl(
             name = nameImage,
             filePath = file.toString()
         )
+    }
+    companion object {
+        const val COUNT_MILLIS = 1000
     }
 }
