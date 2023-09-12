@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.media.ui.fragment.playlist
+package com.delirium.playlistmaker.media.ui.fragment.media
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,8 @@ import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.media.domain.model.PlayListData
 
 class PlayListAdapter(
-    private val context: Context
+    private val context: Context,
+    private val listener: ClickListenerPlaylist
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var data: List<PlayListData> = listOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -19,6 +20,10 @@ class PlayListAdapter(
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as PlayListViewHolder).bind(data[position])
+        (holder as PlayListViewHolder).bind(data[position], listener)
     }
+}
+
+interface ClickListenerPlaylist {
+    fun clickOnPlaylist(id: Long)
 }

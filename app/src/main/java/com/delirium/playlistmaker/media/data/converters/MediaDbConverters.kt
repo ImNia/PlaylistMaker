@@ -7,6 +7,7 @@ import kotlin.random.Random
 class MediaDbConverters {
     fun map(entity: PlayListEntity): PlayListData {
         return PlayListData(
+            id = entity.id,
             name = entity.name ?: "",
             description = entity.description,
             image = entity.image,
@@ -18,7 +19,7 @@ class MediaDbConverters {
 
     fun map(data: PlayListData): PlayListEntity {
         return PlayListEntity(
-            id = Random.nextLong(),
+            id = data.id,
             name = data.name,
             description = data.description,
             image = data.image,

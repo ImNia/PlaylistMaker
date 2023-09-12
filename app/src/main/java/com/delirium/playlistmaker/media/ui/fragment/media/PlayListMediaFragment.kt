@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.media.ui.fragment.playlist
+package com.delirium.playlistmaker.media.ui.fragment.media
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,17 +9,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentPlayListMediaBinding
-import com.delirium.playlistmaker.media.ui.models.PlayListState
+import com.delirium.playlistmaker.media.ui.models.PlaylistMediaState
 import com.delirium.playlistmaker.media.ui.viewmodel.PlayListMediaViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlayListMediaFragment : Fragment() {
+class PlayListMediaFragment : Fragment(), ClickListenerPlaylist {
 
     private lateinit var binding: FragmentPlayListMediaBinding
     private val viewModel by viewModel<PlayListMediaViewModel>()
 
     private val adapter by lazy {
-        PlayListAdapter(requireContext())
+        PlayListAdapter(requireContext(), this)
     }
 
     override fun onCreateView(
@@ -41,10 +41,10 @@ class PlayListMediaFragment : Fragment() {
 
         viewModel.getPlayListLiveData().observe(viewLifecycleOwner) { state ->
             when(state) {
-                PlayListState.Empty -> {
+                PlaylistMediaState.Empty -> {
                     changeVisibility(true)
                 }
-                is PlayListState.Content -> {
+                is PlaylistMediaState.Content -> {
                     changeVisibility(false)
                     adapter.data = state.data
                     adapter.notifyDataSetChanged()
@@ -67,9 +67,18 @@ class PlayListMediaFragment : Fragment() {
             binding.textProblemItem.visibility = View.GONE
         }
     }
+    override fun clickOnPlaylist(id: Long) {
+        val bundle = Bundle()
+        bundle.putString(PLAYLIST_ID, id.toString())
+        findNavController().navigate(
+            R.id.action_mediaFragment_to_playlistFragment,
+            bundle
+        )
+    }
+
     companion object {
         fun newInstance() = PlayListMediaFragment()
-
         const val COUNT_GRID = 2
+        private const val PLAYLIST_ID = "PLAYLIST_ID"
     }
 }

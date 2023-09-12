@@ -13,4 +13,7 @@ interface MediaDao {
 
     @Query("SELECT * FROM play_list_table")
     suspend fun getPlaylists(): List<PlayListEntity>
+
+    @Query("SELECT * FROM play_list_table WHERE id = :idPlaylist")
+    suspend fun getPlaylist(idPlaylist: Long): PlayListEntity
 }

@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.media.ui.fragment.playlist
+package com.delirium.playlistmaker.media.ui.fragment.media
 
 import android.content.Context
 import android.view.View
@@ -25,7 +25,7 @@ class PlayListViewHolder(
         count = itemView.findViewById(R.id.playlist_count_item)
     }
 
-    fun bind(data: PlayListData) {
+    fun bind(data: PlayListData, listener: ClickListenerPlaylist) {
         name.text = data.name
         count.text = context.getString(R.string.playlist_count_song, data.countSong.toString())
 
@@ -40,6 +40,9 @@ class PlayListViewHolder(
                     )
                 )
                 .into(image)
+        }
+        itemView.setOnClickListener {
+            listener.clickOnPlaylist(data.id)
         }
     }
 }

@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".media.ui.fragment.playlist.PlayListMediaFragment">
+    tools:context=".media.ui.fragment.media.PlayListMediaFragment">
 
     <Button
         android:id="@+id/button_create_new_playlist"

@@ -12,6 +12,7 @@ import com.delirium.playlistmaker.media.ui.models.MediaCreateState
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class MediaCreateViewModel(
     private val interactor: MediaCreateInteractor,
@@ -39,6 +40,7 @@ class MediaCreateViewModel(
             }
             interactor.savePlayList(
                 PlayListData(
+                    id = Random.nextLong(),
                     name = name,
                     description = description,
                     image = imageInfo.name,
