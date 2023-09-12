@@ -16,6 +16,7 @@ import com.delirium.playlistmaker.media.ui.models.PlaylistState
 import com.delirium.playlistmaker.media.ui.models.SongPlaylistState
 import com.delirium.playlistmaker.media.ui.viewmodel.PlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Calendar
 
 class PlaylistFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistBinding
@@ -47,7 +48,7 @@ class PlaylistFragment : Fragment() {
         viewModel.getSongsStateLiveData().observe(viewLifecycleOwner) { songState ->
             when(songState) {
                 is SongPlaylistState.Content -> {
-                    Log.d("TEST", "${songState.data}")
+//                    Log.d("TEST", "${songState.data}")
                 }
                 SongPlaylistState.Empty -> {}
             }
@@ -55,6 +56,8 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun updateScreen(playlist: PlayListData) {
+        Log.d("TEST", Calendar.getInstance().get(Calendar.YEAR).toString())
+        Log.d("TEST", "${playlist}")
         Glide.with(this)
             .load(playlist.filePath)
             .placeholder(R.drawable.not_image)
@@ -62,7 +65,7 @@ class PlaylistFragment : Fragment() {
             .into(binding.playlistImage)
         binding.playlistImage.scaleType = ImageView.ScaleType.FIT_CENTER
         binding.playlistName.text = playlist.name
-        binding.playlistYear.text = "31312"
+        binding.playlistYear.text = playlist.year
         binding.playlistDuration.text = "???"
         binding.playlistCountTrack.text = playlist.countSong.toString()
     }

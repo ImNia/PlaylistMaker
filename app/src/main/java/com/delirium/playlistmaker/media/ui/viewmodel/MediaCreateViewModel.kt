@@ -12,6 +12,7 @@ import com.delirium.playlistmaker.media.ui.models.MediaCreateState
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import kotlin.random.Random
 
 class MediaCreateViewModel(
@@ -44,7 +45,8 @@ class MediaCreateViewModel(
                     name = name,
                     description = description,
                     image = imageInfo.name,
-                    filePath = imageInfo.filePath
+                    filePath = imageInfo.filePath,
+                    year = Calendar.getInstance().get(Calendar.YEAR).toString()
                 )
             ).collect { result ->
                 if(result) {

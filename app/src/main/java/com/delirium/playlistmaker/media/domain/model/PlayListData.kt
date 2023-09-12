@@ -7,5 +7,6 @@ data class PlayListData(
     val image: String? = null,
     val songList: String? = null,
     val countSong: Long = 0,
-    val filePath: String? = null
+    val filePath: String? = null,
+    val year: String? = null
 )
