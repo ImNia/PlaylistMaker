@@ -19,7 +19,7 @@ class PlayListMediaFragment : Fragment(), ClickListenerPlaylist {
     private val viewModel by viewModel<PlayListMediaViewModel>()
 
     private val adapter by lazy {
-        PlayListAdapter(requireContext(), this)
+        PlayListMediaAdapter(requireContext(), this)
     }
 
     override fun onCreateView(

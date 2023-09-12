@@ -24,11 +24,23 @@ class PlaylistRepositoryImpl(
         val songs = mutableListOf<SongItemPlaylist>()
         if(playlist.songList != null) {
             for (item in playlist.songList.split(" ")) {
-                songs.add(converterSongs.map(
-                    appDatabase.mediaDao().getSongPlaylist(item.toLong())
-                ))
+                if(item.trim() != "") {
+                    songs.add(converterSongs.map(
+                        appDatabase.mediaDao().getSongPlaylist(item.toLong())
+                    ))
+                }
             }
         }
         emit(songs)
+    }
+
+    override suspend fun deleteSongPlaylist(song: SongItemPlaylist, idPlaylist: Long) {
+        val playlist = appDatabase.mediaDao().getPlaylist(idPlaylist)
+        appDatabase.mediaDao().changePlaylist(
+            playlist.copy(
+                songList = playlist.songList?.replace(song.trackId, "")?.trim(),
+                countSong = playlist.countSong.dec()
+            )
+        )
     }
 }

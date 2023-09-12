@@ -16,4 +16,8 @@ class PlaylistInteractorImpl(
     override fun getSongsPlaylist(idPlaylist: Long): Flow<List<SongItemPlaylist>> {
         return repository.getSongsPlaylist(idPlaylist)
     }
+
+    override suspend fun deleteSongPlaylist(song: SongItemPlaylist, idPlaylist: Long) {
+        repository.deleteSongPlaylist(song, idPlaylist)
+    }
 }

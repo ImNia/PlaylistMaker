@@ -70,5 +70,9 @@
     <fragment
         android:id="@+id/playlistFragment"
         android:name="com.delirium.playlistmaker.media.ui.fragment.playlist.PlaylistFragment"
-        android:label="PlaylistFragment" />
+        android:label="PlaylistFragment" >
+        <action
+            android:id="@+id/action_playlistFragment_to_trackFragment"
+            app:destination="@id/trackFragment" />
+    </fragment>
 </navigation>

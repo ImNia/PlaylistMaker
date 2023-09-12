@@ -11,7 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.media.domain.model.PlayListData
 
-class PlayListViewHolder(
+class PlayListMediaViewHolder(
     itemView: View,
     private val context: Context
 ): RecyclerView.ViewHolder(itemView) {

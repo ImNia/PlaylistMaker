@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface PlaylistRepository {
     fun getPlaylist(id: Long): Flow<PlayListData>
     fun getSongsPlaylist(idPlaylist: Long): Flow<List<SongItemPlaylist>>
+    suspend fun deleteSongPlaylist(song: SongItemPlaylist, idPlaylist: Long)
 }

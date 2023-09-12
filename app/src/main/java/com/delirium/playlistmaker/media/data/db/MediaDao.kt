@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.delirium.playlistmaker.utils.db.PlayListEntity
 import com.delirium.playlistmaker.utils.db.SongPlaylistEntity
 
@@ -14,6 +15,9 @@ interface MediaDao {
 
     @Query("SELECT * FROM play_list_table")
     suspend fun getPlaylists(): List<PlayListEntity>
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun changePlaylist(playList: PlayListEntity)
 
     @Query("SELECT * FROM play_list_table WHERE id = :idPlaylist")
     suspend fun getPlaylist(idPlaylist: Long): PlayListEntity
