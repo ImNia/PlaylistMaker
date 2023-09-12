@@ -4,6 +4,7 @@
     <dimen name="text_item_setting_size">16sp</dimen>
     <dimen name="text_item_sub_size">11sp</dimen>
     <dimen name="corner_radius_button">16dp</dimen>
+    <dimen name="corner_without_radius_button">0dp</dimen>
     <dimen name="padding_setting_top_bottom">20dp</dimen>
     <dimen name="padding_setting_start_end">16dp</dimen>
     <dimen name="setting_height">60dp</dimen>
@@ -36,4 +37,6 @@
     <dimen name="text_tabs_layout_size">16sp</dimen>
 
     <dimen name="switch_alpha">0.48</dimen>
+    <dimen name="padding_top_bottom">20dp</dimen>
+    <dimen name="text_size_sub">14sp</dimen>
 </resources>

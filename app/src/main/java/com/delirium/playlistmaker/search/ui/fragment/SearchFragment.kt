@@ -1,7 +1,6 @@
 package com.delirium.playlistmaker.search.ui.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,10 +10,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentSearchBinding
-import com.delirium.playlistmaker.player.ui.activity.TrackActivity
 import com.delirium.playlistmaker.search.domain.model.ErrorItem
 import com.delirium.playlistmaker.search.domain.model.ModelForAdapter
 import com.delirium.playlistmaker.search.domain.model.NotFoundItem
@@ -174,9 +173,12 @@ class SearchFragment : Fragment(), ClickListener {
     }
 
     private fun openSongDescription(trackId: String) {
-        val descSongIntent = Intent(requireContext(), TrackActivity::class.java)
-        descSongIntent.putExtra(TRACK_ID, trackId)
-        startActivity(descSongIntent)
+        val bundle = Bundle()
+        bundle.putString(TRACK_ID, trackId)
+        findNavController().navigate(
+            R.id.action_searchFragment_to_trackFragment,
+            bundle
+        )
     }
 
     override fun clickUpdate() {

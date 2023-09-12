@@ -1,5 +1,6 @@
 package com.delirium.playlistmaker.di
 
+import com.delirium.playlistmaker.media.ui.viewmodel.MediaCreateViewModel
 import com.delirium.playlistmaker.media.ui.viewmodel.FavoriteTrackViewModel
 import com.delirium.playlistmaker.media.ui.viewmodel.MediaViewModel
 import com.delirium.playlistmaker.media.ui.viewmodel.PlayListMediaViewModel
@@ -19,7 +20,7 @@ val viewModelModule = module {
     /** Player
      * */
     viewModel { params ->
-        TrackViewModel(params.get(), get(), get())
+        TrackViewModel(params.get(), get(), get(), get())
     }
 
     /** Setting
@@ -36,10 +37,14 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PlayListMediaViewModel()
+        PlayListMediaViewModel(get())
     }
 
     viewModel {
         FavoriteTrackViewModel(get())
+    }
+
+    viewModel {
+        MediaCreateViewModel(get(), get())
     }
 }

@@ -1,12 +1,15 @@
 package com.delirium.playlistmaker.player.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delirium.playlistmaker.player.domain.api.PlayerInteractor
+import com.delirium.playlistmaker.player.domain.api.PlaylistInteractor
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.domain.api.TracksInteractor
+import com.delirium.playlistmaker.player.domain.model.PlayListData
 import com.delirium.playlistmaker.player.ui.models.PlayerState
 import com.delirium.playlistmaker.player.ui.models.TrackScreenState
 import kotlinx.coroutines.Job
@@ -18,6 +21,7 @@ class TrackViewModel(
     private val trackId: String,
     private val tracksInteractor: TracksInteractor,
     private val playerInteractor: PlayerInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private var screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
@@ -107,7 +111,7 @@ class TrackViewModel(
 
     fun closeScreen() {
         viewModelScope.launch {
-            playerInteractor.closePlayer().collect() {
+            playerInteractor.closePlayer().collect {
                 playerStateLiveData.value = it
             }
         }
@@ -118,11 +122,57 @@ class TrackViewModel(
         track?.let {
             viewModelScope.launch {
                 tracksInteractor.changeFavoriteState(it.trackId).collect {
+                    Log.d("TEST", "${it}")
                     screenStateLiveData.postValue(
                         TrackScreenState.Content(it)
                     )
                 }
             }
+        }
+    }
+
+    fun openBottomSheet() {
+        viewModelScope.launch {
+            playlistInteractor.getPlaylists().collect { result ->
+                screenStateLiveData.postValue(
+                    TrackScreenState.BottomSheetShow(
+                        data = result
+                    )
+                )
+            }
+        }
+    }
+
+    fun addSongToPlaylist(songId: String, playlist: PlayListData) {
+        if(playlist.songList?.contains(songId) == true) {
+            screenStateLiveData.postValue(
+                TrackScreenState.BottomSheetFinished(
+                    isSuccess = false,
+                    name = playlist.name
+                )
+            )
+        } else {
+            val newPlaylist = playlist.copy(
+                songList = if (playlist.songList == null) songId else playlist.songList + songId,
+                countSong = playlist.countSong.inc()
+            )
+            viewModelScope.launch {
+                tracksInteractor.prepareData(songId).collect { song ->
+                    playlistInteractor.saveSong(song!!)
+                }
+            }
+            viewModelScope.launch {
+                tracksInteractor.prepareData(songId).collect { song ->
+                    playlistInteractor.addSongToPlaylist(newPlaylist, song!!)
+                }
+            }
+
+            screenStateLiveData.postValue(
+                TrackScreenState.BottomSheetFinished(
+                    isSuccess = true,
+                    name = playlist.name
+                )
+            )
         }
     }
 

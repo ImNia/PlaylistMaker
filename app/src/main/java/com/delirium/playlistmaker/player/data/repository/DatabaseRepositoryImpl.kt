@@ -1,5 +1,6 @@
 package com.delirium.playlistmaker.player.data.repository
 
+import android.util.Log
 import com.delirium.playlistmaker.player.data.converters.SongPlayerDbConverters
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.domain.repository.DatabaseRepository
@@ -33,16 +34,11 @@ class DatabaseRepositoryImpl(
     override fun changeFavoriteState(trackId: String): Flow<TrackModel> = flow {
         var item = appDatabase.songPlayerDao().getFavoriteSong(trackId)
         if(item != null) {
-            item = item.copy(isFavorite = if (item.isFavorite == 0) 1 else 0)
-            item.addFavoriteDate = (System.currentTimeMillis() / 1000).toString()
-
-            appDatabase.songPlayerDao().changeFavoriteState(item)
-
-            emit(
-                songDbConverter.mapFavoriteToModel(item).copy(
-                    artworkUrl100 = getCoverArtwork(item.artworkUrl100 ?: "")
-                )
+            item = item.copy(
+                isFavorite = if (item.isFavorite == 0) 1 else 0,
+                addFavoriteDate = (System.currentTimeMillis() / 1000).toString()
             )
+            appDatabase.songPlayerDao().changeFavoriteState(item)
         } else {
             val newItem = appDatabase.songPlayerDao().getSong(trackId)
             if (newItem != null) {
@@ -51,14 +47,23 @@ class DatabaseRepositoryImpl(
                     this.addFavoriteDate = (System.currentTimeMillis() / 1000).toString()
                     appDatabase.songPlayerDao().insertFavoriteSong(this)
                 }
+            } else {
+                Log.d("TEST", "PROBLEM")
             }
         }
-
         appDatabase.songPlayerDao().getSong(trackId)?.let {
             it.isFavorite = if (it.isFavorite == 0) 1 else 0
             appDatabase.songPlayerDao().changeFavoriteStateHistory(it)
         }
 
+        val song = appDatabase.songPlayerDao().getSong(trackId)
+        song?.let {
+            emit(
+                songDbConverter.map(it).copy(
+                    artworkUrl100 = getCoverArtwork(it.artworkUrl100 ?: "")
+                )
+            )
+        }
     }
 
     private fun getCoverArtwork(artworkUrl: String) =

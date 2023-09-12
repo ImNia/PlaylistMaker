@@ -4,10 +4,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".media.ui.fragment.PlayListMediaFragment">
+    tools:context=".media.ui.fragment.playlist.PlayListMediaFragment">
 
     <Button
-        android:id="@+id/button_update_item"
+        android:id="@+id/button_create_new_playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/new_playlist"
@@ -15,6 +15,13 @@
         android:layout_marginTop="20dp"
         style="@style/button_item_update"
         />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlist_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="16dp"/>
 
     <ImageView
         android:id="@+id/image_problem_item"

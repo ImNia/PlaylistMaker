@@ -4,11 +4,17 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.room.Room
 import com.delirium.playlistmaker.media.data.repository.FavoriteRepositoryImpl
+import com.delirium.playlistmaker.media.data.repository.MediaCreateRepositoryImpl
+import com.delirium.playlistmaker.media.data.repository.StorageReposirotyImpl
 import com.delirium.playlistmaker.media.domain.repository.FavoriteRepository
+import com.delirium.playlistmaker.media.domain.repository.MediaCreateRepository
+import com.delirium.playlistmaker.media.domain.repository.StorageRepository
 import com.delirium.playlistmaker.player.data.repository.MediaPlayerRepositoryImpl
 import com.delirium.playlistmaker.player.data.repository.DatabaseRepositoryImpl
+import com.delirium.playlistmaker.player.data.repository.PlaylistRepositoryImpl
 import com.delirium.playlistmaker.player.domain.repository.MediaPlayerRepository
 import com.delirium.playlistmaker.player.domain.repository.DatabaseRepository
+import com.delirium.playlistmaker.player.domain.repository.PlaylistRepository
 import com.delirium.playlistmaker.utils.db.AppDatabase
 import com.delirium.playlistmaker.search.data.network.ITunesServiceApi
 import com.delirium.playlistmaker.search.data.repository.HistoryRepositoryImpl
@@ -65,6 +71,9 @@ val dataModule = module {
         MediaPlayerRepositoryImpl(get())
     }
 
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(get(), get(), get())
+    }
     /** Setting
      * */
     single<SettingsRepository> {
@@ -88,5 +97,13 @@ val dataModule = module {
      * */
     single<FavoriteRepository> {
         FavoriteRepositoryImpl(get(), get())
+    }
+
+    single<MediaCreateRepository> {
+        MediaCreateRepositoryImpl(get(), get())
+    }
+
+    single<StorageRepository> {
+        StorageReposirotyImpl(get())
     }
 }
