@@ -1,16 +1,19 @@
 package com.delirium.playlistmaker.media.ui.fragment.playlist
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentPlaylistBinding
 import com.delirium.playlistmaker.media.domain.model.PlayListData
 import com.delirium.playlistmaker.media.ui.models.PlaylistState
+import com.delirium.playlistmaker.media.ui.models.SongPlaylistState
 import com.delirium.playlistmaker.media.ui.viewmodel.PlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,6 +43,15 @@ class PlaylistFragment : Fragment() {
                 is PlaylistState.Error -> {}
             }
         }
+
+        viewModel.getSongsStateLiveData().observe(viewLifecycleOwner) { songState ->
+            when(songState) {
+                is SongPlaylistState.Content -> {
+                    Log.d("TEST", "${songState.data}")
+                }
+                SongPlaylistState.Empty -> {}
+            }
+        }
     }
 
     private fun updateScreen(playlist: PlayListData) {
@@ -48,6 +60,7 @@ class PlaylistFragment : Fragment() {
             .placeholder(R.drawable.not_image)
             .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_description_image)))
             .into(binding.playlistImage)
+        binding.playlistImage.scaleType = ImageView.ScaleType.FIT_CENTER
         binding.playlistName.text = playlist.name
         binding.playlistYear.text = "31312"
         binding.playlistDuration.text = "???"

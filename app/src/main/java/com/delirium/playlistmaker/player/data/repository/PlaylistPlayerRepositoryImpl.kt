@@ -1,7 +1,7 @@
 package com.delirium.playlistmaker.player.data.repository
 
 import com.delirium.playlistmaker.player.data.converters.PlaylistDbConverters
-import com.delirium.playlistmaker.player.data.converters.SongPlaylistDbConverters
+import com.delirium.playlistmaker.player.data.converters.SongPlaylistPlayerDbConverters
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.player.domain.repository.PlaylistPlayerRepository
 import com.delirium.playlistmaker.player.domain.model.PlayListData
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 class PlaylistPlayerRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val converter: PlaylistDbConverters,
-    private val converterSongPlaylist: SongPlaylistDbConverters
+    private val converterSongPlaylist: SongPlaylistPlayerDbConverters
 ): PlaylistPlayerRepository {
     override fun getPlaylists(): Flow<List<PlayListData>> = flow {
         appDatabase.playlistPlayerDao().getPlaylists().apply {

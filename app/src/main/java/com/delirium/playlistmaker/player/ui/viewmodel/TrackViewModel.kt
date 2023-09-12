@@ -152,7 +152,7 @@ class TrackViewModel(
             )
         } else {
             val newPlaylist = playlist.copy(
-                songList = if (playlist.songList == null) songId else playlist.songList + songId,
+                songList = if (playlist.songList == null) songId else playlist.songList + " " + songId,
                 countSong = playlist.countSong.inc()
             )
             viewModelScope.launch {

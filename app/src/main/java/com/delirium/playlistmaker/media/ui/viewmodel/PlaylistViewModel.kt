@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delirium.playlistmaker.media.domain.api.PlaylistInteractor
 import com.delirium.playlistmaker.media.ui.models.PlaylistState
+import com.delirium.playlistmaker.media.ui.models.SongPlaylistState
 import kotlinx.coroutines.launch
 
 class PlaylistViewModel(
@@ -12,6 +13,9 @@ class PlaylistViewModel(
 ): ViewModel() {
     private val playlistStateLiveData = MutableLiveData<PlaylistState>()
     fun getPlaylistStateLiveData(): MutableLiveData<PlaylistState> = playlistStateLiveData
+
+    private val songsStateLiveData = MutableLiveData<SongPlaylistState>()
+    fun getSongsStateLiveData(): MutableLiveData<SongPlaylistState> = songsStateLiveData
 
     fun initData(id: String?) {
         if(id == null) {
@@ -24,6 +28,13 @@ class PlaylistViewModel(
                     playlistStateLiveData.postValue(
                         PlaylistState.Content(it)
                     )
+                }
+                interactor.getSongsPlaylist(id.toLong()).collect { songs ->
+                    if(songs.isEmpty()) {
+                        songsStateLiveData.postValue(SongPlaylistState.Empty)
+                    } else {
+                        songsStateLiveData.postValue(SongPlaylistState.Content(songs))
+                    }
                 }
             }
         }

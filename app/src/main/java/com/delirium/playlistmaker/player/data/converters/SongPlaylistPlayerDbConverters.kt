@@ -3,7 +3,7 @@ package com.delirium.playlistmaker.player.data.converters
 import com.delirium.playlistmaker.player.domain.model.TrackModel
 import com.delirium.playlistmaker.utils.db.SongPlaylistEntity
 
-class SongPlaylistDbConverters {
+class SongPlaylistPlayerDbConverters {
     fun map(song: SongPlaylistEntity): TrackModel {
         return TrackModel(
             trackId = song.trackId,
@@ -22,15 +22,15 @@ class SongPlaylistDbConverters {
     fun map(songEntity: TrackModel): SongPlaylistEntity {
         return SongPlaylistEntity(
             trackId = songEntity.trackId,
-            trackName = songEntity.trackName ?: "",
-            artistName = songEntity.artistName ?: "",
+            trackName = songEntity.trackName,
+            artistName = songEntity.artistName,
             collectionName = songEntity.collectionName,
-            trackTimeMillis = songEntity.trackTimeMillis ?: 0,
-            artworkUrl100 = songEntity.artworkUrl100 ?: "",
-            releaseDate = songEntity.releaseDate ?: "",
-            country = songEntity.country ?: "",
-            primaryGenreName = songEntity.primaryGenreName ?: "",
-            previewUrl = songEntity.previewUrl ?: "",
+            trackTimeMillis = songEntity.trackTimeMillis,
+            artworkUrl100 = songEntity.artworkUrl100,
+            releaseDate = songEntity.releaseDate,
+            country = songEntity.country,
+            primaryGenreName = songEntity.primaryGenreName,
+            previewUrl = songEntity.previewUrl,
             isFavorite = if(songEntity.isFavorite) 1 else 0,
         )
     }

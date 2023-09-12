@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.delirium.playlistmaker.utils.db.PlayListEntity
+import com.delirium.playlistmaker.utils.db.SongPlaylistEntity
 
 @Dao
 interface MediaDao {
@@ -16,4 +17,7 @@ interface MediaDao {
 
     @Query("SELECT * FROM play_list_table WHERE id = :idPlaylist")
     suspend fun getPlaylist(idPlaylist: Long): PlayListEntity
+
+    @Query("SELECT * FROM song_playlist_table WHERE trackId = :idTrack")
+    suspend fun getSongPlaylist(idTrack: Long): SongPlaylistEntity
 }
