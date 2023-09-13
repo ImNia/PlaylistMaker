@@ -20,4 +20,12 @@ class PlaylistInteractorImpl(
     override suspend fun deleteSongPlaylist(song: SongItemPlaylist, idPlaylist: Long) {
         repository.deleteSongPlaylist(song, idPlaylist)
     }
+
+    override suspend fun deletePlaylist(id: Long) {
+        repository.deletePlaylist(id)
+    }
+
+    override suspend fun deleteSongs(songs: List<SongItemPlaylist>) {
+        repository.deleteSongs(songs)
+    }
 }

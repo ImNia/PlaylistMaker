@@ -24,4 +24,10 @@ interface MediaDao {
 
     @Query("SELECT * FROM song_playlist_table WHERE trackId = :idTrack")
     suspend fun getSongPlaylist(idTrack: Long): SongPlaylistEntity
+
+    @Query("DELETE FROM play_list_table WHERE id=:id")
+    suspend fun deletePlaylist(id: Long)
+
+    @Query("DELETE FROM song_playlist_table WHERE trackId=:trackId")
+    suspend fun deleteSong(trackId: String)
 }

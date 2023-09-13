@@ -1,6 +1,4 @@
-package com.delirium.playlistmaker.settings.model
-
-import com.delirium.playlistmaker.sharing.model.EmailData
+package com.delirium.playlistmaker.sharing.model
 
 data class ContentSharing(
     val data: List<Pair<String, String>>? = listOf(),

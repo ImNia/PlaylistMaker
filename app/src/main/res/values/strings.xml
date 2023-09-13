@@ -60,5 +60,11 @@
     <string name="bottom_sheet_exist_to_playlist">Трек уже добавлен в плейлист %1$s</string>
 
     <string name="playlist_question_delete_song">Хотите удалить трек?</string>
+    <string name="playlist_question_delete_playlist">Хотите удалить плейлист?</string>
     <string name="yes">да</string>
+    <string name="playlist_share_not_songs">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="playlist_share_theme">Мой плейлист</string>
+    <string name="playlist_share">Поделиться</string>
+    <string name="playlist_edit_info">Редактировать информацию</string>
+    <string name="playlist_delete">Удалить плейлист</string>
 </resources>

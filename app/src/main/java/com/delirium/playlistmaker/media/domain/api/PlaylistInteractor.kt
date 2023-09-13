@@ -8,4 +8,6 @@ interface PlaylistInteractor {
     fun getPlaylist(id: Long): Flow<PlayListData>
     fun getSongsPlaylist(idPlaylist: Long): Flow<List<SongItemPlaylist>>
     suspend fun deleteSongPlaylist(song: SongItemPlaylist, idPlaylist: Long)
+    suspend fun deletePlaylist(id: Long)
+    suspend fun deleteSongs(songs: List<SongItemPlaylist>)
 }

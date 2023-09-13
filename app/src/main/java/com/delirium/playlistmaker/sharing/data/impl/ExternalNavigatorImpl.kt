@@ -3,7 +3,7 @@ package com.delirium.playlistmaker.sharing.data.impl
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.delirium.playlistmaker.settings.model.ContentSharing
+import com.delirium.playlistmaker.sharing.model.ContentSharing
 import com.delirium.playlistmaker.sharing.domain.ExternalNavigator
 import java.lang.Exception
 

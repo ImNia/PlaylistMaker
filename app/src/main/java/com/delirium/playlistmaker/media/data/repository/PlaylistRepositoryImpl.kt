@@ -42,5 +42,35 @@ class PlaylistRepositoryImpl(
                 countSong = playlist.countSong.dec()
             )
         )
+        if(isNotExistsSongInPlaylists(song.trackId.trim())) {
+            appDatabase.mediaDao().deleteSong(song.trackId)
+        }
+    }
+
+    override suspend fun deleteSongs(songs: List<SongItemPlaylist>) {
+        for (songItem in songs) {
+            if(isNotExistsSongInPlaylists(songItem.trackId.trim())) {
+                appDatabase.mediaDao().deleteSong(songItem.trackId.trim())
+            }
+        }
+    }
+
+    private suspend fun isNotExistsSongInPlaylists(songId: String): Boolean {
+        val playlists = appDatabase.mediaDao().getPlaylists()
+        var notExist = true
+        for(item in playlists) {
+            if(item.songList != null) {
+                for(songItem in item.songList.split(" ")) {
+                    if(songItem.trim() == songId) {
+                        notExist = false
+                    }
+                }
+            }
+        }
+        return notExist
+    }
+    override suspend fun deletePlaylist(id: Long) {
+//        val songs = appDatabase.mediaDao().getPlaylist(id).songList?.split(" ")
+        appDatabase.mediaDao().deletePlaylist(id)
     }
 }

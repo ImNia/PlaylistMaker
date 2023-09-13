@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentSettingsBinding
-import com.delirium.playlistmaker.settings.model.ContentSharing
+import com.delirium.playlistmaker.sharing.model.ContentSharing
 import com.delirium.playlistmaker.settings.model.StateSharing
 import com.delirium.playlistmaker.settings.ui.viewmodel.SettingViewModel
 import com.delirium.playlistmaker.sharing.model.EmailData
