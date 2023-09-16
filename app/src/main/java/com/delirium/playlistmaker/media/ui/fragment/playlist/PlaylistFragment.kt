@@ -1,7 +1,6 @@
 package com.delirium.playlistmaker.media.ui.fragment.playlist
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -90,10 +89,10 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
             when (screenState) {
                 is ScreenState.NotSongs -> {
                     showMessage(getString(R.string.playlist_share_not_songs))
+                    bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_HIDDEN
                 }
 
                 is ScreenState.ShareSongs -> {
-                    Log.d("TEST", "in share state${screenState.message}")
                     viewModel.sharing(
                         ContentSharing(
                             emailData = EmailData(
@@ -103,6 +102,7 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
                             )
                         )
                     )
+                    bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_HIDDEN
                 }
 
                 is ScreenState.CloseScreen -> {

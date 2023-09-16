@@ -40,6 +40,10 @@ class TrackViewModel(
                         TrackScreenState.Content(trackModel)
                     )
                     track = trackModel
+                } else {
+                    screenStateLiveData.postValue(
+                        TrackScreenState.Loading
+                    )
                 }
             }
         }

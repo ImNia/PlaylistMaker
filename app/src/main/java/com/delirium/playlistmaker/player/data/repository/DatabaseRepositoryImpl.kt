@@ -28,6 +28,8 @@ class DatabaseRepositoryImpl(
                     artworkUrl100 = getCoverArtwork(item.artworkUrl100 ?: "")
                 )
             )
+        } else {
+            emit(null)
         }
     }
 

@@ -85,6 +85,7 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
 
                 is TrackScreenState.Loading -> {
                     changeContentVisibility(loading = true)
+                    viewModel.initViewModel()
                 }
 
                 is TrackScreenState.PlayerNotPrepared -> {
