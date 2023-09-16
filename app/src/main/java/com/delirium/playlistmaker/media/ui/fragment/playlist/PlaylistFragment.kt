@@ -80,15 +80,18 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
                     updateSongsInfo(songState.data)
                 }
 
-                SongPlaylistState.Empty -> {}
+                SongPlaylistState.Empty -> {
+                    updateSongsInfo(listOf())
+                }
             }
         }
 
         viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
-            when(screenState) {
+            when (screenState) {
                 is ScreenState.NotSongs -> {
                     showMessage(getString(R.string.playlist_share_not_songs))
                 }
+
                 is ScreenState.ShareSongs -> {
                     Log.d("TEST", "in share state${screenState.message}")
                     viewModel.sharing(
@@ -101,9 +104,11 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
                         )
                     )
                 }
+
                 is ScreenState.CloseScreen -> {
                     closeScreen()
                 }
+
                 is ScreenState.EditPlaylist -> {
                     val bundle = Bundle()
                     bundle.putString(PLAYLIST_ID, screenState.idPlaylist.toString())
@@ -143,8 +148,7 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
         binding.playlistImage.scaleType = ImageView.ScaleType.CENTER_CROP
         binding.playlistName.text = playlist.name
         binding.playlistYear.text = playlist.year
-        binding.playlistCountTrack.text =
-            getString(R.string.playlist_count_song, playlist.countSong.toString())
+        binding.playlistCountTrack.text = getCorrectVersionTextNumberTrack(playlist.countSong)
 
         Glide.with(this)
             .load(playlist.filePath)
@@ -152,14 +156,20 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
             .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_description_image)))
             .into(binding.playlistImageItemBottomSheet)
         binding.playlistNameItemBottomSheet.text = playlist.name
-        binding.playlistCountItemBottomSheet.text = getString(R.string.playlist_count_song, playlist.countSong.toString())
+        binding.playlistCountItemBottomSheet.text = getCorrectVersionTextNumberTrack(playlist.countSong)
     }
 
     private fun updateSongsInfo(songs: List<SongItemPlaylist>) {
-        binding.playlistDuration.text = getString(
-            R.string.playlist_duration_song,
-            SimpleDateFormat("mm", Locale.getDefault()).format(duration(songs))
-        )
+        val duration = duration(songs)
+        binding.playlistDuration.text = if (duration >= 600000) {
+            getCorrectVersionTextDuration(
+                SimpleDateFormat("mm", Locale.getDefault()).format(duration(songs)).toLong()
+            )
+        } else {
+            getCorrectVersionTextDuration(
+                SimpleDateFormat("m", Locale.getDefault()).format(duration(songs)).toLong()
+            )
+        }
         adapter.data = songs
         adapter.notifyDataSetChanged()
     }
@@ -183,6 +193,7 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
             findNavController().popBackStack()
         }
     }
+
     override fun clickOnSong(song: SongItemPlaylist) {
         val bundle = Bundle()
         bundle.putString(TRACK_ID, song.trackId)
@@ -219,6 +230,30 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
                     viewModel.deletePlaylist()
                 }
             confirmDialog.show()
+        }
+    }
+
+    private fun getCorrectVersionTextNumberTrack(value: Long) = when(value % 10) {
+        1L -> {
+            getString(R.string.playlist_count_song_v2, value.toString())
+        }
+        2L, 3L, 4L -> {
+            getString(R.string.playlist_count_song_v3, value.toString())
+        }
+        else -> {
+            getString(R.string.playlist_count_song_v1, value.toString())
+        }
+    }
+
+    private fun getCorrectVersionTextDuration(value: Long) = when(value % 10) {
+        1L -> {
+            getString(R.string.playlist_duration_song_v2, value.toString())
+        }
+        2L, 3L, 4L -> {
+            getString(R.string.playlist_duration_song_v3, value.toString())
+        }
+        else -> {
+            getString(R.string.playlist_duration_song_v1, value.toString())
         }
     }
     companion object {

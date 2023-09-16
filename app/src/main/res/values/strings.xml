@@ -48,8 +48,6 @@
     <string name="edit_hint_media_create_description">Описание</string>
     <string name="create_button_media">Создать</string>
     <string name="playlist_created">Плейлист %1$s создан</string>
-    <string name="playlist_count_song">%1$s треков</string>
-    <string name="playlist_duration_song">%1$s минут</string>
     <string name="create_playlist_dialog_title">Завершить создание плейлиста?</string>
     <string name="create_playlist_dialog_message">Все несохраненные данные будут потеряны</string>
     <string name="create_playlist_dialog_neutral">Отмена</string>
@@ -72,4 +70,12 @@
     <string name="edit_playlist_button">Сохранить</string>
     <string name="edit_playlist_dialog_title">Завершить редактирование плейлиста?</string>
     <string name="playlist_updated">Плейлист %1$s изменен</string>
+
+    <string name="playlist_count_song_v1">%1$s треков</string>
+    <string name="playlist_count_song_v2">%1$s трек</string>
+    <string name="playlist_count_song_v3">%1$s трека</string>
+
+    <string name="playlist_duration_song_v1">%1$s минут</string>
+    <string name="playlist_duration_song_v2">%1$s минута</string>
+    <string name="playlist_duration_song_v3">%1$s минуты</string>
 </resources>

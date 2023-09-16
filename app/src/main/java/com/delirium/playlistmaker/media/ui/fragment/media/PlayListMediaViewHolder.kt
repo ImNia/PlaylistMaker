@@ -27,7 +27,7 @@ class PlayListMediaViewHolder(
 
     fun bind(data: PlayListData, listener: ClickListenerPlaylist) {
         name.text = data.name
-        count.text = context.getString(R.string.playlist_count_song, data.countSong.toString())
+        count.text = getCorrectVersionTextNumberTrack(data.countSong)
 
         data.image?.let {
             Glide.with(itemView)
@@ -43,6 +43,18 @@ class PlayListMediaViewHolder(
         }
         itemView.setOnClickListener {
             listener.clickOnPlaylist(data.id)
+        }
+    }
+
+    private fun getCorrectVersionTextNumberTrack(value: Long) = when(value % 10) {
+        1L -> {
+            context.getString(R.string.playlist_count_song_v2, value.toString())
+        }
+        2L, 3L, 4L -> {
+            context.getString(R.string.playlist_count_song_v3, value.toString())
+        }
+        else -> {
+            context.getString(R.string.playlist_count_song_v1, value.toString())
         }
     }
 }
