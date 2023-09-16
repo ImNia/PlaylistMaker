@@ -15,4 +15,8 @@ class MediaCreateInteractorImpl(
     override fun getPlayLists(): Flow<List<PlayListData>> {
         return repository.getPlayLists()
     }
+
+    override fun getPlaylist(idPlaylist: Long): Flow<PlayListData> {
+        return repository.getPlaylist(idPlaylist)
+    }
 }

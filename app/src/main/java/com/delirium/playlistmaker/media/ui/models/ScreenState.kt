@@ -6,4 +6,7 @@ sealed interface ScreenState {
         val message: String
     ): ScreenState
     object CloseScreen: ScreenState
+    data class EditPlaylist(
+        val idPlaylist: Long
+    ): ScreenState
 }

@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface MediaCreateInteractor {
     fun savePlayList(playList: PlayListData): Flow<Boolean>
     fun getPlayLists(): Flow<List<PlayListData>>
+    fun getPlaylist(idPlaylist: Long): Flow<PlayListData>
 }

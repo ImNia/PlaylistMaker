@@ -133,4 +133,12 @@ class PlaylistViewModel(
             }
         }
     }
+
+    fun openEditScreen() {
+        if(currentIdPlaylist != null) {
+            screenStateLiveData.postValue(
+                ScreenState.EditPlaylist(currentIdPlaylist!!)
+            )
+        }
+    }
 }

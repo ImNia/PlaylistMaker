@@ -2,14 +2,13 @@ package com.delirium.playlistmaker.media.data.converters
 
 import com.delirium.playlistmaker.media.domain.model.PlayListData
 import com.delirium.playlistmaker.utils.db.PlayListEntity
-import kotlin.random.Random
 
 class MediaDbConverters {
     fun map(entity: PlayListEntity): PlayListData {
         return PlayListData(
             id = entity.id,
             name = entity.name ?: "",
-            description = entity.description,
+            description = entity.description ?: "",
             image = entity.image,
             songList = entity.songList,
             countSong = entity.countSong,
@@ -22,7 +21,7 @@ class MediaDbConverters {
         return PlayListEntity(
             id = data.id,
             name = data.name,
-            description = data.description,
+            description = data.description ?: "",
             image = data.image,
             songList = data.songList,
             countSong = data.countSong,

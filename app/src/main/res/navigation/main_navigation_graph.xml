@@ -57,7 +57,13 @@
         android:id="@+id/mediaCreateFragment"
         android:name="com.delirium.playlistmaker.media.ui.fragment.create.MediaCreateFragment"
         android:label="fragment_media_create"
-        tools:layout="@layout/fragment_media_create" />
+        tools:layout="@layout/fragment_media_create" >
+        <action android:id="@+id/mediaCreateFragment_back"
+            app:destination="@id/playlistFragment"
+            app:popUpTo="@id/playlistFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
     <fragment
         android:id="@+id/trackFragment"
         android:name="com.delirium.playlistmaker.player.ui.fragment.TrackFragment"
@@ -74,5 +80,8 @@
         <action
             android:id="@+id/action_playlistFragment_to_trackFragment"
             app:destination="@id/trackFragment" />
+        <action
+            android:id="@+id/action_playlistFragment_to_mediaCreateFragment"
+            app:destination="@id/mediaCreateFragment" />
     </fragment>
 </navigation>

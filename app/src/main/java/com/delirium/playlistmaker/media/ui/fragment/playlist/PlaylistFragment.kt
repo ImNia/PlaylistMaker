@@ -104,6 +104,14 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
                 is ScreenState.CloseScreen -> {
                     closeScreen()
                 }
+                is ScreenState.EditPlaylist -> {
+                    val bundle = Bundle()
+                    bundle.putString(PLAYLIST_ID, screenState.idPlaylist.toString())
+                    findNavController().navigate(
+                        R.id.action_playlistFragment_to_mediaCreateFragment,
+                        bundle
+                    )
+                }
             }
         }
         binding.playlistArrowBack.setOnClickListener {
@@ -200,7 +208,9 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
         binding.playlistSharingApp.setOnClickListener {
             viewModel.clickOnSharedIcon()
         }
-        binding.playlistEditInfo.setOnClickListener {  }
+        binding.playlistEditInfo.setOnClickListener {
+            viewModel.openEditScreen()
+        }
         binding.playlistDelete.setOnClickListener {
             confirmDialog = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.playlist_question_delete_playlist))

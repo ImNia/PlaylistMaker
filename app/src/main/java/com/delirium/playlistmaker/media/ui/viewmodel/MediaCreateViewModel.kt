@@ -9,6 +9,7 @@ import com.delirium.playlistmaker.media.domain.api.StorageInteractor
 import com.delirium.playlistmaker.media.domain.model.PlayListData
 import com.delirium.playlistmaker.media.domain.model.ResponseImageInfo
 import com.delirium.playlistmaker.media.ui.models.MediaCreateState
+import com.delirium.playlistmaker.media.ui.models.PlaylistEditState
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -20,9 +21,14 @@ class MediaCreateViewModel(
     private val interactorStorage: StorageInteractor
 ) : ViewModel() {
     private var mediaCreateStatePlayerLiveData = MutableLiveData<MediaCreateState>()
-    fun getMediaCreateStatePlayerLiveData(): MutableLiveData<MediaCreateState> = mediaCreateStatePlayerLiveData
+    fun getMediaCreateStatePlayerLiveData(): MutableLiveData<MediaCreateState> =
+        mediaCreateStatePlayerLiveData
 
-    fun clickButtonCreate(name: String, description: String?, uri: Uri?) {
+    private var playlistStateLiveData = MutableLiveData<PlaylistEditState>()
+    fun getPlaylistStateLiveData(): MutableLiveData<PlaylistEditState> = playlistStateLiveData
+
+    private var currentPlaylist: PlayListData? = null
+    fun clickButtonCreate(idPlaylist: Long? = null, name: String, description: String?, uri: Uri?) {
         viewModelScope.launch {
             val imageInfo = ResponseImageInfo(
                 name = null,
@@ -39,23 +45,64 @@ class MediaCreateViewModel(
                 imageInfo.name = this?.name
                 imageInfo.filePath = this?.filePath
             }
+
             interactor.savePlayList(
                 PlayListData(
-                    id = Random.nextLong(),
-                    name = name,
-                    description = description,
+                    id = idPlaylist ?: Random.nextLong(),
+                    name = currentPlaylist?.name ?: name,
+                    description = currentPlaylist?.description ?: description,
                     image = imageInfo.name,
                     filePath = imageInfo.filePath,
-                    year = Calendar.getInstance().get(Calendar.YEAR).toString()
+                    songList = currentPlaylist?.songList ?:  null,
+                    countSong = currentPlaylist?.countSong ?: 0L,
+                    year = currentPlaylist?.year ?: Calendar.getInstance().get(Calendar.YEAR).toString()
                 )
             ).collect { result ->
-                if(result) {
+                if (result) {
                     mediaCreateStatePlayerLiveData.postValue(
                         MediaCreateState.Created(name = name)
                     )
                 }
             }
         }
+    }
+
+    fun initData(idPlaylist: Long) {
+        viewModelScope.launch {
+            interactor.getPlaylist(idPlaylist).collect { playlist ->
+                currentPlaylist = playlist
+                playlistStateLiveData.postValue(
+                    PlaylistEditState.Content(playlist)
+                )
+            }
+        }
+    }
+
+    fun closeScreen(name: String?, description: String?, img: Uri?) {
+        val playlistState = playlistStateLiveData.value
+        if (playlistState is PlaylistEditState.Content) {
+            playlistStateLiveData.postValue(
+                PlaylistEditState.CloseScreen(
+                    isEdited(
+                        name,
+                        description,
+                        img,
+                        playlistState.playlist
+                    )
+                )
+            )
+        }
+    }
+
+    private fun isEdited(
+        name: String?,
+        description: String?,
+        img: Uri?,
+        playlistData: PlayListData
+    ): Boolean {
+        return (name != null && name != playlistData.name
+                || description != null && description != playlistData.description
+                || img != null && img.toString() != playlistData.image)
     }
 
     companion object {

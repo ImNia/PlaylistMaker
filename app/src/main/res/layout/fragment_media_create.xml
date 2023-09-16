@@ -31,6 +31,7 @@
             android:focusable="true" />
         <TextView
             style="@style/toolbar"
+            android:id="@+id/create_playlist_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/title_media_create"

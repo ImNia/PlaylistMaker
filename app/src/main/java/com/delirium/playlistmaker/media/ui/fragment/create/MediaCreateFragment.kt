@@ -21,7 +21,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.databinding.FragmentMediaCreateBinding
+import com.delirium.playlistmaker.media.domain.model.PlayListData
 import com.delirium.playlistmaker.media.ui.models.MediaCreateState
+import com.delirium.playlistmaker.media.ui.models.PlaylistEditState
 import com.delirium.playlistmaker.media.ui.viewmodel.MediaCreateViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
@@ -36,6 +38,7 @@ class MediaCreateFragment : Fragment() {
     private var currentImageUri: Uri? = null
 
     lateinit var confirmDialog: MaterialAlertDialogBuilder
+    private var playlistId: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,16 +62,6 @@ class MediaCreateFragment : Fragment() {
             }
         }
 
-        confirmDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.create_playlist_dialog_title))
-            .setMessage(getString(R.string.create_playlist_dialog_message))
-            .setNeutralButton(getString(R.string.create_playlist_dialog_neutral)) { dialog, which ->
-            }.setNegativeButton(getString(R.string.create_playlist_dialog_close)) { dialog, which ->
-                lifecycleScope.launch {
-                    findNavController().popBackStack()
-                }
-            }
-
         return binding.root
     }
 
@@ -80,13 +73,12 @@ class MediaCreateFragment : Fragment() {
             }
         }
         activity?.onBackPressedDispatcher?.addCallback(callback)
+        if (playlistId == null) {
+            playlistId = arguments?.getString(PLAYLIST_ID)
+        }
 
         binding.mediaCreateImage.setOnClickListener {
             setImage()
-        }
-
-        binding.arrowBack.setOnClickListener {
-            closeScreen()
         }
 
         binding.mediaCreateName.addTextChangedListener(object : TextWatcher {
@@ -108,12 +100,35 @@ class MediaCreateFragment : Fragment() {
         binding.mediaCreateButton.setOnClickListener {
             if (it.isEnabled) {
                 viewModel.clickButtonCreate(
+                    idPlaylist = playlistId?.toLong(),
                     name = binding.mediaCreateName.text.toString(),
                     description = binding.mediaCreateDescription.text.toString(),
                     uri = currentImageUri
                 )
             }
         }
+
+        if(playlistId == null) {
+            createNewPlaylist()
+        } else {
+            editExistPlaylist()
+        }
+    }
+
+    private fun createNewPlaylist() {
+        binding.arrowBack.setOnClickListener {
+            closeScreen()
+        }
+
+        confirmDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.create_playlist_dialog_title))
+            .setMessage(getString(R.string.create_playlist_dialog_message))
+            .setNeutralButton(getString(R.string.create_playlist_dialog_neutral)) { dialog, which ->
+            }.setNegativeButton(getString(R.string.create_playlist_dialog_close)) { dialog, which ->
+                lifecycleScope.launch {
+                    findNavController().popBackStack()
+                }
+            }
 
         viewModel.getMediaCreateStatePlayerLiveData().observe(viewLifecycleOwner) { state ->
             when(state) {
@@ -125,8 +140,65 @@ class MediaCreateFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun editExistPlaylist() {
+        binding.createPlaylistTitle.text = getString(R.string.edit_playlist_title)
+        binding.mediaCreateButton.text = getString(R.string.edit_playlist_button)
+
+        confirmDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.edit_playlist_dialog_title))
+            .setMessage(getString(R.string.create_playlist_dialog_message))
+            .setNeutralButton(getString(R.string.create_playlist_dialog_neutral)) { dialog, which ->
+            }.setNegativeButton(getString(R.string.create_playlist_dialog_close)) { dialog, which ->
+                val bundle = Bundle()
+                bundle.putString(PLAYLIST_ID, playlistId.toString())
+                findNavController().navigate(R.id.mediaCreateFragment_back, bundle)
+            }
+
+        viewModel.getPlaylistStateLiveData().observe(viewLifecycleOwner) { playlistState ->
+            when(playlistState) {
+                is PlaylistEditState.Content -> {
+                    updateScreenPlaylist(playlistState.playlist)
+                }
+                is PlaylistEditState.CloseScreen -> {
+                    closeEditScreen(playlistState.updated)
+                }
+            }
+        }
+        viewModel.getMediaCreateStatePlayerLiveData().observe(viewLifecycleOwner) { state ->
+            when(state) {
+                is MediaCreateState.Created -> {
+                    Toast.makeText(requireContext(), getString(R.string.playlist_updated, state.name), Toast.LENGTH_SHORT).show()
+                    lifecycleScope.launch {
+                        val bundle = Bundle()
+                        bundle.putString(PLAYLIST_ID, playlistId.toString())
+                        findNavController().navigate(R.id.mediaCreateFragment_back, bundle)
+                    }
+                }
+            }
+        }
 
 
+        binding.arrowBack.setOnClickListener {
+            viewModel.closeScreen(
+                binding.mediaCreateName.text.toString(),
+                binding.mediaCreateDescription.text.toString(),
+                currentImageUri
+            )
+        }
+
+        viewModel.initData(playlistId!!.toLong())
+    }
+
+    private fun updateScreenPlaylist(playlist: PlayListData) {
+        binding.mediaCreateName.setText(playlist.name)
+        binding.mediaCreateDescription.setText(playlist.description)
+        Glide.with(this)
+            .load(playlist.filePath)
+            .placeholder(R.drawable.not_image)
+            .transform(CenterCrop(), RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_description_image)))
+            .into(binding.mediaCreateImage)
     }
 
     private fun setImage() {
@@ -144,5 +216,21 @@ class MediaCreateFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
+    }
+
+    private fun closeEditScreen(updated: Boolean) {
+        if(updated) {
+            confirmDialog.show()
+        } else {
+            lifecycleScope.launch {
+                val bundle = Bundle()
+                bundle.putString(PLAYLIST_ID, playlistId.toString())
+                findNavController().navigate(R.id.mediaCreateFragment_back, bundle)
+            }
+        }
+    }
+
+    companion object {
+        const val PLAYLIST_ID = "PLAYLIST_ID"
     }
 }
