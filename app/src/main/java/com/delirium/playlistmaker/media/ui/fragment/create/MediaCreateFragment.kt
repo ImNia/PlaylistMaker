@@ -14,6 +14,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -67,12 +68,6 @@ class MediaCreateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                closeScreen()
-            }
-        }
-        activity?.onBackPressedDispatcher?.addCallback(callback)
         if (playlistId == null) {
             playlistId = arguments?.getString(PLAYLIST_ID)
         }
@@ -116,6 +111,12 @@ class MediaCreateFragment : Fragment() {
     }
 
     private fun createNewPlaylist() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                closeScreen()
+            }
+        }
+        activity?.onBackPressedDispatcher?.addCallback(callback)
         binding.arrowBack.setOnClickListener {
             closeScreen()
         }
@@ -156,10 +157,29 @@ class MediaCreateFragment : Fragment() {
                 findNavController().navigate(R.id.mediaCreateFragment_back, bundle)
             }
 
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                viewModel.closeScreen(
+                    binding.mediaCreateName.text.toString(),
+                    binding.mediaCreateDescription.text.toString(),
+                    currentImageUri
+                )
+            }
+        }
+        activity?.onBackPressedDispatcher?.addCallback(callback)
+        binding.arrowBack.setOnClickListener {
+            viewModel.closeScreen(
+                binding.mediaCreateName.text.toString(),
+                binding.mediaCreateDescription.text.toString(),
+                currentImageUri
+            )
+        }
+
         viewModel.getPlaylistStateLiveData().observe(viewLifecycleOwner) { playlistState ->
             when(playlistState) {
                 is PlaylistEditState.Content -> {
                     updateScreenPlaylist(playlistState.playlist)
+                    currentImageUri = playlistState.playlist.image?.toUri()
                 }
                 is PlaylistEditState.CloseScreen -> {
                     closeEditScreen(playlistState.updated)
@@ -177,15 +197,6 @@ class MediaCreateFragment : Fragment() {
                     }
                 }
             }
-        }
-
-
-        binding.arrowBack.setOnClickListener {
-            viewModel.closeScreen(
-                binding.mediaCreateName.text.toString(),
-                binding.mediaCreateDescription.text.toString(),
-                currentImageUri
-            )
         }
 
         viewModel.initData(playlistId!!.toLong())

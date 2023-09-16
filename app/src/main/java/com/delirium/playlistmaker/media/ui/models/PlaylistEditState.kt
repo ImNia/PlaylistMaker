@@ -7,6 +7,7 @@ sealed interface PlaylistEditState {
         val playlist: PlayListData
     ): PlaylistEditState
     data class CloseScreen(
-        val updated: Boolean
+        val updated: Boolean,
+        val playlist: PlayListData
     ): PlaylistEditState
 }

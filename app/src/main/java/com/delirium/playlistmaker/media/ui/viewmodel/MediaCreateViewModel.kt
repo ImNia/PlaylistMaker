@@ -31,31 +31,34 @@ class MediaCreateViewModel(
     fun clickButtonCreate(idPlaylist: Long? = null, name: String, description: String?, uri: Uri?) {
         viewModelScope.launch {
             val imageInfo = ResponseImageInfo(
-                name = null,
-                filePath = null
+                name = currentPlaylist?.image,
+                filePath = currentPlaylist?.filePath
             )
-            var job: Deferred<ResponseImageInfo>? = null
-            uri?.let {
-                job = async {
-                    interactorStorage.saveImageToStorage(uri, FILES_DIR)
+            if(imageInfo.name != uri.toString()) {
+                var job: Deferred<ResponseImageInfo>? = null
+                uri?.let {
+                    job = async {
+                        interactorStorage.saveImageToStorage(uri, FILES_DIR)
+                    }
                 }
-            }
 
-            job?.await().apply {
-                imageInfo.name = this?.name
-                imageInfo.filePath = this?.filePath
+                job?.await().apply {
+                    imageInfo.name = this?.name
+                    imageInfo.filePath = this?.filePath
+                }
             }
 
             interactor.savePlayList(
                 PlayListData(
                     id = idPlaylist ?: Random.nextLong(),
-                    name = currentPlaylist?.name ?: name,
-                    description = currentPlaylist?.description ?: description,
+                    name = name,
+                    description = description ?: currentPlaylist?.description,
                     image = imageInfo.name,
                     filePath = imageInfo.filePath,
-                    songList = currentPlaylist?.songList ?:  null,
+                    songList = currentPlaylist?.songList,
                     countSong = currentPlaylist?.countSong ?: 0L,
-                    year = currentPlaylist?.year ?: Calendar.getInstance().get(Calendar.YEAR).toString()
+                    year = currentPlaylist?.year ?: Calendar.getInstance().get(Calendar.YEAR)
+                        .toString()
                 )
             ).collect { result ->
                 if (result) {
@@ -80,18 +83,21 @@ class MediaCreateViewModel(
 
     fun closeScreen(name: String?, description: String?, img: Uri?) {
         val playlistState = playlistStateLiveData.value
-        if (playlistState is PlaylistEditState.Content) {
-            playlistStateLiveData.postValue(
-                PlaylistEditState.CloseScreen(
-                    isEdited(
-                        name,
-                        description,
-                        img,
-                        playlistState.playlist
-                    )
-                )
+
+        val playlist = if (playlistState is PlaylistEditState.Content) playlistState.playlist
+        else if (playlistState is PlaylistEditState.CloseScreen) playlistState.playlist
+        else null
+        playlistStateLiveData.postValue(
+            PlaylistEditState.CloseScreen(
+                isEdited(
+                    name,
+                    description,
+                    img,
+                    playlist!!
+                ),
+                playlist
             )
-        }
+        )
     }
 
     private fun isEdited(
@@ -100,9 +106,9 @@ class MediaCreateViewModel(
         img: Uri?,
         playlistData: PlayListData
     ): Boolean {
-        return (name != null && name != playlistData.name
-                || description != null && description != playlistData.description
-                || img != null && img.toString() != playlistData.image)
+        return (name != playlistData.name
+                || description != playlistData.description
+                || img.toString() != playlistData.image)
     }
 
     companion object {
