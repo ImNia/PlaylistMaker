@@ -81,6 +81,7 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
 
                 SongPlaylistState.Empty -> {
                     updateSongsInfo(listOf())
+                    showMessage(getString(R.string.playlist_not_songs))
                 }
             }
         }

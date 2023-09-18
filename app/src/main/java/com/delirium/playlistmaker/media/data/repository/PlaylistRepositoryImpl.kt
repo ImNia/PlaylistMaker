@@ -70,7 +70,6 @@ class PlaylistRepositoryImpl(
         return notExist
     }
     override suspend fun deletePlaylist(id: Long) {
-//        val songs = appDatabase.mediaDao().getPlaylist(id).songList?.split(" ")
         appDatabase.mediaDao().deletePlaylist(id)
     }
 }

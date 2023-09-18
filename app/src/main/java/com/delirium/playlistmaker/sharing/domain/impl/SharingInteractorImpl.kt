@@ -18,4 +18,8 @@ class SharingInteractorImpl(
     override fun openSupport(content: ContentSharing) {
         externalNavigator.openEmail(content)
     }
+
+    override fun openMessanger(content: ContentSharing) {
+        externalNavigator.openMessanger(content)
+    }
 }

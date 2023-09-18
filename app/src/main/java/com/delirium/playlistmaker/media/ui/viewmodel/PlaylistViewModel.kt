@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delirium.playlistmaker.media.domain.api.PlaylistInteractor
+import com.delirium.playlistmaker.media.domain.model.PlayListData
 import com.delirium.playlistmaker.media.domain.model.SongItemPlaylist
 import com.delirium.playlistmaker.media.ui.models.PlaylistState
 import com.delirium.playlistmaker.media.ui.models.ScreenState
@@ -29,6 +30,7 @@ class PlaylistViewModel(
     fun getScreenStateLiveData(): MutableLiveData<ScreenState> = screenStateLiveData
 
     private var currentIdPlaylist: Long? = null
+    private var currentPlaylist: PlayListData? = null
 
     fun initData(id: String?) {
         if (id == null) {
@@ -42,6 +44,7 @@ class PlaylistViewModel(
                     playlistStateLiveData.postValue(
                         PlaylistState.Content(it)
                     )
+                    currentPlaylist = it
                 }
                 interactor.getSongsPlaylist(id.toLong()).collect { songs ->
                     if (songs.isEmpty()) {
@@ -98,6 +101,8 @@ class PlaylistViewModel(
 
     private fun collectSongsList(songs: List<SongItemPlaylist>): String {
         val list = mutableListOf<String>()
+        list.add("${currentPlaylist?.name}")
+        list.add("${currentPlaylist?.description}")
         list.add("${songs.size} треков")
         songs.forEachIndexed { index, song ->
             list.add(
@@ -113,7 +118,7 @@ class PlaylistViewModel(
     }
 
     fun sharing(content: ContentSharing) {
-        sharingInteractor.openSupport(content)
+        sharingInteractor.openMessanger(content)
     }
 
     fun deletePlaylist() {

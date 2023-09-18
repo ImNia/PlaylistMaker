@@ -194,7 +194,6 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
         }
         binding.genreSong.text = track.primaryGenreName
         binding.countrySong.text = track.country
-//        binding.currentDurationSong.text = "00:00"
 
         if (track.isFavorite) {
             binding.favoriteButtonDesc.setImageResource(R.drawable.favorite_active)
@@ -245,12 +244,12 @@ class TrackFragment : Fragment(), ClickOnPlaylist {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
+    override fun clickOnPlaylist(playlist: PlayListData) {
+        trackId?.let { viewModel.addSongToPlaylist(it, playlist) }
+    }
+
     companion object {
         const val SAVE_TRACK = "SAVE_TRACK"
         const val TRACK_ID = "TRACK_ID"
-    }
-
-    override fun clickOnPlaylist(playlist: PlayListData) {
-        trackId?.let { viewModel.addSongToPlaylist(it, playlist) }
     }
 }

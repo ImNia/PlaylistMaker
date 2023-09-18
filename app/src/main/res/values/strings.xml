@@ -61,6 +61,7 @@
     <string name="playlist_question_delete_playlist">Хотите удалить плейлист?</string>
     <string name="yes">да</string>
     <string name="playlist_share_not_songs">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="playlist_not_songs">В этом плейлисте нет треков</string>
     <string name="playlist_share_theme">Мой плейлист</string>
     <string name="playlist_share">Поделиться</string>
     <string name="playlist_edit_info">Редактировать информацию</string>

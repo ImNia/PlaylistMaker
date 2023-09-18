@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
                 R.id.mediaCreateFragment,
-                R.id.trackFragment-> {
+                R.id.trackFragment,
+                R.id.playlistFragment-> {
                     bottomNavigationView.visibility = View.GONE
                 }
                 else -> {

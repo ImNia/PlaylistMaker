@@ -6,4 +6,5 @@ interface SharingInteractor {
     fun shareApp(content: ContentSharing)
     fun openTerms(content: ContentSharing)
     fun openSupport(content: ContentSharing)
+    fun openMessanger(content: ContentSharing)
 }

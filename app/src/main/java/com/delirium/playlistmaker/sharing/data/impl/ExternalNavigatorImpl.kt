@@ -52,4 +52,19 @@ class ExternalNavigatorImpl(
             e.printStackTrace()
         }
     }
+
+    override fun openMessanger(content: ContentSharing) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            content.emailData?.let {
+                putExtra(Intent.EXTRA_TEXT, it.messageOnMail)
+            }
+            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            type = "text/plain"
+        }
+        try {
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }

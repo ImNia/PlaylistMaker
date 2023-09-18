@@ -6,4 +6,5 @@ interface ExternalNavigator {
     fun shareLink(content: ContentSharing)
     fun openLink(content: ContentSharing)
     fun openEmail(content: ContentSharing)
+    fun openMessanger(content: ContentSharing)
 }
