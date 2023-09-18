@@ -1,6 +1,5 @@
 package com.delirium.playlistmaker.player.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -125,7 +124,6 @@ class TrackViewModel(
         track?.let {
             viewModelScope.launch {
                 tracksInteractor.changeFavoriteState(it.trackId).collect {
-                    Log.d("TEST", "${it}")
                     screenStateLiveData.postValue(
                         TrackScreenState.Content(it)
                     )

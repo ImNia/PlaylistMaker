@@ -22,8 +22,8 @@ class PlaylistRepositoryImpl(
     override fun getSongsPlaylist(idPlaylist: Long): Flow<List<SongItemPlaylist>> = flow {
         val playlist = appDatabase.mediaDao().getPlaylist(idPlaylist)
         val songs = mutableListOf<SongItemPlaylist>()
-        if(playlist.songList != null) {
-            for (item in playlist.songList.split(" ")) {
+        playlist.songList?.let { songsList ->
+            songsList.split(" ").forEach { item ->
                 if(item.trim() != "") {
                     songs.add(converterSongs.map(
                         appDatabase.mediaDao().getSongPlaylist(item.toLong())
@@ -31,7 +31,11 @@ class PlaylistRepositoryImpl(
                 }
             }
         }
-        emit(songs)
+        emit(formedSongs(songs))
+    }
+
+    private fun formedSongs(songs: List<SongItemPlaylist>): List<SongItemPlaylist> {
+        return songs.reversed()
     }
 
     override suspend fun deleteSongPlaylist(song: SongItemPlaylist, idPlaylist: Long) {
