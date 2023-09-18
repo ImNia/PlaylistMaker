@@ -6,6 +6,7 @@ data class SongItemFavorite(
     val artistName: String? = null,
     val collectionName: String? = null,
     val trackTimeMillis: Int? = null,
+    val artworkUrl60: String? = null,
     val artworkUrl100: String? = null,
     val releaseDate: String? = null,
     val country: String? = null,

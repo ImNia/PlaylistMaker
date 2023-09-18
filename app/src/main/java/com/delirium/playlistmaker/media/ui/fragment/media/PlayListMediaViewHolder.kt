@@ -40,7 +40,7 @@ class PlayListMediaViewHolder(
                     )
                 )
                 .into(image)
-        }
+        } ?: image.setImageDrawable(context.getDrawable(R.drawable.not_image))
         itemView.setOnClickListener {
             listener.clickOnPlaylist(data.id)
         }

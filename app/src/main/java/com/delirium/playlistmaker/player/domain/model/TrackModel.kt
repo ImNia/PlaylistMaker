@@ -6,6 +6,7 @@ data class TrackModel(
     val artistName: String,
     val collectionName: String? = null,
     val trackTimeMillis: Int,
+    val artworkUrl60: String? = null,
     val artworkUrl100: String,
     val releaseDate: String,
     val country: String,

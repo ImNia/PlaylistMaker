@@ -1,6 +1,6 @@
 package com.delirium.playlistmaker.media.ui.fragment.playlist
 
-import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -29,8 +29,10 @@ class PlayListViewHolder(
     }
 
     fun bind(data: SongItemPlaylist, clickListener: ListenerSongPlaylist) {
+        Log.d("TEST", "${data.artworkUrl60}")
+        Log.d("TEST", "${data.artworkUrl100}")
         Glide.with(itemView)
-            .load(data.artworkUrl100)
+            .load(data.artworkUrl60)
             .placeholder(R.drawable.not_image)
             .transform(
                 CenterCrop(),
