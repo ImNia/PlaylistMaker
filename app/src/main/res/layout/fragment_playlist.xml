@@ -53,14 +53,15 @@
             tools:text="Best songs 2021" />
 
         <TextView
-            android:id="@+id/playlist_year"
+            android:id="@+id/playlist_description"
             style="@style/text_sub_playlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/description_margin_vertical_sub"
             android:layout_marginVertical="@dimen/playlist_margin_small"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/name_song_desc"
-            tools:text="2022" />
+            tools:text="description" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -127,7 +128,6 @@
         android:id="@+id/playlist_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_with_bottom_sheet"
         android:visibility="visible" />
 
     <LinearLayout

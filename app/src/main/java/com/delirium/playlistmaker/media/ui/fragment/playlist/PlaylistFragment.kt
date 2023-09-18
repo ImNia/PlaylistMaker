@@ -147,8 +147,13 @@ class PlaylistFragment : Fragment(), ListenerSongPlaylist {
             .into(binding.playlistImage)
         binding.playlistImage.scaleType = ImageView.ScaleType.CENTER_CROP
         binding.playlistName.text = playlist.name
-        binding.playlistYear.text = playlist.year
         binding.playlistCountTrack.text = getCorrectVersionTextNumberTrack(playlist.countSong)
+        if(playlist.description != null && playlist.description != "") {
+            binding.playlistDescription.visibility = View.VISIBLE
+            binding.playlistDescription.text = playlist.description
+        } else {
+            binding.playlistDescription.visibility = View.GONE
+        }
 
         Glide.with(this)
             .load(playlist.filePath)
