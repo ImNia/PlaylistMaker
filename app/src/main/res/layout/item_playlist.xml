@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginHorizontal="4dp"
     android:layout_marginBottom="16dp">
@@ -10,15 +10,13 @@
     <ImageView
         android:id="@+id/playlist_image_item"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
+        android:layout_height="160dp"
         android:src="@drawable/not_image"
         android:background="@drawable/rounder_image_playlist"/>
     <TextView
         android:id="@+id/playlist_name_item"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         tools:text="test"
         android:fontFamily="@font/ys_display_regular"
         android:textSize="12sp"
@@ -27,8 +25,7 @@
     <TextView
         android:id="@+id/playlist_count_item"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         tools:text="test"
         android:fontFamily="@font/ys_display_regular"
         android:textSize="12sp"
