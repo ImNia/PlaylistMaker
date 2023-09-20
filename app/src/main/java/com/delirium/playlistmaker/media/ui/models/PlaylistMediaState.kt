@@ -2,9 +2,9 @@ package com.delirium.playlistmaker.media.ui.models
 
 import com.delirium.playlistmaker.media.domain.model.PlayListData
 
-sealed interface PlayListState {
+sealed interface PlaylistMediaState {
     class Content(
         val data: List<PlayListData>
-    ): PlayListState
-    object Empty: PlayListState
+    ): PlaylistMediaState
+    object Empty: PlaylistMediaState
 }

@@ -28,7 +28,7 @@ class BottomSheetViewHolder(
 
     fun bind(data: PlayListData) {
         name.text = data.name
-        countSong.text = context.getString(R.string.playlist_count_song, data.countSong.toString())
+        countSong.text = getCorrectVersionTextNumberTrack(data.countSong)
 
         data.image?.let {
             Glide.with(itemView)
@@ -44,6 +44,18 @@ class BottomSheetViewHolder(
         }
         itemView.setOnClickListener {
             clickListener.clickOnPlaylist(data)
+        }
+    }
+
+    private fun getCorrectVersionTextNumberTrack(value: Long) = when(value % 10) {
+        1L -> {
+            context.getString(R.string.playlist_count_song_v2, value.toString())
+        }
+        2L, 3L, 4L -> {
+            context.getString(R.string.playlist_count_song_v3, value.toString())
+        }
+        else -> {
+            context.getString(R.string.playlist_count_song_v1, value.toString())
         }
     }
 }

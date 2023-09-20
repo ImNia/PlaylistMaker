@@ -1,6 +1,6 @@
 package com.delirium.playlistmaker.sharing.domain.impl
 
-import com.delirium.playlistmaker.settings.model.ContentSharing
+import com.delirium.playlistmaker.sharing.model.ContentSharing
 import com.delirium.playlistmaker.sharing.domain.ExternalNavigator
 import com.delirium.playlistmaker.sharing.domain.SharingInteractor
 
@@ -17,5 +17,9 @@ class SharingInteractorImpl(
 
     override fun openSupport(content: ContentSharing) {
         externalNavigator.openEmail(content)
+    }
+
+    override fun openMessanger(content: ContentSharing) {
+        externalNavigator.openMessanger(content)
     }
 }

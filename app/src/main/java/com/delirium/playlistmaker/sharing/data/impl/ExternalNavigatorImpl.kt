@@ -3,7 +3,7 @@ package com.delirium.playlistmaker.sharing.data.impl
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.delirium.playlistmaker.settings.model.ContentSharing
+import com.delirium.playlistmaker.sharing.model.ContentSharing
 import com.delirium.playlistmaker.sharing.domain.ExternalNavigator
 import java.lang.Exception
 
@@ -45,6 +45,21 @@ class ExternalNavigatorImpl(
                 putExtra(Intent.EXTRA_TEXT, it.messageOnMail)
             }
             this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        try {
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun openMessanger(content: ContentSharing) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            content.emailData?.let {
+                putExtra(Intent.EXTRA_TEXT, it.messageOnMail)
+            }
+            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            type = "text/plain"
         }
         try {
             context.startActivity(intent)

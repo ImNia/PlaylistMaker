@@ -39,4 +39,7 @@
     <dimen name="switch_alpha">0.48</dimen>
     <dimen name="padding_top_bottom">20dp</dimen>
     <dimen name="text_size_sub">14sp</dimen>
+
+    <dimen name="playlist_margin_small">4dp</dimen>
+    <dimen name="playlist_height_bottom_sheet">240dp</dimen>
 </resources>

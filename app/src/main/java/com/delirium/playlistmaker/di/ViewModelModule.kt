@@ -4,6 +4,7 @@ import com.delirium.playlistmaker.media.ui.viewmodel.MediaCreateViewModel
 import com.delirium.playlistmaker.media.ui.viewmodel.FavoriteTrackViewModel
 import com.delirium.playlistmaker.media.ui.viewmodel.MediaViewModel
 import com.delirium.playlistmaker.media.ui.viewmodel.PlayListMediaViewModel
+import com.delirium.playlistmaker.media.ui.viewmodel.PlaylistViewModel
 import com.delirium.playlistmaker.player.ui.viewmodel.TrackViewModel
 import com.delirium.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.delirium.playlistmaker.settings.ui.viewmodel.SettingViewModel
@@ -46,5 +47,8 @@ val viewModelModule = module {
 
     viewModel {
         MediaCreateViewModel(get(), get())
+    }
+    viewModel {
+        PlaylistViewModel(get(), get())
     }
 }

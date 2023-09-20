@@ -35,10 +35,13 @@
         <action
             android:id="@+id/action_mediaFragment_to_trackFragment"
             app:destination="@id/trackFragment" />
+        <action
+            android:id="@+id/action_mediaFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
     </fragment>
     <fragment
         android:id="@+id/playListMediaFragment"
-        android:name="com.delirium.playlistmaker.media.ui.fragment.playlist.PlayListMediaFragment"
+        android:name="com.delirium.playlistmaker.media.ui.fragment.media.PlayListMediaFragment"
         android:label="fragment_play_list_media"
         tools:layout="@layout/fragment_play_list_media" />
     <fragment
@@ -54,7 +57,13 @@
         android:id="@+id/mediaCreateFragment"
         android:name="com.delirium.playlistmaker.media.ui.fragment.create.MediaCreateFragment"
         android:label="fragment_media_create"
-        tools:layout="@layout/fragment_media_create" />
+        tools:layout="@layout/fragment_media_create" >
+        <action android:id="@+id/mediaCreateFragment_back"
+            app:destination="@id/playlistFragment"
+            app:popUpTo="@id/playlistFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
     <fragment
         android:id="@+id/trackFragment"
         android:name="com.delirium.playlistmaker.player.ui.fragment.TrackFragment"
@@ -62,6 +71,17 @@
         tools:layout="@layout/fragment_description_song" >
         <action
             android:id="@+id/action_trackFragment_to_mediaCreateFragment"
+            app:destination="@id/mediaCreateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.delirium.playlistmaker.media.ui.fragment.playlist.PlaylistFragment"
+        android:label="PlaylistFragment" >
+        <action
+            android:id="@+id/action_playlistFragment_to_trackFragment"
+            app:destination="@id/trackFragment" />
+        <action
+            android:id="@+id/action_playlistFragment_to_mediaCreateFragment"
             app:destination="@id/mediaCreateFragment" />
     </fragment>
 </navigation>

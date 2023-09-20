@@ -1,5 +1,6 @@
 package com.delirium.playlistmaker.search.domain.impl
 
+import android.util.Log
 import com.delirium.playlistmaker.search.Resource
 import com.delirium.playlistmaker.search.domain.api.RetrofitInteractor
 import com.delirium.playlistmaker.search.domain.api.RetrofitRepository
@@ -14,6 +15,7 @@ class RetrofitInteractorImpl(
         return repository.searchSongs(expression).map { result ->
             when(result) {
                 is Resource.Success -> {
+                    Log.d("TEST", "${result.data?.first()}")
                     ResultRetrofitInteractor(
                         listSong = result.data,
                         error = null

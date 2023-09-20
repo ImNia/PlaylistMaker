@@ -1,4 +1,4 @@
-package com.delirium.playlistmaker.media.ui.fragment.playlist
+package com.delirium.playlistmaker.media.ui.fragment.media
 
 import android.content.Context
 import android.view.View
@@ -11,7 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.delirium.playlistmaker.R
 import com.delirium.playlistmaker.media.domain.model.PlayListData
 
-class PlayListViewHolder(
+class PlayListMediaViewHolder(
     itemView: View,
     private val context: Context
 ): RecyclerView.ViewHolder(itemView) {
@@ -25,9 +25,9 @@ class PlayListViewHolder(
         count = itemView.findViewById(R.id.playlist_count_item)
     }
 
-    fun bind(data: PlayListData) {
+    fun bind(data: PlayListData, listener: ClickListenerPlaylist) {
         name.text = data.name
-        count.text = context.getString(R.string.playlist_count_song, data.countSong.toString())
+        count.text = getCorrectVersionTextNumberTrack(data.countSong)
 
         data.image?.let {
             Glide.with(itemView)
@@ -40,6 +40,21 @@ class PlayListViewHolder(
                     )
                 )
                 .into(image)
+        } ?: image.setImageDrawable(context.getDrawable(R.drawable.not_image))
+        itemView.setOnClickListener {
+            listener.clickOnPlaylist(data.id)
+        }
+    }
+
+    private fun getCorrectVersionTextNumberTrack(value: Long) = when(value % 10) {
+        1L -> {
+            context.getString(R.string.playlist_count_song_v2, value.toString())
+        }
+        2L, 3L, 4L -> {
+            context.getString(R.string.playlist_count_song_v3, value.toString())
+        }
+        else -> {
+            context.getString(R.string.playlist_count_song_v1, value.toString())
         }
     }
 }

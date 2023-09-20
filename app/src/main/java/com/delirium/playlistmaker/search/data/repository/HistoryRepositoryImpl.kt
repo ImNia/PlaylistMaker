@@ -34,12 +34,16 @@ class HistoryRepositoryImpl(
     override suspend fun saveSongDB(song: SongItem) {
         val songEntities = findSongInDB(song.trackId) ?: songDbConverter.map(song)
         songEntities.saveData = (System.currentTimeMillis() / 1000).toString()
+        songEntities.artworkUrl60 = songEntities.artworkUrl100?.let { getCoverArtwork(it) }
         appDatabase.songDao().insertSong(songEntities)
     }
 
     private suspend fun findSongInDB(trackId: String): SongEntity? {
         return appDatabase.songDao().getSong(trackId)
     }
+
+    private fun getCoverArtwork(artworkUrl: String) =
+        artworkUrl.replaceAfterLast('/', "60x60bb.jpg")
     companion object {
         const val MAX_SIZE_HISTORY = 10
     }

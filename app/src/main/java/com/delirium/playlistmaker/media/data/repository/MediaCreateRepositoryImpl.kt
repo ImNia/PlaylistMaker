@@ -1,5 +1,6 @@
 package com.delirium.playlistmaker.media.data.repository
 
+import android.util.Log
 import com.delirium.playlistmaker.media.data.converters.MediaDbConverters
 import com.delirium.playlistmaker.media.domain.model.PlayListData
 import com.delirium.playlistmaker.media.domain.repository.MediaCreateRepository
@@ -24,5 +25,13 @@ class MediaCreateRepositoryImpl(
             }
             emit(data)
         }
+    }
+
+    override fun getPlaylist(idPlaylist: Long): Flow<PlayListData> = flow {
+        val playlist = appDatabase.mediaDao().getPlaylist(idPlaylist)
+        Log.d("TEST", "${playlist}")
+        emit(
+            converter.map(playlist)
+        )
     }
 }

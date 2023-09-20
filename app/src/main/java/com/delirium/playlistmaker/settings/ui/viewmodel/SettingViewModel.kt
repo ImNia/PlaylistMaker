@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.delirium.playlistmaker.settings.domain.model.ThemeSettings
 import com.delirium.playlistmaker.settings.domain.api.SettingsInteractor
-import com.delirium.playlistmaker.settings.model.ContentSharing
+import com.delirium.playlistmaker.sharing.model.ContentSharing
 import com.delirium.playlistmaker.sharing.domain.SharingInteractor
 
 class SettingViewModel(
