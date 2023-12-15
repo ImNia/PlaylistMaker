@@ -1,11 +1,18 @@
 # PlaylistMaker
 Мобильное приложение для создание плейлистов.
+В проекте используется: Kotlin, MVVM, Coroutine, Retrofit, Koin
 
 ### Медиатека:
 Экран для сохранения избранных треков и создания плейлистов.
 <p align="left">
 <img src="https://github.com/ImNia/PlaylistMaker/blob/screenshot/screenshot/Screenshot_2023-08-17-21-36-21-228_com.delirium.playlistmaker.jpg" width="200">
 <img src="https://github.com/ImNia/PlaylistMaker/blob/screenshot/screenshot/Screenshot_2023-08-17-21-36-24-728_com.delirium.playlistmaker.jpg" width="200">
+</p>
+
+Экран созданого плейлиста
+<p align="left">
+<img src="https://github.com/ImNia/PlaylistMaker/blob/screenshot/screenshot/photo_2023-12-15_23-17-16.jpg" width="200">
+<img src="https://github.com/ImNia/PlaylistMaker/blob/screenshot/screenshot/photo_2023-12-15_23-17-25.jpg" width="200">
 </p>
 
 ### Настройки:
